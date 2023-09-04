@@ -1,8 +1,13 @@
 import * as Phaser from 'phaser';
-import Player from "./Player";
+import Player, { PlayerAnimation } from "./Player";
+import InputController from "./InputController";
 
 export default class Level1 extends Phaser.Scene
 {
+    cursors : Phaser.Types.Input.Keyboard.CursorKeys;
+    player : Player;
+    inputController : InputController;
+
     constructor()
     {
         super();
@@ -22,27 +27,47 @@ export default class Level1 extends Phaser.Scene
         const groundLayer = map.createLayer("Ground", tileset);
         const gateLayer = map.createLayer("Back", tileset);
         const tags = this.anims.createFromAseprite("noob");
-        const player = new Player(this);
+        
+        this.player = new Player(this);
+        this.inputController = new InputController(this);
 
         groundLayer.setCollisionByExclusion([-1]);
 
-        this.physics.add.collider(player.container, groundLayer);
+        this.physics.add.collider(this.player.container, groundLayer);
 
-        this.placeCharacterAtStart(player, map);
-        this.centerCameraAtCharacter(player);
+        this.placeCharacterAtStart(this.player, map);
+        this.centerCameraAtCharacter(this.player);
         this.cameras.main.setZoom(4, 4);
+
+        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     private placeCharacterAtStart(
         player: Player, 
         map: Phaser.Tilemaps.Tilemap) {
         const startGate = map.findObject("Objects", o => o.name === "Start");
+        const playerSize = player.bodySize;
 
-        player.setPosition(startGate.x + startGate.width / 2, startGate.y + startGate.height / 2);
+        player.setPosition(startGate.x + startGate.width / 2, startGate.y + startGate.height - playerSize.height / 2);
     }
 
     private centerCameraAtCharacter(player: Player) {
         this.cameras.main.centerOn(player.getPosition().x, player.getPosition().y);
+    }
+
+    override update(time : number, delta : number) {
+        if (this.inputController.isLeftDown()) {
+            this.player.body.setVelocityX(-100);
+            this.player.play(PlayerAnimation.Run);
+            this.player.flipX = true;
+        } else if (this.inputController.isRightDown()) {
+            this.player.body.setVelocityX(100);
+            this.player.play(PlayerAnimation.Run);
+            this.player.flipX = false;
+        } else {
+            this.player.body.setVelocityX(0);
+            this.player.play(PlayerAnimation.Idle);
+        }
     }
 }
 
