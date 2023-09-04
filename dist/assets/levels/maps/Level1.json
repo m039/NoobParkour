@@ -253,29 +253,29 @@
         {
          "draworder":"topdown",
          "id":4,
-         "name":"Object Layer 1",
+         "name":"Objects",
          "objects":[
                 {
-                 "height":47.6245059288538,
+                 "height":47.6245,
                  "id":4,
                  "name":"Start",
                  "rotation":0,
                  "type":"Gate",
                  "visible":true,
-                 "width":31.9486166007905,
-                 "x":48.0513833992095,
-                 "y":127.936758893281
+                 "width":31.9486,
+                 "x":48.0514,
+                 "y":127.937
                 }, 
                 {
-                 "height":47.4545454545455,
+                 "height":47.4545,
                  "id":8,
                  "name":"End",
                  "rotation":0,
                  "type":"Gate",
                  "visible":true,
-                 "width":31.8181818181819,
+                 "width":31.8182,
                  "x":992,
-                 "y":96.1818181818182
+                 "y":96.1818
                 }],
          "opacity":1,
          "type":"objectgroup",

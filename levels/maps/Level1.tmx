@@ -194,7 +194,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1">
+ <objectgroup id="4" name="Objects">
   <object id="4" name="Start" type="Gate" x="48.0514" y="127.937" width="31.9486" height="47.6245"/>
   <object id="8" name="End" type="Gate" x="992" y="96.1818" width="31.8182" height="47.4545"/>
  </objectgroup>

@@ -1,10 +1,11 @@
 import * as Phaser from 'phaser';
+import Player from "./Player";
 
 export default class Level1 extends Phaser.Scene
 {
     constructor()
     {
-        super('Level1');
+        super();
     }
 
     preload()
@@ -21,15 +22,36 @@ export default class Level1 extends Phaser.Scene
         const groundLayer = map.createLayer("Ground", tileset);
         const gateLayer = map.createLayer("Back", tileset);
         const tags = this.anims.createFromAseprite("noob");
-        const sprite = this.add.sprite(400, 400, "noob").play({key:"Idle", repeat: -1});
+        const player = new Player(this);
+
+        this.placeCharacterAtStart(player, map);
+        this.centerCameraAtCharacter(player);
+        this.cameras.main.setZoom(4, 4);
+    }
+
+    private placeCharacterAtStart(
+        player: Player, 
+        map: Phaser.Tilemaps.Tilemap) {
+        const startGate = map.findObject("Objects", o => o.name === "Start");
+
+        player.setPosition(startGate.x + startGate.width / 2, startGate.y + startGate.height / 2);
+    }
+
+    private centerCameraAtCharacter(player: Player) {
+        this.cameras.main.centerOn(player.getPosition().x, player.getPosition().y);
     }
 }
 
 const config = {
     type: Phaser.AUTO,
+    scale: {
+        mode: Phaser.Scale.ENVELOP,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1920,
+        height: 1080,
+    },
     backgroundColor: '#125555',
-    width: 1920,
-    height: 1080,
+    pixelArt: true,
     scene: Level1
 };
 
