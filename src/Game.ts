@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import Player  from "./Player";
+import Player, { PlayerEvent }  from "./Player";
 import InputController from "./InputController";
 
 export default class Level1 extends Phaser.Scene
@@ -38,10 +38,12 @@ export default class Level1 extends Phaser.Scene
         groundLayer.setCollisionByExclusion([-1]);
         lavaLayer.setCollisionByExclusion([-1]);
 
-        this.physics.add.collider(this.player.container, groundLayer);
-        this.physics.add.collider(this.player.container, lavaLayer, () => {
+        this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
             this.placeCharacterAtStart(this.player, this.map, false);
         })
+
+        this.physics.add.collider(this.player.container, groundLayer);
+        this.physics.add.collider(this.player.container, lavaLayer, () => this.player.dieInAir());
 
         this.placeCharacterAtStart(this.player, this.map, true);
         this.centerCameraAtCharacter(this.player);
@@ -57,7 +59,7 @@ export default class Level1 extends Phaser.Scene
         const startGate = map.findObject("Objects", o => o.name === "Start");
         const playerSize = player.bodySize;
 
-        player.flipX = false;
+        player.restartLevel();
         player.setPosition(
             startGate.x + startGate.width / 2, 
             startGate.y + (onGround? startGate.height - playerSize.height / 2 : startGate.height / 2)

@@ -5,7 +5,12 @@ enum PlayerAnimation {
     Run = "Run",
     Jump = "Jump",
     Fall = "Fall",
-    DoubleJump = "Double Jump"
+    DoubleJump = "Double Jump",
+    DeathInAir = "Death In Air"
+}
+
+export enum PlayerEvent {
+    DeathInAir = "DeathInAir"
 }
 
 export default class Player {
@@ -15,13 +20,20 @@ export default class Player {
 
     body : Phaser.Physics.Arcade.Body;
 
+    emmiter : Phaser.Events.EventEmitter;
+
     private sprite : Phaser.GameObjects.Sprite;    
 
     private currentAnimation? : PlayerAnimation;
 
     private inDoubleJump : boolean;
+
+    private inDieInAir : boolean;
+
+    private isDead : boolean;
     
     constructor(scene: Phaser.Scene) {
+        this.emmiter = new Phaser.Events.EventEmitter();
         this.container = scene.add.container(400, 400);
         this.sprite = scene.add.sprite(-1, -2, "noob");
         this.container.add(this.sprite);
@@ -32,6 +44,11 @@ export default class Player {
         this.flipX = false;
         this.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
             this.inDoubleJump = false;
+            
+            if (this.inDieInAir) {
+                this.emmiter.emit(PlayerEvent.DeathInAir);
+                this.inDieInAir = false;
+            }
         });
     }
 
@@ -58,7 +75,9 @@ export default class Player {
     }
 
     public update() {
-        if (this.inDoubleJump) {
+        if (this.inDieInAir) {
+            this.play(PlayerAnimation.DeathInAir, false);
+        } else if (this.inDoubleJump) {
             this.play(PlayerAnimation.DoubleJump, false);
         } else if (this.body.velocity.y < 0) {
             this.play(PlayerAnimation.Jump);
@@ -88,31 +107,72 @@ export default class Player {
     }
 
     public moveLeft() {
+        if (this.isDead) {
+            return;
+        }
+
         this.body.setVelocityX(-100);
         this.flipX = true;
     }
 
     public moveRight() {
+        if (this.isDead) {
+            return;
+        }
+
         this.body.setVelocityX(100);
         this.flipX = false;
     }
 
     public jump() {
+        if (this.isDead) {
+            return;
+        }
+
         this.body.setVelocityY(-300);
     }
 
     public doubleJump() {
+        if (this.isDead) {
+            return;
+        }
+
         this.body.setVelocityY(this.body.velocity.y - 400);
         this.inDoubleJump = true;
     }
 
     public stopJump() {
+        if (this.isDead) {
+            return;
+        }
+
         if (this.body.velocity.y < 0) {
             this.body.setVelocityY(0);
         }
     }
 
     public stay() {
+        if (this.isDead) {
+            return;
+        }
+
         this.body.setVelocityX(0);
+    }
+
+    public dieInAir() {
+        if (this.isDead) {
+            return;
+        }
+
+        this.inDieInAir = true;
+        this.isDead = true;
+        this.body.setVelocity(0, 0);
+        this.body.setAllowGravity(false);
+    }
+
+    public restartLevel() {
+        this.flipX = false;
+        this.body.setAllowGravity(true);
+        this.isDead = false;
     }
 }
