@@ -28,6 +28,7 @@ export default class Level1 extends Phaser.Scene
         this.map = this.make.tilemap({ key: "map"});
         const tileset = this.map.addTilesetImage("NoobParkourTileset", "tiles");
         const groundLayer = this.map.createLayer("Ground", tileset);
+        const lavaLayer = this.map.createLayer("Lava", tileset);
         const gateLayer = this.map.createLayer("Back", tileset);
         const tags = this.anims.createFromAseprite("noob");
         
@@ -35,8 +36,12 @@ export default class Level1 extends Phaser.Scene
         this.inputController = new InputController(this);
 
         groundLayer.setCollisionByExclusion([-1]);
+        lavaLayer.setCollisionByExclusion([-1]);
 
         this.physics.add.collider(this.player.container, groundLayer);
+        this.physics.add.collider(this.player.container, lavaLayer, () => {
+            this.placeCharacterAtStart(this.player, this.map, false);
+        })
 
         this.placeCharacterAtStart(this.player, this.map, true);
         this.centerCameraAtCharacter(this.player);
