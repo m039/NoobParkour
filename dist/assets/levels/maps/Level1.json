@@ -276,6 +276,18 @@
                  "width":31.8182,
                  "x":992,
                  "y":96.1818
+                }, 
+                {
+                 "height":0,
+                 "id":10,
+                 "name":"BottomLine",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":0,
+                 "y":320
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -284,7 +296,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":10,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
