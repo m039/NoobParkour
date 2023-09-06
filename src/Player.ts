@@ -6,7 +6,8 @@ enum PlayerAnimation {
     Jump = "Jump",
     Fall = "Fall",
     DoubleJump = "Double Jump",
-    DeathInAir = "Death In Air"
+    DeathInAir = "Death In Air",
+    Fly = "Fly"
 }
 
 export enum PlayerEvent {
@@ -29,6 +30,8 @@ export default class Player {
     private inDoubleJump : boolean;
 
     private inDieInAir : boolean;
+
+    private inFly : boolean;
 
     private isDead : boolean;
     
@@ -79,6 +82,8 @@ export default class Player {
             this.play(PlayerAnimation.DeathInAir, false);
         } else if (this.inDoubleJump) {
             this.play(PlayerAnimation.DoubleJump, false);
+        } else if (this.inFly) {
+            this.play(PlayerAnimation.Fly);
         } else if (this.body.velocity.y < 0) {
             this.play(PlayerAnimation.Jump);
         } else if (this.body.velocity.y > 0) {
@@ -173,6 +178,14 @@ export default class Player {
     public restartLevel() {
         this.flipX = false;
         this.body.setAllowGravity(true);
+        this.body.setVelocity(0, 0);
         this.isDead = false;
+        this.inFly = false;
+        this.inDieInAir = false;
+        this.inDoubleJump = false;
+    }
+
+    public fly() {
+        this.inFly = true;
     }
 }

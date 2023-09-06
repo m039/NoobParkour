@@ -315,15 +315,27 @@
                 }, 
                 {
                  "height":0,
-                 "id":10,
-                 "name":"BottomLine",
+                 "id":11,
+                 "name":"BottomLine2",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":0,
-                 "y":320
+                 "x":-1.33333,
+                 "y":439.333
+                }, 
+                {
+                 "height":0,
+                 "id":10,
+                 "name":"BottomLine1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":-0.333333,
+                 "y":231.333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -332,7 +344,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":11,
+ "nextobjectid":12,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

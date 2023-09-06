@@ -6,7 +6,8 @@ export default class Level1 extends Phaser.Scene
 {
     private player : Player;
     private inputController : InputController;
-    private bottomLine : Phaser.Types.Tilemaps.TiledObject;
+    private bottomLine1 : Phaser.Types.Tilemaps.TiledObject;
+    private bottomLine2 : Phaser.Types.Tilemaps.TiledObject;
     private map : Phaser.Tilemaps.Tilemap;
     private upKeyPressed : Phaser.Input.Keyboard.Key;
     private canDoubleJump : boolean = false;
@@ -48,7 +49,8 @@ export default class Level1 extends Phaser.Scene
         this.placeCharacterAtStart(this.player, this.map, true);
         this.centerCameraAtCharacter(this.player);
         this.cameras.main.setZoom(4, 4);
-        this.bottomLine = this.map.findObject("Objects", o => o.name === "BottomLine");
+        this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
+        this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);
     }
 
@@ -79,11 +81,18 @@ export default class Level1 extends Phaser.Scene
             this.player.stay();
         }
 
+        if (this.player.body.blocked.down) {
+            this.canDoubleJump = true;
+        }
+
         if (this.inputController.isUpDown && this.player.body.blocked.down) {
             this.player.jump();
             this.upKeyPressed = this.inputController.upKeyPressed;
-            this.canDoubleJump = false;
-        } else if (this.inputController.isUpDown && this.canDoubleJump) {
+        } else if (this.inputController.isUpDown && 
+            this.canDoubleJump && 
+            this.player.body.velocity.y !== 0 && 
+            this.upKeyPressed === undefined) 
+        {
             this.canDoubleJump = false;
             this.player.doubleJump();
         }
@@ -91,11 +100,12 @@ export default class Level1 extends Phaser.Scene
         if (this.upKeyPressed && this.upKeyPressed.isUp) {
             this.player.stopJump();
             this.upKeyPressed = undefined;
-            this.canDoubleJump = true;
         }
 
-        if (this.player.getPosition().y > this.bottomLine.y) {
+        if (this.player.getPosition().y > this.bottomLine2.y) {
             this.placeCharacterAtStart(this.player, this.map, false);
+        } else if (this.player.getPosition().y > this.bottomLine1.y) {
+            this.player.fly();
         }
 
         this.player.update();
