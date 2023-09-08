@@ -217,8 +217,8 @@
   </data>
  </layer>
  <objectgroup id="4" name="Objects">
-  <object id="4" name="Start" type="Gate" x="48.0514" y="127.937" width="31.9486" height="47.6245"/>
-  <object id="8" name="End" type="Gate" x="992" y="96.1818" width="31.8182" height="47.4545"/>
+  <object id="4" name="Start" type="Gate" x="48" y="128" width="31.9486" height="47.937"/>
+  <object id="8" name="End" type="Gate" x="992" y="96" width="31.8182" height="47.892"/>
   <object id="11" name="BottomLine2" x="-1.33333" y="439.333">
    <point/>
   </object>

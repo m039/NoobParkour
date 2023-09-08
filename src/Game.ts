@@ -21,7 +21,9 @@ export default class Level1 extends Phaser.Scene
     {
         this.load.tilemapTiledJSON("map", "assets/levels/maps/Level1.json");
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
+        this.load.image("pixel", "assets/images/Pixel.png");
         this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
+        this.load.atlas("portal", "assets/animations/Portal.png", "assets/animations/Portal.json");
     }
 
     create()
@@ -32,6 +34,9 @@ export default class Level1 extends Phaser.Scene
         const lavaLayer = this.map.createLayer("Lava", tileset);
         const gateLayer = this.map.createLayer("Back", tileset);
         const tags = this.anims.createFromAseprite("noob");
+        
+        this.createPortals();
+        this.createPortalsParticles();
         
         this.player = new Player(this);
         this.inputController = new InputController(this);
@@ -52,6 +57,43 @@ export default class Level1 extends Phaser.Scene
         this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
         this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);
+    }
+
+    private createPortals() {
+        const startGate = this.map.findObject("Objects", o => o.name === "Start");
+        const endGate = this.map.findObject("Objects", o => o.name === "End");
+        this.anims.create({key:"portal", frameRate: 10, repeat: -1, frames: this.anims.generateFrameNames("portal")});
+
+        const startPortal = this.add.sprite(startGate.x, startGate.y, "portal", 0)
+            .setOrigin(0, 0)
+            .play("portal");
+
+        const endPortal = this.add.sprite(endGate.x, endGate.y, "portal", 0)
+            .setOrigin(0, 0)
+            .play("portal");
+    }
+
+    private createPortalsParticles() {
+        const startGate = this.map.findObject("Objects", o => o.name === "Start");
+        const endGate = this.map.findObject("Objects", o => o.name === "End");
+
+        for (var gate of [startGate, endGate]) {
+            this.add.particles(
+                gate.x + gate.width / 2, 
+                gate.y + gate.height / 2,
+                "pixel", {
+                    x: {min: -8, max: 8},
+                    y: {min: -12, max: 12},
+                    scale: { min: 1.0, max: 4.0},
+                    speed: { min: 5, max: 20 },
+                    alpha: {start: 1, end: 0},
+                    rotate: {min: 0, max: 360},
+                    color: [ 0xff6d2aa7, 0xffc354cd, 0xfff4a2bc ],
+                    lifespan: 4000,
+                    frequency: 100,
+                    blendMode: "ADD"
+                });
+        }
     }
 
     private placeCharacterAtStart(

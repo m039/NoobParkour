@@ -292,18 +292,18 @@
          "name":"Objects",
          "objects":[
                 {
-                 "height":47.6245,
+                 "height":47.937,
                  "id":4,
                  "name":"Start",
                  "rotation":0,
                  "type":"Gate",
                  "visible":true,
                  "width":31.9486,
-                 "x":48.0514,
-                 "y":127.937
+                 "x":48,
+                 "y":128
                 }, 
                 {
-                 "height":47.4545,
+                 "height":47.892,
                  "id":8,
                  "name":"End",
                  "rotation":0,
@@ -311,7 +311,7 @@
                  "visible":true,
                  "width":31.8182,
                  "x":992,
-                 "y":96.1818
+                 "y":96
                 }, 
                 {
                  "height":0,
