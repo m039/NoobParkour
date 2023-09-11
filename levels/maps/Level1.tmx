@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../../dist/assets/levels/maps/Level1.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="40" columns="10">
-  <image source="../tilesets/NoobParkourTileset.png" width="160" height="64"/>
+ <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="50" columns="10">
+  <image source="../tilesets/NoobParkourTileset.png" width="160" height="80"/>
  </tileset>
  <layer id="1" name="Ground" width="35" height="20">
   <data encoding="csv">
@@ -147,9 +147,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,5,5,5,5,0,0,0,0,0,0,0,0,0,0,
-0,0,5,6,6,5,0,0,0,0,0,0,0,0,0,0,
-0,0,5,6,6,5,0,0,0,0,0,0,0,0,0,0,
-0,0,5,6,6,5,0,0,0,0,0,0,0,0,0,0,
+0,0,5,41,41,5,0,0,0,0,0,0,0,0,0,0,
+0,0,5,41,41,5,0,0,0,0,0,0,0,0,0,0,
+0,0,5,41,41,5,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -163,9 +163,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,
-0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,6,
-0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,6,
-0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,6,
+0,0,0,0,0,0,0,0,0,0,0,0,0,5,41,41,
+0,0,0,0,0,0,0,0,0,0,0,0,0,5,41,41,
+0,0,0,0,0,0,0,0,0,0,0,0,0,5,41,41,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -216,7 +216,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="4" name="Objects">
+ <objectgroup id="4" name="Objects" visible="0">
   <object id="4" name="Start" type="Gate" x="48" y="128" width="31.9486" height="47.937"/>
   <object id="8" name="End" type="Gate" x="992" y="96" width="31.8182" height="47.892"/>
   <object id="11" name="BottomLine2" x="-1.33333" y="439.333">
