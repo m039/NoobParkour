@@ -38,6 +38,10 @@ export default class Player {
     private isDead : boolean;
 
     private scene : Phaser.Scene;
+
+    private dustEmmiter : Phaser.GameObjects.Particles.ParticleEmitter;
+
+    private passedDistance : number;
     
     constructor(scene: Phaser.Scene) {
         this.emmiter = new Phaser.Events.EventEmitter();
@@ -59,6 +63,16 @@ export default class Player {
             }
         });
         this.scene = scene;
+        this.dustEmmiter = this.scene.add.particles(0, 0, "pixel", {
+            lifespan: 1000,
+            speed: {min: 10, max: 20},
+            scale: {start: 5, end: 0},
+            rotate: {start: 0, end: 360},
+            gravityY: 50,
+            emitting: false
+        });
+        this.dustEmmiter.depth = 1;
+        this.passedDistance = 0;
     }
 
     private play(playerAnimation: PlayerAnimation, repeat?:boolean) {
@@ -83,7 +97,7 @@ export default class Player {
         }
     }
 
-    public update() {
+    public update(delta: number) {
         if (this.inDieInAir) {
             this.play(PlayerAnimation.DeathInAir, false);
         } else if (this.inDoubleJump) {
@@ -98,6 +112,27 @@ export default class Player {
             this.play(PlayerAnimation.Run);
         } else if (this.body.blocked.down || this.inIdle) {
             this.play(PlayerAnimation.Idle);
+        }
+
+        // Show dust particles when the direction of movement is changed.
+        this.passedDistance += this.body.velocity.x * delta;
+
+        if (this.body.velocity.x > 0 && this.passedDistance < 0 ||
+            this.body.velocity.x < 0 && this.passedDistance > 0 || 
+            this.body.velocity.x === 0 && Math.abs(this.passedDistance) > 0) {
+            
+            // Only when the player is standing on the ground.
+            if (this.body.blocked.down) {
+                const passedDistanceOld = this.passedDistance;
+                setTimeout(() => {
+                    if (this.body.velocity.x > 0 && passedDistanceOld < 0 ||
+                        this.body.velocity.x < 0 && passedDistanceOld > 0) {
+                        this.showDust();
+                    }
+                }, 100);
+            }
+
+            this.passedDistance = 0;
         }
     }
 
@@ -141,6 +176,7 @@ export default class Player {
         }
 
         this.body.setVelocityY(-300);
+        this.showDust();
     }
 
     public doubleJump() {
@@ -150,6 +186,7 @@ export default class Player {
 
         this.body.setVelocityY(this.body.velocity.y - 400);
         this.inDoubleJump = true;
+        this.showDust();
     }
 
     public stopJump() {
@@ -226,5 +263,10 @@ export default class Player {
 
     public fly() {
         this.inFly = true;
+    }
+
+    private showDust() {
+        var p = this.getPosition();
+        this.dustEmmiter.emitParticleAt(p.x, p.y + 3, 6);
     }
 }

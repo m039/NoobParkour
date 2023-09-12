@@ -127,7 +127,6 @@ export default class Level1 extends Phaser.Scene
         tint: boolean,
         ) {
         const startGate = map.findObject("Objects", o => o.name === "Start");
-        const playerSize = player.bodySize;
 
         player.setPosition(
             startGate.x + startGate.width / 2, 
@@ -176,7 +175,7 @@ export default class Level1 extends Phaser.Scene
             this.player.fly();
         }
 
-        this.player.update();
+        this.player.update(delta);
     }
 }
 
