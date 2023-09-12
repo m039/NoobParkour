@@ -33,7 +33,11 @@ export default class Player {
 
     private inFly : boolean;
 
+    private inIdle : boolean;
+
     private isDead : boolean;
+
+    private scene : Phaser.Scene;
     
     constructor(scene: Phaser.Scene) {
         this.emmiter = new Phaser.Events.EventEmitter();
@@ -54,6 +58,7 @@ export default class Player {
                 this.inDieInAir = false;
             }
         });
+        this.scene = scene;
     }
 
     private play(playerAnimation: PlayerAnimation, repeat?:boolean) {
@@ -91,7 +96,7 @@ export default class Player {
             this.play(PlayerAnimation.Fall);
         } else if (Math.abs(this.body.velocity.x) > 0 && this.body.blocked.down) {
             this.play(PlayerAnimation.Run);
-        } else if (this.body.blocked.down) {
+        } else if (this.body.blocked.down || this.inIdle) {
             this.play(PlayerAnimation.Idle);
         }
     }
@@ -176,14 +181,47 @@ export default class Player {
         this.body.setAllowGravity(false);
     }
 
-    public restartLevel() {
+    public restartLevel(tint: boolean) {
+        this.container.scale = 0;
+        const self = this;
+
+        this.scene.tweens.add({
+            targets: [this.container],
+            scale: 1,
+            yoyo: false,
+            duration: 400,
+            repeat: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            onComplete: function () {
+                self.isDead = false;
+                self.inDieInAir = false;
+                self.inDoubleJump = false;
+                self.body.setAllowGravity(true);
+                self.inIdle = false;
+            }
+        });
+
+        if (tint) {
+            setTimeout(() => {
+                this.sprite.setTint(0xff83ff);
+                setTimeout(() => {
+                    this.sprite.clearTint();
+                    setTimeout(() => {
+                        this.sprite.setTint(0xff83ff);
+                        setTimeout(() => {
+                            this.sprite.clearTint();
+                        }, 100);
+                    }, 200)
+                }, 100);
+            }, 200);
+        }
+
+        this.inIdle = true;
+        this.isDead = true;
         this.flipX = false;
-        this.body.setAllowGravity(true);
-        this.body.setVelocity(0, 0);
-        this.isDead = false;
         this.inFly = false;
-        this.inDieInAir = false;
-        this.inDoubleJump = false;
+        this.body.setVelocity(0, 0);
+        this.body.setAllowGravity(false);
     }
 
     public fly() {

@@ -44,12 +44,12 @@ export default class Level1 extends Phaser.Scene
         groundLayer.setCollisionByExclusion([-1]);
 
         this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
-            this.placeCharacterAtStart(this.player, this.map, false);
+            this.placeCharacterAtStart(this.player, this.map, true);
         })
 
         this.physics.add.collider(this.player.container, groundLayer);
 
-        this.placeCharacterAtStart(this.player, this.map, true);
+        this.placeCharacterAtStart(this.player, this.map, false);
         this.centerCameraAtCharacter(this.player);
         this.cameras.main.setZoom(4, 4);
         this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
@@ -124,15 +124,16 @@ export default class Level1 extends Phaser.Scene
     private placeCharacterAtStart(
         player: Player, 
         map: Phaser.Tilemaps.Tilemap,
-        onGround: boolean) {
+        tint: boolean,
+        ) {
         const startGate = map.findObject("Objects", o => o.name === "Start");
         const playerSize = player.bodySize;
 
-        player.restartLevel();
         player.setPosition(
             startGate.x + startGate.width / 2, 
-            startGate.y + (onGround? startGate.height - playerSize.height / 2 : startGate.height / 2)
+            startGate.y + startGate.height / 2 - 3
             );
+        player.restartLevel(tint);
     }
 
     private centerCameraAtCharacter(player: Player) {
@@ -170,7 +171,7 @@ export default class Level1 extends Phaser.Scene
         }
 
         if (this.player.getPosition().y > this.bottomLine2.y) {
-            this.placeCharacterAtStart(this.player, this.map, false);
+            this.placeCharacterAtStart(this.player, this.map, true);
         } else if (this.player.getPosition().y > this.bottomLine1.y) {
             this.player.fly();
         }
