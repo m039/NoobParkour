@@ -41,6 +41,7 @@ export default class Player {
         this.sprite = scene.add.sprite(-1, -2, "noob");
         this.container.add(this.sprite);
         this.container.setSize(this.bodySize.width, this.bodySize.height);
+        this.container.depth = 1;
         scene.physics.world.enableBody(this.container);
         this.body = this.container.body as Phaser.Physics.Arcade.Body;
         this.play(PlayerAnimation.Idle);

@@ -23,7 +23,8 @@ export default class Level1 extends Phaser.Scene
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.image("pixel", "assets/images/Pixel.png");
         this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
-        this.load.glsl('portal', 'assets/shaders/Portal.frag');
+        this.load.glsl("portal", "assets/shaders/Portal.frag");
+        this.load.glsl("lava", "assets/shaders/Lava.frag");
     }
 
     create()
@@ -31,24 +32,22 @@ export default class Level1 extends Phaser.Scene
         this.map = this.make.tilemap({ key: "map"});
         const tileset = this.map.addTilesetImage("NoobParkourTileset", "tiles");
         const groundLayer = this.map.createLayer("Ground", tileset);
-        const lavaLayer = this.map.createLayer("Lava", tileset);
         const gateLayer = this.map.createLayer("Back", tileset);
         const tags = this.anims.createFromAseprite("noob");
-        
-        this.createPortals();
 
         this.player = new Player(this);
         this.inputController = new InputController(this);
 
+        this.createPortals();
+        this.createLava();
+
         groundLayer.setCollisionByExclusion([-1]);
-        lavaLayer.setCollisionByExclusion([-1]);
 
         this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
             this.placeCharacterAtStart(this.player, this.map, false);
         })
 
         this.physics.add.collider(this.player.container, groundLayer);
-        this.physics.add.collider(this.player.container, lavaLayer, () => this.player.dieInAir());
 
         this.placeCharacterAtStart(this.player, this.map, true);
         this.centerCameraAtCharacter(this.player);
@@ -64,7 +63,8 @@ export default class Level1 extends Phaser.Scene
 
         for (var gate of [startGate, endGate]) {
             // Add vortex.
-            this.add.shader("portal", gate.x, gate.y, gate.width, gate.height)
+            this.add
+                .shader("portal", gate.x, gate.y, gate.width, gate.height)
                 .setOrigin(0, 0);
 
             // Add particles.
@@ -84,6 +84,40 @@ export default class Level1 extends Phaser.Scene
                     blendMode: "ADD",
                     advance: 3000
                 });
+        }
+    }
+
+    private createLava() {
+        const offset = 10.0;
+
+        for (var lava of this.map.getObjectLayer("Lava").objects) {
+            // Add lava effect.
+            const lavaObject = this.add
+                .shader("lava", lava.x, lava.y, lava.width, lava.height)
+                .setOrigin(0, 0);
+
+            this.physics.add.existing(lavaObject, true);
+
+            // Add particles.
+            this.add.particles(
+                lava.x + lava.width / 2, 
+                lava.y + offset,
+                "pixel", {
+                    x: {min: -lava.width / 2, max: lava.width / 2},
+                    y: {min: -offset, max: -offset/2},
+                    scale: { min: 1.0, max: 2.0},
+                    speed: { min: 1, max: 3 },
+                    alpha: {start: 1, end: 0},
+                    color: [ 0xffff00, 0xec1800 ],
+                    lifespan: 500,
+                    frequency: 100,
+                    blendMode: "ADD",
+                    advance: 3000,
+                    gravityY: -20
+                });
+
+            // Collider.
+            this.physics.add.collider(this.player.container, lavaObject, () => this.player.dieInAir());
         }
     }
 
