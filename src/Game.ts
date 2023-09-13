@@ -1,11 +1,14 @@
 import * as Phaser from 'phaser';
 import Player, { PlayerEvent }  from "./Player";
 import InputController from "./InputController";
+import CoinManager from './CoinManager';
+import GameLevel from './GameLevel';
 
-export default class Level1 extends Phaser.Scene
+export default class Level1 extends GameLevel
 {
     private player : Player;
     private inputController : InputController;
+    private coinManager : CoinManager;
     private bottomLine1 : Phaser.Types.Tilemaps.TiledObject;
     private bottomLine2 : Phaser.Types.Tilemaps.TiledObject;
     private map : Phaser.Tilemaps.Tilemap;
@@ -17,29 +20,35 @@ export default class Level1 extends Phaser.Scene
         super();
     }
 
-    preload()
+    override preload()
     {
+        super.preload();
         this.load.tilemapTiledJSON("map", "assets/levels/maps/Level1.json");
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.image("pixel", "assets/images/Pixel.png");
         this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
+        this.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
         this.load.glsl("portal", "assets/shaders/Portal.frag");
         this.load.glsl("lava", "assets/shaders/Lava.frag");
     }
 
-    create()
+    override create()
     {
+        super.create();
+
         this.map = this.make.tilemap({ key: "map"});
         const tileset = this.map.addTilesetImage("NoobParkourTileset", "tiles");
         const groundLayer = this.map.createLayer("Ground", tileset);
-        const gateLayer = this.map.createLayer("Back", tileset);
-        const tags = this.anims.createFromAseprite("noob");
+        this.map.createLayer("Back", tileset);
+        this.anims.createFromAseprite("noob");
 
         this.player = new Player(this);
         this.inputController = new InputController(this);
+        this.coinManager = new CoinManager(this);
 
         this.createPortals();
         this.createLava();
+        this.coinManager.createCoins(this.player, this.map);
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -140,6 +149,8 @@ export default class Level1 extends Phaser.Scene
     }
 
     override update(time : number, delta : number) {
+        super.update(time, delta);
+
         if (this.inputController.isLeftDown) {
             this.player.moveLeft();
         } else if (this.inputController.isRightDown) {

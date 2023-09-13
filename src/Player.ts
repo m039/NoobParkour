@@ -1,4 +1,6 @@
 import * as Phaser from 'phaser';
+import GameLevel from './GameLevel';
+import { SoundId } from './AudioManager';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -37,20 +39,20 @@ export default class Player {
 
     private isDead : boolean;
 
-    private scene : Phaser.Scene;
+    private gameLevel : GameLevel;
 
     private dustEmmiter : Phaser.GameObjects.Particles.ParticleEmitter;
 
     private passedDistance : number;
     
-    constructor(scene: Phaser.Scene) {
+    constructor(gameLevel: GameLevel) {
         this.emmiter = new Phaser.Events.EventEmitter();
-        this.container = scene.add.container(400, 400);
-        this.sprite = scene.add.sprite(-1, -2, "noob");
+        this.container = gameLevel.add.container(400, 400);
+        this.sprite = gameLevel.add.sprite(-1, -2, "noob");
         this.container.add(this.sprite);
         this.container.setSize(this.bodySize.width, this.bodySize.height);
         this.container.depth = 1;
-        scene.physics.world.enableBody(this.container);
+        gameLevel.physics.world.enableBody(this.container);
         this.body = this.container.body as Phaser.Physics.Arcade.Body;
         this.play(PlayerAnimation.Idle);
         this.flipX = false;
@@ -62,8 +64,8 @@ export default class Player {
                 this.inDieInAir = false;
             }
         });
-        this.scene = scene;
-        this.dustEmmiter = this.scene.add.particles(0, 0, "pixel", {
+        this.gameLevel = gameLevel;
+        this.dustEmmiter = this.gameLevel.add.particles(0, 0, "pixel", {
             lifespan: 1000,
             speed: {min: 10, max: 20},
             scale: {start: 5, end: 0},
@@ -187,6 +189,7 @@ export default class Player {
         this.body.setVelocityY(this.body.velocity.y - 400);
         this.inDoubleJump = true;
         this.showDust();
+        this.gameLevel.audioManager.play(SoundId.Jump);
     }
 
     public stopJump() {
@@ -216,13 +219,14 @@ export default class Player {
         this.isDead = true;
         this.body.setVelocity(0, 0);
         this.body.setAllowGravity(false);
+        this.gameLevel.audioManager.play(SoundId.Loose);
     }
 
     public restartLevel(tint: boolean) {
         this.container.scale = 0;
         const self = this;
 
-        this.scene.tweens.add({
+        this.gameLevel.tweens.add({
             targets: [this.container],
             scale: 1,
             yoyo: false,
@@ -267,6 +271,6 @@ export default class Player {
 
     private showDust() {
         var p = this.getPosition();
-        this.dustEmmiter.emitParticleAt(p.x, p.y + 3, 6);
+        this.dustEmmiter.emitParticleAt(p.x, p.y + 3, Math.floor(Math.random() * 3) + 4);
     }
 }
