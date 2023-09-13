@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import GameLevel from './GameLevel';
+import GameLevel, { GameManager } from './GameLevel';
 import { SoundId } from './AudioManager';
 
 enum PlayerAnimation {
@@ -16,7 +16,7 @@ export enum PlayerEvent {
     DeathInAir = "DeathInAir"
 }
 
-export default class Player {
+export default class Player implements GameManager {
     container : Phaser.GameObjects.Container;
 
     readonly bodySize = { width: 7, height: 16 };
@@ -46,13 +46,23 @@ export default class Player {
     private passedDistance : number;
     
     constructor(gameLevel: GameLevel) {
+        this.gameLevel = gameLevel;
+    }
+
+    preload(): void {
+        this.gameLevel.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
+    }
+
+    create(): void {
+        this.gameLevel.anims.createFromAseprite("noob");
+
         this.emmiter = new Phaser.Events.EventEmitter();
-        this.container = gameLevel.add.container(400, 400);
-        this.sprite = gameLevel.add.sprite(-1, -2, "noob");
+        this.container = this.gameLevel.add.container(400, 400);
+        this.sprite = this.gameLevel.add.sprite(-1, -2, "noob");
         this.container.add(this.sprite);
         this.container.setSize(this.bodySize.width, this.bodySize.height);
         this.container.depth = 1;
-        gameLevel.physics.world.enableBody(this.container);
+        this.gameLevel.physics.world.enableBody(this.container);
         this.body = this.container.body as Phaser.Physics.Arcade.Body;
         this.play(PlayerAnimation.Idle);
         this.flipX = false;
@@ -64,7 +74,6 @@ export default class Player {
                 this.inDieInAir = false;
             }
         });
-        this.gameLevel = gameLevel;
         this.dustEmmiter = this.gameLevel.add.particles(0, 0, "pixel", {
             lifespan: 1000,
             speed: {min: 10, max: 20},
@@ -99,7 +108,7 @@ export default class Player {
         }
     }
 
-    public update(delta: number) {
+    update(time: number, delta: number) {
         if (this.inDieInAir) {
             this.play(PlayerAnimation.DeathInAir, false);
         } else if (this.inDoubleJump) {

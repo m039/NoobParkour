@@ -1,16 +1,27 @@
 import * as Phaser from 'phaser';
 import Player from './Player';
-import GameLevel from './GameLevel';
+import GameLevel, { GameManager } from './GameLevel';
 import { SoundId } from './AudioManager';
 
-export default class CoinManager {
+export default class CoinManager implements GameManager {
     private gameLevel : GameLevel;
 
     constructor(gameLevel: GameLevel) {
         this.gameLevel = gameLevel;
     }
 
-    public createCoins(player: Player, map: Phaser.Tilemaps.Tilemap) {
+    preload(): void {
+        this.gameLevel.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
+    }
+
+    create(): void {
+        this.createCoins(this.gameLevel.player, this.gameLevel.map);
+    }
+
+    update(time: number, delta: number): void {
+    }
+
+    private createCoins(player: Player, map: Phaser.Tilemaps.Tilemap) {
         const coinsLayer = map.getObjectLayer("Coins");
 
         for (var coin of coinsLayer.objects) {
