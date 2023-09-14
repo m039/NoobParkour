@@ -179,7 +179,7 @@ export default class Level1 extends GameLevel
 }
 
 const config : Phaser.Types.Core.GameConfig = {
-    type: Phaser.AUTO,
+    type: Phaser.WEBGL,
     scale: {
         mode: Phaser.Scale.ENVELOP,
         autoCenter: Phaser.Scale.CENTER_BOTH,
