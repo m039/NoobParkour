@@ -6,3 +6,8 @@ body {
   padding: 0;
   overflow: hidden;
 }
+
+@font-face {
+  font-family: monocraft;
+  src: url("./assets/fonts/Monocraft.ttf");
+}

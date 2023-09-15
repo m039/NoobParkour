@@ -1,8 +1,62 @@
 import * as Phaser from 'phaser';
 import Player, { PlayerEvent }  from "./Player";
 import InputController from "./InputController";
-import CoinManager from './CoinManager';
 import GameLevel from './GameLevel';
+import { CoinPickUpEvent } from './CoinManager';
+
+const GameLevelRestartEvent = "level_restart";
+
+class UIScene extends Phaser.Scene {
+    private coinImage : Phaser.GameObjects.Image;
+    private coinText : Phaser.GameObjects.Text;
+    private viewport : Phaser.Geom.Rectangle;
+    private gameLevel : GameLevel;
+
+    constructor() {
+        super({key:"UIScene", active: true});
+    }
+
+    preload() {
+        this.load.image("coin_ui", "assets/images/CoinUI.png");
+    }
+
+    create() {
+        this.gameLevel = this.scene.get("GameLevel") as GameLevel;
+        this.viewport = new Phaser.Geom.Rectangle();
+        this.coinImage = this.add.image(100, 100, "coin_ui").setScale(2.0, 2.0).setOrigin(0.5, 0.5);
+        this.coinText = this.add.text(160, 100, "0/99", {fontFamily:"monocraft", fontSize: 36}).setOrigin(0.0, 0.5);
+        this.updateUI();
+
+        this.scale.on("resize", () => this.updateUI());
+        this.gameLevel.events.on(CoinPickUpEvent, () => this.updateUI());
+        this.gameLevel.events.on(GameLevelRestartEvent, () => this.updateUI());
+    }
+
+    private updateUI() {
+        const viewPort = this.getViewport(this.scale, this.viewport);
+        this.coinText.setPosition(viewPort.left + 160, viewPort.top + 100);
+        this.coinImage.setPosition(viewPort.left + 100, viewPort.top + 100);
+        this.coinText.setText(`${this.gameLevel.coinManager.pickedCoins}/${this.gameLevel.coinManager.coinsCount}`);
+    }
+
+    private getViewport (scaleManager : Phaser.Scale.ScaleManager, out : Phaser.Geom.Rectangle) {
+        var bounds = scaleManager.canvasBounds;
+        var scale = scaleManager.displayScale;
+        var autoCenter = scaleManager.autoCenter;
+    
+        out.x = (bounds.x >= 0) ? 0 : -(bounds.x * scale.x);
+        out.y = (bounds.y >= 0) ? 0 : -(bounds.y * scale.y);
+        out.width = (bounds.width * scale.x) - out.x;
+        out.height = (bounds.height * scale.y) - out.y;
+        if ((autoCenter === 1) || (autoCenter === 2)) {
+            out.width -= out.x;
+        }
+        if ((autoCenter === 1) || (autoCenter === 3)) {
+            out.height -= out.y;
+        }
+        return out;
+    };
+}
 
 export default class Level1 extends GameLevel
 {
@@ -14,13 +68,14 @@ export default class Level1 extends GameLevel
 
     constructor()
     {
-        super();
+        super({key: "GameLevel"});
     }
 
     override preload()
     {
         super.preload();
         
+
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.image("pixel", "assets/images/Pixel.png");
         this.load.glsl("portal", "assets/shaders/Portal.frag");
@@ -132,6 +187,8 @@ export default class Level1 extends GameLevel
             startGate.y + startGate.height / 2 - 3
             );
         player.restartLevel(tint);
+        this.coinManager.restartLevel();
+        this.events.emit(GameLevelRestartEvent);
     }
 
     private centerCameraAtCharacter(player: Player) {
@@ -195,7 +252,7 @@ const config : Phaser.Types.Core.GameConfig = {
             gravity: { y: 600}
         }
     },
-    scene: Level1
+    scene: [Level1, UIScene]
 };
 
 const game = new Phaser.Game(config);

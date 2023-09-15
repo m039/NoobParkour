@@ -16,12 +16,12 @@ export default abstract class GameLevel extends Phaser.Scene {
 
     public player : Player;
 
-    private coinManager : CoinManager;
+    public coinManager : CoinManager;
 
     private gameManagers : Array<GameManager>;
 
-    constructor() {
-        super();
+    constructor(config? : string | Phaser.Types.Scenes.SettingsConfig) {
+        super(config);
 
         this.audioManager = new AudioManager(this);
         this.coinManager = new CoinManager(this);
