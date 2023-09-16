@@ -16,13 +16,13 @@ class UIScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("coin_ui", "assets/images/CoinUI.png");
+        this.load.image("coin_ui", "assets/images/CoinUI_16x16.png");
     }
 
     create() {
         this.gameLevel = this.scene.get("GameLevel") as GameLevel;
         this.viewport = new Phaser.Geom.Rectangle();
-        this.coinImage = this.add.image(100, 100, "coin_ui").setScale(2.0, 2.0).setOrigin(0.5, 0.5);
+        this.coinImage = this.add.image(100, 100, "coin_ui").setScale(4.0, 4.0).setOrigin(0.5, 0.5);
         this.coinText = this.add.text(160, 100, "0/99", {fontFamily:"monocraft", fontSize: 36}).setOrigin(0.0, 0.5);
         this.updateUI();
 

@@ -53,6 +53,7 @@ export default class CoinManager implements GameManager {
         const sprite = this.gameLevel.add.sprite(x, y, "coin");
         this.gameLevel.anims.createFromAseprite("coin", ["Idle", "Pick Up"], sprite);
         sprite.play({key: "Idle", repeat: -1});
+        sprite.depth = 1;
         
         this.gameLevel.physics.add.existing(sprite);
         
