@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import AudioManager from './AudioManager';
 import CoinManager from './CoinManager';
 import Player from './Player';
+import CloudManager from './CloudManager';
 
 export interface GameManager {
     preload(): void;
@@ -18,6 +19,8 @@ export default abstract class GameLevel extends Phaser.Scene {
 
     public coinManager : CoinManager;
 
+    private cloudManager : CloudManager;
+
     private gameManagers : Array<GameManager>;
 
     constructor(config? : string | Phaser.Types.Scenes.SettingsConfig) {
@@ -26,7 +29,8 @@ export default abstract class GameLevel extends Phaser.Scene {
         this.audioManager = new AudioManager(this);
         this.coinManager = new CoinManager(this);
         this.player = new Player(this);
-        this.gameManagers = [this.player, this.audioManager, this.coinManager];
+        this.cloudManager = new CloudManager(this);
+        this.gameManagers = [this.player, this.audioManager, this.coinManager, this.cloudManager];
     }
 
     public preload(): void {

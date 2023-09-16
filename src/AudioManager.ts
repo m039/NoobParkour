@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import GameLevel, { GameManager } from './GameLevel';
+import { getRandomElement } from './Utils';
 
 export enum SoundId {
     Jump,
@@ -32,7 +33,7 @@ export default class AudioManager implements GameManager {
     public play(soundId: SoundId) {
         switch (soundId) {
             case SoundId.Jump:
-                this.gameLevel.sound.play(this.getRandomElement(["jump1", "jump2"]));
+                this.gameLevel.sound.play(getRandomElement(["jump2"]));
                 break;
             case SoundId.PickUpCoin:
                 this.gameLevel.sound.play("coin1");
@@ -41,9 +42,5 @@ export default class AudioManager implements GameManager {
                 this.gameLevel.sound.play("loose1");
                 break;
         }
-    }
-
-    private getRandomElement(array: Array<string>) : string {
-        return array[Math.floor(Math.random() * array.length)];
     }
 }

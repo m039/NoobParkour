@@ -3,8 +3,7 @@ import Player, { PlayerEvent }  from "./Player";
 import InputController from "./InputController";
 import GameLevel from './GameLevel';
 import { CoinPickUpEvent } from './CoinManager';
-
-const GameLevelRestartEvent = "level_restart";
+import { GameLevelRestartEvent } from './Events';
 
 class UIScene extends Phaser.Scene {
     private coinImage : Phaser.GameObjects.Image;
@@ -243,7 +242,7 @@ const config : Phaser.Types.Core.GameConfig = {
         width: 1920,
         height: 1080,
     },
-    backgroundColor: '#125555',
+    backgroundColor: '#92b9e3',
     pixelArt: true,
     physics: {
         default: 'arcade',

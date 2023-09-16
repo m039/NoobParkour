@@ -126,7 +126,7 @@ export default class Player implements GameManager {
         }
 
         // Show dust particles when the direction of movement is changed.
-        this.passedDistance += this.body.velocity.x * delta;
+        this.passedDistance += this.body.velocity.x * delta / 1000;
 
         if (this.body.velocity.x > 0 && this.passedDistance < 0 ||
             this.body.velocity.x < 0 && this.passedDistance > 0 || 

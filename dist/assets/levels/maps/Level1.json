@@ -300,6 +300,17 @@
                  "width":0,
                  "x":-0.333333,
                  "y":231.333
+                }, 
+                {
+                 "height":232,
+                 "id":17,
+                 "name":"CloudBounds",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1676,
+                 "x":-284,
+                 "y":-72
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -377,7 +388,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":17,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
