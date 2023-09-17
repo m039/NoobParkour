@@ -13,4 +13,4 @@ node_modules/
 /npm-debug.log
 *.tiled-session
 
-./dist/Game.js
+dist/Game.js
