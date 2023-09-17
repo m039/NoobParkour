@@ -12,3 +12,5 @@ node_modules/
 # Build
 /npm-debug.log
 *.tiled-session
+
+./dist/Game.js

@@ -228,10 +228,12 @@ export default class Player implements GameManager {
         this.isDead = true;
         this.body.setVelocity(0, 0);
         this.body.setAllowGravity(false);
+        this.gameLevel.cameras.main.roundPixels = true;
         this.gameLevel.audioManager.play(SoundId.Loose);
     }
 
     public restartLevel(tint: boolean) {
+        this.gameLevel.cameras.main.roundPixels = false;
         this.container.scale = 0;
         const self = this;
 
