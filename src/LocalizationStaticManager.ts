@@ -31,11 +31,13 @@ class LocalizationStaticManager {
                 case Language.English:
                     language = "en";
                     break;
-            }    
+            }
         }
         
         if (language === "ru" || language === "en") {
             localStorage.setItem(LanguageStorageKey, language);
+        } else {
+            localStorage.setItem(LanguageStorageKey, "en");
         }
     }
 }
