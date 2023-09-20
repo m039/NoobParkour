@@ -4,6 +4,7 @@ import InputController from "./InputController";
 import GameLevel from './GameLevel';
 import { CoinPickUpEvent } from './CoinManager';
 import { GameLevelRestartEvent } from './Events';
+import WelcomeScene from './WelcomeScene';
 
 class UIScene extends Phaser.Scene {
     private coinImage : Phaser.GameObjects.Image;
@@ -57,7 +58,7 @@ class UIScene extends Phaser.Scene {
     };
 }
 
-export default class Level1 extends GameLevel
+export class Level1 extends GameLevel
 {
     private inputController : InputController;
     private bottomLine1 : Phaser.Types.Tilemaps.TiledObject;
@@ -251,7 +252,8 @@ const config : Phaser.Types.Core.GameConfig = {
             gravity: { y: 600}
         }
     },
-    scene: [Level1, UIScene]
+    // scene: [Level1, UIScene]
+    scene: [WelcomeScene]
 };
 
 const game = new Phaser.Game(config);
