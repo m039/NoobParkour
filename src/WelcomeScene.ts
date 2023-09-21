@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { Language, Localization } from './LocalizationStaticManager';
+import CloudManager from './CloudManager';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
@@ -34,10 +35,10 @@ class FlagButton {
             if (!this.selected) {
                 this.image.setTexture(this.defaultTexture);
             }
-        })
+        });
         this.image.on("pointerup", () => {
             this.welcomeScene.setLanguage(this.language);
-        })
+        });
     }
 
     public setSelected(selected:boolean) {
@@ -50,12 +51,15 @@ export default class WelcomeScene extends Phaser.Scene {
     private title : Phaser.GameObjects.Image;
     private russianFlag : FlagButton;
     private englishFlag : FlagButton;
+    private cloudManager : CloudManager;
 
     constructor() {
         super({ key:"WelcomeScene" });
+        this.cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, 480+80, 270)});
     }
 
     preload() {
+        this.cloudManager.preload();
         this.load.image("title_en", "assets/images/ui/GameTitleEn.png");
         this.load.image("title_ru", "assets/images/ui/GameTitleRu.png");
         this.load.image("english_flag_default", "assets/images/ui/EnglishFlagDefault.png");
@@ -64,20 +68,42 @@ export default class WelcomeScene extends Phaser.Scene {
         this.load.image("russian_flag_hovered", "assets/images/ui/RussianFlagHovered.png");
         this.load.image("start_button_default", "assets/images/ui/StartButtonDefault.png");
         this.load.image("start_button_hovered", "assets/images/ui/StartButtonHovered.png");
+
+        this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
+        this.load.tilemapTiledJSON("map", "assets/levels/maps/WelcomeScene.json");
+
+        this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
     }
 
     create() {
-        if (Localization.currentLanguage === undefined) {
-            Localization.currentLanguage = bridge.platform.language;
-        }
+        this.cloudManager.create();
 
         this.cameras.main.setZoom(4, 4);
         this.cameras.main.setOrigin(0, 0);
         this.cameras.main.setPosition(0, 0);
 
+        const map = this.make.tilemap({ key: "map"});
+        const tileset = map.addTilesetImage("NoobParkourTileset", "tiles", 16, 16);
+        const groundLayer = map.createLayer("Ground", tileset, -200, -20);
+        groundLayer.setSkipCull(true);
+
+        this.anims.createFromAseprite("noob");
+        const noob = this.add.sprite(127, 227, "noob");
+        noob.play({key:"Sit", repeat: -1});
+
         this.title = this.add.image(240, 100, "title_ru");
         const startButton = this.add.image(240, 205, "start_button_default");
         this.constructButton(startButton, "start_button_default", "start_button_hovered");
+
+        startButton.setRotation(-0.08);
+        this.tweens.add({
+            targets: startButton,
+            rotation: 0.08,
+            duration: 1500,
+            ease: Phaser.Math.Easing.Sine.InOut,
+            repeat: -1,
+            yoyo: true
+        });
 
         this.englishFlag = new FlagButton(
             this, 
@@ -97,7 +123,15 @@ export default class WelcomeScene extends Phaser.Scene {
             Language.Russian
         );
         
+        if (Localization.currentLanguage === undefined) {
+            Localization.currentLanguage = bridge.platform.language;
+        }
+
         this.setLanguage(Localization.currentLanguage);
+    }
+
+    update(time: number, delta: number): void {
+        this.cloudManager.update(time, delta);
     }
 
     private constructButton(

@@ -75,7 +75,6 @@ export class Level1 extends GameLevel
     {
         super.preload();
         
-
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.image("pixel", "assets/images/Pixel.png");
         this.load.glsl("portal", "assets/shaders/Portal.frag");
@@ -252,7 +251,7 @@ const config : Phaser.Types.Core.GameConfig = {
             gravity: { y: 600}
         }
     },
-    // scene: [Level1, UIScene]
+    //scene: [Level1, UIScene]
     scene: [WelcomeScene]
 };
 

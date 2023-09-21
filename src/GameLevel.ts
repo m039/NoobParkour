@@ -4,13 +4,17 @@ import CoinManager from './CoinManager';
 import Player from './Player';
 import CloudManager from './CloudManager';
 
+export interface IGameLevel {
+    map:Phaser.Tilemaps.Tilemap;
+}
+
 export interface GameManager {
     preload(): void;
     create(): void;
     update(time: number, delta: number): void;
 }
 
-export default abstract class GameLevel extends Phaser.Scene {
+export default abstract class GameLevel extends Phaser.Scene implements IGameLevel {
     public audioManager : AudioManager;
 
     public map : Phaser.Tilemaps.Tilemap;
@@ -29,7 +33,7 @@ export default abstract class GameLevel extends Phaser.Scene {
         this.audioManager = new AudioManager(this);
         this.coinManager = new CoinManager(this);
         this.player = new Player(this);
-        this.cloudManager = new CloudManager(this);
+        this.cloudManager = new CloudManager(this, {tilemap: () => this.map});
         this.gameManagers = [this.player, this.audioManager, this.coinManager, this.cloudManager];
     }
 

@@ -1,36 +1,52 @@
 import * as Phaser from 'phaser';
-import GameLevel, { GameManager } from './GameLevel';
+import { GameManager, IGameLevel } from './GameLevel';
 import { getRandomElement } from './Utils';
 import { GameLevelRestartEvent } from './Events';
+
+type CloudManagerConfig = {
+    count? : number;
+    bounds? : Phaser.Geom.Rectangle;
+    tilemap? : () => Phaser.Tilemaps.Tilemap;
+};
 
 export default class CloudManager implements GameManager {
     private CloudsCount = 20;
     private CloudsMinSpeed = 5;
     private CloudsMaxSpeed = 15;
 
-    private gameLevel : GameLevel;
+    private scene : Phaser.Scene;
+    private tilemap? : () => Phaser.Tilemaps.Tilemap;
     private clouds : Phaser.GameObjects.Group;
     private cloudBounds : Phaser.Geom.Rectangle;
     private direction : number;
     private cloudsData : Array<{sprite : Phaser.GameObjects.Sprite, speed : number}>;
 
-    constructor(gameLevel: GameLevel) {
-        this.gameLevel = gameLevel;
+    constructor(scene: Phaser.Scene, cloudConfig?: CloudManagerConfig) {
+        this.scene = scene;
         this.cloudsData = [];
+
+        if (cloudConfig) {
+            this.CloudsCount = Math.max(cloudConfig.count ?? this.CloudsCount, 0);
+            this.cloudBounds = cloudConfig.bounds;
+            this.tilemap = cloudConfig.tilemap;
+        }
     }
 
     preload(): void {
         const directory = "clouds_a";
 
-        this.gameLevel.load.image("cloud1", `assets/images/${directory}/Cloud1.png`);
-        this.gameLevel.load.image("cloud2", `assets/images/${directory}/Cloud2.png`);
-        this.gameLevel.load.image("cloud3", `assets/images/${directory}/Cloud3.png`);
+        this.scene.load.image("cloud1", `assets/images/${directory}/Cloud1.png`);
+        this.scene.load.image("cloud2", `assets/images/${directory}/Cloud2.png`);
+        this.scene.load.image("cloud3", `assets/images/${directory}/Cloud3.png`);
     }
 
     create(): void {
-        this.clouds = this.gameLevel.add.group();
-        this.cloudBounds = this.getCloudBounds();
+        this.clouds = this.scene.add.group();
         this.direction = Math.random() < 0.5? -1 : 1;
+
+        if (this.cloudBounds === undefined) {
+            this.cloudBounds = this.getCloudBounds();
+        }
 
         if (this.cloudBounds === undefined) {
             throw new Error("Can't find cloud bounds.");
@@ -38,7 +54,7 @@ export default class CloudManager implements GameManager {
 
         this.createClouds();
 
-        this.gameLevel.events.on(GameLevelRestartEvent, () => this.createClouds());
+        this.scene.events.on(GameLevelRestartEvent, () => this.createClouds());
     }
 
     update(time: number, delta: number): void {
@@ -70,7 +86,7 @@ export default class CloudManager implements GameManager {
         const x = this.cloudBounds.left + this.cloudBounds.width * Math.random();
         const y = this.cloudBounds.top + this.cloudBounds.height * yRatio;
 
-        const sprite = this.gameLevel.add.sprite(x, y, key);
+        const sprite = this.scene.add.sprite(x, y, key);
         sprite.depth = -1;
         this.clouds.add(sprite);
 
@@ -81,7 +97,11 @@ export default class CloudManager implements GameManager {
     }
 
     private getCloudBounds() : Phaser.Geom.Rectangle {
-        const bounds = this.gameLevel.map.findObject("Objects", (o) => o.name === "CloudBounds");
+        if (this.tilemap === undefined) {
+            return undefined;
+        }
+
+        const bounds = this.tilemap().findObject("Objects", (o) => o.name === "CloudBounds");
         if (bounds === undefined) {
             return undefined;
         }
