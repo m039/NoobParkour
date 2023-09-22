@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
-import { Language, Localization } from './LocalizationStaticManager';
-import CloudManager from './CloudManager';
+import { Language, Localization } from '../LocalizationStaticManager';
+import CloudManager from '../CloudManager';
+import { GameHeight, GameWidth } from '../Consts';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
@@ -55,7 +56,7 @@ export default class WelcomeScene extends Phaser.Scene {
 
     constructor() {
         super({ key:"WelcomeScene" });
-        this.cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, 480+80, 270)});
+        this.cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
     }
 
     preload() {
@@ -78,9 +79,7 @@ export default class WelcomeScene extends Phaser.Scene {
     create() {
         this.cloudManager.create();
 
-        this.cameras.main.setZoom(4, 4);
-        this.cameras.main.setOrigin(0, 0);
-        this.cameras.main.setPosition(0, 0);
+        this.cameras.main.setZoom(4, 4).setOrigin(0, 0).setPosition(0, 0);
 
         const map = this.make.tilemap({ key: "map"});
         const tileset = map.addTilesetImage("NoobParkourTileset", "tiles", 16, 16);
@@ -123,7 +122,7 @@ export default class WelcomeScene extends Phaser.Scene {
             Language.Russian
         );
         
-        if (Localization.currentLanguage === undefined) {
+        if (!Localization.wasLanguagePreviouslySelected) {
             Localization.currentLanguage = bridge.platform.language;
         }
 

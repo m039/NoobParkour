@@ -4,7 +4,8 @@ import InputController from "./InputController";
 import GameLevel from './GameLevel';
 import { CoinPickUpEvent } from './CoinManager';
 import { GameLevelRestartEvent } from './Events';
-import WelcomeScene from './WelcomeScene';
+import WelcomeScene from './Scenes/WelcomeScene';
+import LevelSelectionScene from './Scenes/LevelSelectionScene';
 
 class UIScene extends Phaser.Scene {
     private coinImage : Phaser.GameObjects.Image;
@@ -252,7 +253,8 @@ const config : Phaser.Types.Core.GameConfig = {
         }
     },
     //scene: [Level1, UIScene]
-    scene: [WelcomeScene]
+    //scene: [WelcomeScene]
+    scene: [LevelSelectionScene]
 };
 
 const game = new Phaser.Game(config);

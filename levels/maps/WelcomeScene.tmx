@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="3" nextobjectid="2">
  <editorsettings>
-  <export target="../../dist/assets/levels/maps/WelcomeScene.tmj" format="json"/>
+  <export target="../../dist/assets/levels/maps/WelcomeScene.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="50" columns="10">
   <image source="../tilesets/NoobParkourTileset.png" width="160" height="80"/>

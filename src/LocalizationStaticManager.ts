@@ -5,11 +5,27 @@ export enum Language {
 
 const LanguageStorageKey = "current_language";
 
+export enum LocalizationKey {
+    SelectLevelTitle = "select_level_title"
+};
+
 class LocalizationStaticManager {
 
-    private _currentLanguage : Language;
+    private localizationTexts : {[key:string] : {en:string, ru:string}};
 
-    public get currentLanguage() : Language | undefined {
+    constructor() {
+        this.localizationTexts = {};
+        this.localizationTexts[LocalizationKey.SelectLevelTitle] = {
+            en: "Select Level",
+            ru: "Выберите уровень"
+        };
+    }
+
+    public get wasLanguagePreviouslySelected() : boolean {
+        return localStorage.getItem(LanguageStorageKey) !== undefined;
+    }
+
+    public get currentLanguage() : Language {
         var language = localStorage.getItem(LanguageStorageKey);
 
         if (language === "en") {
@@ -17,7 +33,7 @@ class LocalizationStaticManager {
         } else if (language === "ru") {
             return Language.Russian;
         } else {
-            return undefined;
+            return Language.English;
         }
     }
 
@@ -39,6 +55,10 @@ class LocalizationStaticManager {
         } else {
             localStorage.setItem(LanguageStorageKey, "en");
         }
+    }
+
+    public getText(key:string) {
+        return this.localizationTexts[key][this.currentLanguage];
     }
 }
 
