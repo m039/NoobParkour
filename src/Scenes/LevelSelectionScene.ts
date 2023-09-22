@@ -76,6 +76,9 @@ export default class LevelSelectionScene extends Phaser.Scene {
         this.load.image("star_icon_fill", "assets/images/ui/StarIconFill.png");
         this.load.image("lock_icon", "assets/images/ui/LockIcon.png");
         this.load.image("tick_icon", "assets/images/ui/TickIcon.png");
+        this.load.image("back_button_default", "assets/images/ui/BackButtonDefault.png");
+        this.load.image("back_button_hovered", "assets/images/ui/BackButtonHovered.png");
+
         this.load.bitmapFont("monocraft", "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
@@ -93,11 +96,24 @@ export default class LevelSelectionScene extends Phaser.Scene {
             .setTint(0x000000);
 
         this.createButtons();
+        this.createBackButton();
     }
 
     update(time: number, delta: number): void {
         this.cloudManager.update(time, delta);
         this.audioManager.update(time, delta);
+    }
+
+    private createBackButton() {
+        const button = this.add.image(30, 30, "back_button_default");
+
+        button.setInteractive();
+        button.on("pointerover", () => {
+            button.setTexture("back_button_hovered");
+        });
+        button.on("pointerout", () => {
+            button.setTexture("back_button_default");
+        })
     }
 
     private createButtons() : void {
