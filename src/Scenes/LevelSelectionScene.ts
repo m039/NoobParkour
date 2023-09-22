@@ -2,36 +2,86 @@ import * as Phaser from 'phaser';
 import { Localization, LocalizationKey } from '../LocalizationStaticManager';
 import { GameHeight, GameWidth } from '../Consts';
 import CloudManager from '../CloudManager';
+import { Progress } from '../ProgressStaticManager';
+import AudioManager, { SoundId } from '../AudioManager';
 
 class LevelButton {
+    private audioManager: AudioManager;
     private image : Phaser.GameObjects.Image;
+    private star: Phaser.GameObjects.Image;
+    private lock: Phaser.GameObjects.Image;
+    private tick: Phaser.GameObjects.Image;
 
-    constructor(scene: Phaser.Scene, level: number, x:number, y:number) {
+    constructor(scene: LevelSelectionScene, level: number, x:number, y:number) {
         this.image = scene.add.image(x, y, "level_button_default");
 
         scene.add.bitmapText(x, y, "monocraft", level.toString())
             .setOrigin(0.5, 0.5)
             .setScale(1.5)
             .setTint(0x000000);
+
+        this.star = scene.add.image(x, y + 16, "star_icon_empty").setVisible(false);
+        this.lock = scene.add.image(x, y + 16, "lock_icon").setVisible(false);
+        this.tick = scene.add.image(x + 16, y - 16, "tick_icon").setVisible(false);
+        this.audioManager = scene.audioManager;
+
+        this.constructButton();
+    }
+
+    public constructButton() {
+        this.image.setInteractive();
+        this.image.on("pointerover", () => {
+            this.image.setTexture("level_button_hovered");
+            this.audioManager.play(SoundId.Blip);
+        });
+        this.image.on("pointerout", () => {
+            this.image.setTexture("level_button_default");
+        })
+    }
+
+    public setStarFill(value: boolean) {
+        this.star.setTexture(value?"star_icon_fill":"star_icon_empty");
+    }
+
+    public setStarVisible(visible: boolean) {
+        this.star.visible = visible;
+    }
+
+    public setLockVisible(visible: boolean) {
+        this.lock.visible = visible;
+    }
+
+    public setTickVisible(visible: boolean) {
+        this.tick.visible = visible;
     }
 }
 
 export default class LevelSelectionScene extends Phaser.Scene {
     private cloudManager: CloudManager;
+    public audioManager: AudioManager;
 
     constructor() {
         super({key: "LevelSelectionScene"});
         this.cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
+        this.audioManager = new AudioManager(this);
     }
 
     preload() {
         this.cloudManager.preload();
+        this.audioManager.preload();
+
         this.load.image("level_button_default", "assets/images/ui/LevelButtonDefault.png");
+        this.load.image("level_button_hovered", "assets/images/ui/LevelButtonHovered.png");
+        this.load.image("star_icon_empty", "assets/images/ui/StarIconEmpty.png");
+        this.load.image("star_icon_fill", "assets/images/ui/StarIconFill.png");
+        this.load.image("lock_icon", "assets/images/ui/LockIcon.png");
+        this.load.image("tick_icon", "assets/images/ui/TickIcon.png");
         this.load.bitmapFont("monocraft", "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
     create() {
         this.cloudManager.create();
+        this.audioManager.create();
 
         this.cameras.main.setZoom(4.0, 4.0)
             .setOrigin(0, 0)
@@ -47,6 +97,7 @@ export default class LevelSelectionScene extends Phaser.Scene {
 
     update(time: number, delta: number): void {
         this.cloudManager.update(time, delta);
+        this.audioManager.update(time, delta);
     }
 
     private createButtons() : void {
@@ -64,6 +115,17 @@ export default class LevelSelectionScene extends Phaser.Scene {
                 const y = startY + row * vSpacing;
 
                 const levelButton = new LevelButton(this, level, x, y);
+
+                levelButton.setStarFill(Progress.isLevelCompletedFully(level));
+                levelButton.setTickVisible(Progress.isLevelCompleted(level));
+
+                if (Progress.isLevelOpen(level) || Progress.isLevelCompleted(level)) {
+                    levelButton.setLockVisible(false);
+                    levelButton.setStarVisible(true);
+                } else {
+                    levelButton.setLockVisible(true);
+                    levelButton.setStarVisible(false);
+                }
 
                 level++;
             }
