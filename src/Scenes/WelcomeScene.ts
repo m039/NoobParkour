@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { Language, Localization } from '../LocalizationStaticManager';
 import CloudManager from '../CloudManager';
 import { GameHeight, GameWidth } from '../Consts';
+import BaseScene from './BaseScene';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
@@ -48,19 +49,19 @@ class FlagButton {
     }
 }
 
-export default class WelcomeScene extends Phaser.Scene {
+export default class WelcomeScene extends BaseScene {
     private title : Phaser.GameObjects.Image;
     private russianFlag : FlagButton;
     private englishFlag : FlagButton;
-    private cloudManager : CloudManager;
 
     constructor() {
         super({ key:"WelcomeScene" });
-        this.cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
+        this.gameManagers.push(new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)}));
     }
 
-    preload() {
-        this.cloudManager.preload();
+    override preload() {
+        super.preload();
+
         this.load.image("title_en", "assets/images/ui/GameTitleEn.png");
         this.load.image("title_ru", "assets/images/ui/GameTitleRu.png");
         this.load.image("english_flag_default", "assets/images/ui/EnglishFlagDefault.png");
@@ -76,8 +77,8 @@ export default class WelcomeScene extends Phaser.Scene {
         this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
     }
 
-    create() {
-        this.cloudManager.create();
+    override create() {
+        super.create();
 
         this.cameras.main.setZoom(4, 4).setOrigin(0, 0).setPosition(0, 0);
 
@@ -86,23 +87,14 @@ export default class WelcomeScene extends Phaser.Scene {
         const groundLayer = map.createLayer("Ground", tileset, -200, -20);
         groundLayer.setSkipCull(true);
 
-        this.anims.createFromAseprite("noob");
+        if (!this.anims.exists("Idle")) {
+            this.anims.createFromAseprite("noob");
+        }
         const noob = this.add.sprite(127, 227, "noob");
         noob.play({key:"Sit", repeat: -1});
 
         this.title = this.add.image(240, 100, "title_ru");
-        const startButton = this.add.image(240, 205, "start_button_default");
-        this.constructButton(startButton, "start_button_default", "start_button_hovered");
-
-        startButton.setRotation(-0.08);
-        this.tweens.add({
-            targets: startButton,
-            rotation: 0.08,
-            duration: 1500,
-            ease: Phaser.Math.Easing.Sine.InOut,
-            repeat: -1,
-            yoyo: true
-        });
+        this.constructStartButton();
 
         this.englishFlag = new FlagButton(
             this, 
@@ -129,21 +121,29 @@ export default class WelcomeScene extends Phaser.Scene {
         this.setLanguage(Localization.currentLanguage);
     }
 
-    update(time: number, delta: number): void {
-        this.cloudManager.update(time, delta);
-    }
+    private constructStartButton() : void {
+        const startButton = this.add.image(240, 205, "start_button_default");
 
-    private constructButton(
-        image:Phaser.GameObjects.Image, 
-        defaultTexture:string, 
-        hoveredTexture:string) : void {
-        image.setInteractive();
-        image.on("pointerover", () => {
-            image.setTexture(hoveredTexture);
+        startButton.setInteractive();
+        startButton.on("pointerover", () => {
+            startButton.setTexture("start_button_hovered");
         });
-        image.on("pointerout", () => {
-            image.setTexture(defaultTexture);
-        })
+        startButton.on("pointerout", () => {
+            startButton.setTexture("start_button_default");
+        });
+        startButton.on("pointerup", () => {
+            this.scene.start("LevelSelectionScene");
+        });
+
+        startButton.setRotation(-0.08);
+        this.tweens.add({
+            targets: startButton,
+            rotation: 0.08,
+            duration: 1500,
+            ease: Phaser.Math.Easing.Sine.InOut,
+            repeat: -1,
+            yoyo: true
+        });
     }
 
     public setLanguage(language : Language) {

@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
-import GameLevel, { GameManager } from './GameLevel';
+import GameLevel from './GameLevel';
 import { getRandomElement } from './Utils';
+import { GameManager } from './Scenes/BaseScene';
 
 export enum SoundId {
     Jump,

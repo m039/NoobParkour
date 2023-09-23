@@ -4,6 +4,7 @@ import { GameHeight, GameWidth } from '../Consts';
 import CloudManager from '../CloudManager';
 import { Progress } from '../ProgressStaticManager';
 import AudioManager, { SoundId } from '../AudioManager';
+import BaseScene from './BaseScene';
 
 class LevelButton {
     private audioManager: AudioManager;
@@ -56,19 +57,19 @@ class LevelButton {
     }
 }
 
-export default class LevelSelectionScene extends Phaser.Scene {
-    private cloudManager: CloudManager;
+export default class LevelSelectionScene extends BaseScene {
     public audioManager: AudioManager;
 
     constructor() {
         super({key: "LevelSelectionScene"});
-        this.cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
+        const cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
         this.audioManager = new AudioManager(this);
+
+        this.gameManagers.push(cloudManager, this.audioManager);
     }
 
-    preload() {
-        this.cloudManager.preload();
-        this.audioManager.preload();
+    override preload() {
+        super.preload();
 
         this.load.image("level_button_default", "assets/images/ui/LevelButtonDefault.png");
         this.load.image("level_button_hovered", "assets/images/ui/LevelButtonHovered.png");
@@ -82,9 +83,8 @@ export default class LevelSelectionScene extends Phaser.Scene {
         this.load.bitmapFont("monocraft", "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
-    create() {
-        this.cloudManager.create();
-        this.audioManager.create();
+    override create() {
+        super.create();
 
         this.cameras.main.setZoom(4.0, 4.0)
             .setOrigin(0, 0)
@@ -99,11 +99,6 @@ export default class LevelSelectionScene extends Phaser.Scene {
         this.createBackButton();
     }
 
-    update(time: number, delta: number): void {
-        this.cloudManager.update(time, delta);
-        this.audioManager.update(time, delta);
-    }
-
     private createBackButton() {
         const button = this.add.image(30, 30, "back_button_default");
 
@@ -113,7 +108,10 @@ export default class LevelSelectionScene extends Phaser.Scene {
         });
         button.on("pointerout", () => {
             button.setTexture("back_button_default");
-        })
+        });
+        button.on("pointerup", () => {
+            this.scene.start("WelcomeScene");
+        });
     }
 
     private createButtons() : void {
@@ -137,7 +135,7 @@ export default class LevelSelectionScene extends Phaser.Scene {
 
                 if (Progress.isLevelOpen(level) || Progress.isLevelCompleted(level)) {
                     levelButton.setLockVisible(false);
-                    levelButton.setStarVisible(true);
+                    levelButton.setStarVisible(Progress.isLevelCompleted(level) && Progress.isLevelCompleted(level));
                 } else {
                     levelButton.setLockVisible(true);
                     levelButton.setStarVisible(false);

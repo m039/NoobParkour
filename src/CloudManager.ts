@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
-import { GameManager, IGameLevel } from './GameLevel';
 import { getRandomElement } from './Utils';
 import { GameLevelRestartEvent } from './Events';
+import { GameManager } from './Scenes/BaseScene';
 
 type CloudManagerConfig = {
     count? : number;

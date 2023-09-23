@@ -1,7 +1,8 @@
 import * as Phaser from 'phaser';
 import Player from './Player';
-import GameLevel, { GameManager } from './GameLevel';
+import GameLevel from './GameLevel';
 import { SoundId } from './AudioManager';
+import { GameManager } from './Scenes/BaseScene';
 
 export const CoinPickUpEvent = "coin_pick_up";
 

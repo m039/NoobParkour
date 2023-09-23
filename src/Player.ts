@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
-import GameLevel, { GameManager } from './GameLevel';
+import GameLevel from './GameLevel';
 import { SoundId } from './AudioManager';
+import { GameManager } from './Scenes/BaseScene';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -54,7 +55,9 @@ export default class Player implements GameManager {
     }
 
     create(): void {
-        this.gameLevel.anims.createFromAseprite("noob");
+        if (!this.gameLevel.anims.exists("Idle")) {
+            this.gameLevel.anims.createFromAseprite("noob");
+        }
 
         this.emmiter = new Phaser.Events.EventEmitter();
         this.container = this.gameLevel.add.container(400, 400);

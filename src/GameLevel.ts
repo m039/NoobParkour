@@ -3,18 +3,9 @@ import AudioManager from './AudioManager';
 import CoinManager from './CoinManager';
 import Player from './Player';
 import CloudManager from './CloudManager';
+import BaseScene from './Scenes/BaseScene';
 
-export interface IGameLevel {
-    map:Phaser.Tilemaps.Tilemap;
-}
-
-export interface GameManager {
-    preload(): void;
-    create(): void;
-    update(time: number, delta: number): void;
-}
-
-export default abstract class GameLevel extends Phaser.Scene implements IGameLevel {
+export default abstract class GameLevel extends BaseScene {
     public audioManager : AudioManager;
 
     public map : Phaser.Tilemaps.Tilemap;
@@ -25,8 +16,6 @@ export default abstract class GameLevel extends Phaser.Scene implements IGameLev
 
     private cloudManager : CloudManager;
 
-    private gameManagers : Array<GameManager>;
-
     constructor(config? : string | Phaser.Types.Scenes.SettingsConfig) {
         super(config);
 
@@ -34,28 +23,18 @@ export default abstract class GameLevel extends Phaser.Scene implements IGameLev
         this.coinManager = new CoinManager(this);
         this.player = new Player(this);
         this.cloudManager = new CloudManager(this, {tilemap: () => this.map});
-        this.gameManagers = [this.player, this.audioManager, this.coinManager, this.cloudManager];
+        this.gameManagers.push(this.player, this.audioManager, this.coinManager, this.cloudManager);
     }
 
-    public preload(): void {
+    public override preload(): void {
         this.load.tilemapTiledJSON("map", "assets/levels/maps/Level1.json");
 
-        for (var gm of this.gameManagers) {
-            gm.preload();
-        }
+        super.preload();
     }
 
-    public create(): void {
+    public override create(): void {
         this.map = this.make.tilemap({ key: "map"});
 
-        for (var gm of this.gameManagers) {
-            gm.create();
-        }
-    }
-
-    public update(time: number, delta: number): void {
-        for (var gm of this.gameManagers) {
-            gm.update(time, delta);
-        }
+        super.create();
     }
 }
