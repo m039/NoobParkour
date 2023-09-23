@@ -1,14 +1,18 @@
 import * as Phaser from 'phaser';
 import { Language, Localization } from '../LocalizationStaticManager';
-import CloudManager from '../CloudManager';
-import { GameHeight, GameWidth } from '../Consts';
+import CloudManager from '../Managers/CloudManager';
+import { GameHeight, GameWidth } from '../Consts/Consts';
 import BaseScene from './BaseScene';
+import SettingsManager from '../Managers/SettingsManager';
+import { createButton } from '../Utils';
+import TextureKeys from '../Consts/TextureKeys';
+import SceneKeys from '../Consts/SceneKeys';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
     private image:Phaser.GameObjects.Image;
-    private defaultTexture:string;
-    private hoveredTexture:string;
+    private defaultTexture:TextureKeys;
+    private hoveredTexture:TextureKeys;
     private language:Language;
     private selected:boolean;
 
@@ -16,8 +20,8 @@ class FlagButton {
         welcomeScene:WelcomeScene,
         x:number, 
         y:number, 
-        defaultTexture:string, 
-        hoveredTexture:string,
+        defaultTexture:TextureKeys, 
+        hoveredTexture:TextureKeys,
         language:Language) {
         this.welcomeScene = welcomeScene;
         this.image = welcomeScene.add.image(x, y, defaultTexture);
@@ -25,21 +29,12 @@ class FlagButton {
         this.hoveredTexture = hoveredTexture;
         this.language = language;
         this.selected = false;
-        this.constructButton();
-    }
 
-    private constructButton() {
-        this.image.setInteractive();
-        this.image.on("pointerover", () => {
-            this.image.setTexture(this.hoveredTexture);
-        });
-        this.image.on("pointerout", () => {
-            if (!this.selected) {
-                this.image.setTexture(this.defaultTexture);
-            }
-        });
-        this.image.on("pointerup", () => {
-            this.welcomeScene.setLanguage(this.language);
+        createButton(this.image, {
+            defaultTexture: this.defaultTexture,
+            hoveredTexture: this.hoveredTexture,
+            onClick: () => {this.welcomeScene.setLanguage(this.language);},
+            isSelected: () => this.selected
         });
     }
 
@@ -55,21 +50,24 @@ export default class WelcomeScene extends BaseScene {
     private englishFlag : FlagButton;
 
     constructor() {
-        super({ key:"WelcomeScene" });
-        this.gameManagers.push(new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)}));
+        super({ key: SceneKeys.WelcomeScene });
+        this.gameManagers.push(
+            new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)}),
+            new SettingsManager(this)
+        );
     }
 
     override preload() {
         super.preload();
 
-        this.load.image("title_en", "assets/images/ui/GameTitleEn.png");
-        this.load.image("title_ru", "assets/images/ui/GameTitleRu.png");
-        this.load.image("english_flag_default", "assets/images/ui/EnglishFlagDefault.png");
-        this.load.image("english_flag_hovered", "assets/images/ui/EnglishFlagHovered.png");
-        this.load.image("russian_flag_default", "assets/images/ui/RussianFlagDefault.png");
-        this.load.image("russian_flag_hovered", "assets/images/ui/RussianFlagHovered.png");
-        this.load.image("start_button_default", "assets/images/ui/StartButtonDefault.png");
-        this.load.image("start_button_hovered", "assets/images/ui/StartButtonHovered.png");
+        this.load.image(TextureKeys.TitleEn, "assets/images/ui/GameTitleEn.png");
+        this.load.image(TextureKeys.TitleRu, "assets/images/ui/GameTitleRu.png");
+        this.load.image(TextureKeys.EnglishFlagDefault, "assets/images/ui/EnglishFlagDefault.png");
+        this.load.image(TextureKeys.EnglishFlagHovered, "assets/images/ui/EnglishFlagHovered.png");
+        this.load.image(TextureKeys.RussianFlagDefault, "assets/images/ui/RussianFlagDefault.png");
+        this.load.image(TextureKeys.RussianFlagHovered, "assets/images/ui/RussianFlagHovered.png");
+        this.load.image(TextureKeys.StartButtonDefault, "assets/images/ui/StartButtonDefault.png");
+        this.load.image(TextureKeys.StartButtonHovered, "assets/images/ui/StartButtonHovered.png");
 
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.tilemapTiledJSON("map", "assets/levels/maps/WelcomeScene.json");
@@ -100,8 +98,8 @@ export default class WelcomeScene extends BaseScene {
             this, 
             480 - 56, 
             270 - 20, 
-            "english_flag_default", 
-            "english_flag_hovered", 
+            TextureKeys.EnglishFlagDefault, 
+            TextureKeys.EnglishFlagHovered, 
             Language.English
         );
 
@@ -109,8 +107,8 @@ export default class WelcomeScene extends BaseScene {
             this,
             480 - 25, 
             270 - 20,
-            "russian_flag_default",
-            "russian_flag_hovered",
+            TextureKeys.RussianFlagDefault,
+            TextureKeys.RussianFlagHovered,
             Language.Russian
         );
         
@@ -122,18 +120,13 @@ export default class WelcomeScene extends BaseScene {
     }
 
     private constructStartButton() : void {
-        const startButton = this.add.image(240, 205, "start_button_default");
+        const startButton = this.add.image(240, 205, TextureKeys.StartButtonDefault);
 
-        startButton.setInteractive();
-        startButton.on("pointerover", () => {
-            startButton.setTexture("start_button_hovered");
-        });
-        startButton.on("pointerout", () => {
-            startButton.setTexture("start_button_default");
-        });
-        startButton.on("pointerup", () => {
-            this.scene.start("LevelSelectionScene");
-        });
+        createButton(startButton, {
+            defaultTexture: TextureKeys.StartButtonDefault,
+            hoveredTexture: TextureKeys.StartButtonHovered,
+            onClick: () => { this.scene.start("LevelSelectionScene"); }
+        })
 
         startButton.setRotation(-0.08);
         this.tweens.add({

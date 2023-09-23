@@ -1,12 +1,13 @@
 import * as Phaser from 'phaser';
-import Player, { PlayerEvent }  from "./Player";
+import Player, { PlayerEvent }  from "./Managers/Player";
 import InputController from "./InputController";
 import GameLevel from './GameLevel';
-import { CoinPickUpEvent } from './CoinManager';
+import { CoinPickUpEvent } from './Managers/CoinManager';
 import { GameLevelRestartEvent } from './Events';
 import WelcomeScene from './Scenes/WelcomeScene';
 import LevelSelectionScene from './Scenes/LevelSelectionScene';
 import PreloadScene from './Scenes/PreloadScene';
+import AudioScene from './Scenes/AudioScene';
 
 class UIScene extends Phaser.Scene {
     private coinImage : Phaser.GameObjects.Image;
@@ -254,7 +255,7 @@ const config : Phaser.Types.Core.GameConfig = {
         }
     },
     //scene: [Level1, UIScene]
-    scene: [PreloadScene, WelcomeScene, LevelSelectionScene]
+    scene: [PreloadScene, WelcomeScene, LevelSelectionScene, AudioScene]
 };
 
 const game = new Phaser.Game(config);

@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
-import GameLevel from './GameLevel';
+import GameLevel from '../GameLevel';
 import { SoundId } from './AudioManager';
-import { GameManager } from './Scenes/BaseScene';
+import { GameManager } from '../Scenes/BaseScene';
 
 enum PlayerAnimation {
     Idle = "Idle",

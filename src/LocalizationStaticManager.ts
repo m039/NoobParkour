@@ -22,7 +22,7 @@ class LocalizationStaticManager {
     }
 
     public get wasLanguagePreviouslySelected() : boolean {
-        return localStorage.getItem(LanguageStorageKey) !== undefined;
+        return localStorage.getItem(LanguageStorageKey) !== null;
     }
 
     public get currentLanguage() : Language {

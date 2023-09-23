@@ -1,7 +1,5 @@
 import * as Phaser from 'phaser';
-import GameLevel from './GameLevel';
-import { getRandomElement } from './Utils';
-import { GameManager } from './Scenes/BaseScene';
+import { GameManager } from '../Scenes/BaseScene';
 
 export enum SoundId {
     Jump,
@@ -27,7 +25,7 @@ export default class AudioManager implements GameManager {
     }
 
     create(): void {
-        
+        this.scene.sound.volume = 0.5;
     }
 
     update(time: number, delta: number): void {
@@ -37,7 +35,7 @@ export default class AudioManager implements GameManager {
     public play(soundId: SoundId) {
         switch (soundId) {
             case SoundId.Jump:
-                this.scene.sound.play(getRandomElement(["jump2"]));
+                this.scene.sound.play("jump2");
                 break;
             case SoundId.PickUpCoin:
                 this.scene.sound.play("coin1");
@@ -46,7 +44,7 @@ export default class AudioManager implements GameManager {
                 this.scene.sound.play("loose1");
                 break;
             case SoundId.Blip:
-                this.scene.sound.play(getRandomElement(["blip1"]));
+                this.scene.sound.play("blip1");
                 break;
         }
     }

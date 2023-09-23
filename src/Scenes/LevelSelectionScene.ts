@@ -1,47 +1,41 @@
 import * as Phaser from 'phaser';
 import { Localization, LocalizationKey } from '../LocalizationStaticManager';
-import { GameHeight, GameWidth } from '../Consts';
-import CloudManager from '../CloudManager';
+import { GameHeight, GameWidth } from '../Consts/Consts';
+import CloudManager from '../Managers/CloudManager';
 import { Progress } from '../ProgressStaticManager';
-import AudioManager, { SoundId } from '../AudioManager';
 import BaseScene from './BaseScene';
+import { createButton } from '../Utils';
+import TextureKeys from '../Consts/TextureKeys';
+import SceneKeys from '../Consts/SceneKeys';
+import FontKeys from '../Consts/FontKeys';
 
 class LevelButton {
-    private audioManager: AudioManager;
     private image : Phaser.GameObjects.Image;
     private star: Phaser.GameObjects.Image;
     private lock: Phaser.GameObjects.Image;
     private tick: Phaser.GameObjects.Image;
 
     constructor(scene: LevelSelectionScene, level: number, x:number, y:number) {
-        this.image = scene.add.image(x, y, "level_button_default");
+        this.image = scene.add.image(x, y, TextureKeys.LevelButtonDefault);
 
-        scene.add.bitmapText(x, y, "monocraft", level.toString())
+        scene.add.bitmapText(x, y, FontKeys.Monocraft, level.toString())
             .setOrigin(0.5, 0.5)
             .setScale(1.5)
             .setTint(0x000000);
 
-        this.star = scene.add.image(x, y + 16, "star_icon_empty").setVisible(false);
-        this.lock = scene.add.image(x, y + 16, "lock_icon").setVisible(false);
-        this.tick = scene.add.image(x + 16, y - 16, "tick_icon").setVisible(false);
-        this.audioManager = scene.audioManager;
+        this.star = scene.add.image(x, y + 16, TextureKeys.StarIconEmpty).setVisible(false);
+        this.lock = scene.add.image(x, y + 16, TextureKeys.LockIcon).setVisible(false);
+        this.tick = scene.add.image(x + 16, y - 16, TextureKeys.TickIcon).setVisible(false);
 
-        this.constructButton();
-    }
-
-    public constructButton() {
-        this.image.setInteractive();
-        this.image.on("pointerover", () => {
-            this.image.setTexture("level_button_hovered");
-            this.audioManager.play(SoundId.Blip);
+        createButton(this.image, {
+            defaultTexture: TextureKeys.LevelButtonDefault,
+            hoveredTexture: TextureKeys.LevelButtonHovered,
+            onClick: () => {}
         });
-        this.image.on("pointerout", () => {
-            this.image.setTexture("level_button_default");
-        })
     }
 
     public setStarFill(value: boolean) {
-        this.star.setTexture(value?"star_icon_fill":"star_icon_empty");
+        this.star.setTexture(value?TextureKeys.StarIconFill:TextureKeys.StarIconEmpty);
     }
 
     public setStarVisible(visible: boolean) {
@@ -58,29 +52,26 @@ class LevelButton {
 }
 
 export default class LevelSelectionScene extends BaseScene {
-    public audioManager: AudioManager;
-
     constructor() {
         super({key: "LevelSelectionScene"});
         const cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
-        this.audioManager = new AudioManager(this);
 
-        this.gameManagers.push(cloudManager, this.audioManager);
+        this.gameManagers.push(cloudManager);
     }
 
     override preload() {
         super.preload();
 
-        this.load.image("level_button_default", "assets/images/ui/LevelButtonDefault.png");
-        this.load.image("level_button_hovered", "assets/images/ui/LevelButtonHovered.png");
-        this.load.image("star_icon_empty", "assets/images/ui/StarIconEmpty.png");
-        this.load.image("star_icon_fill", "assets/images/ui/StarIconFill.png");
-        this.load.image("lock_icon", "assets/images/ui/LockIcon.png");
-        this.load.image("tick_icon", "assets/images/ui/TickIcon.png");
-        this.load.image("back_button_default", "assets/images/ui/BackButtonDefault.png");
-        this.load.image("back_button_hovered", "assets/images/ui/BackButtonHovered.png");
+        this.load.image(TextureKeys.LevelButtonDefault, "assets/images/ui/LevelButtonDefault.png");
+        this.load.image(TextureKeys.LevelButtonHovered, "assets/images/ui/LevelButtonHovered.png");
+        this.load.image(TextureKeys.StarIconEmpty, "assets/images/ui/StarIconEmpty.png");
+        this.load.image(TextureKeys.StarIconFill, "assets/images/ui/StarIconFill.png");
+        this.load.image(TextureKeys.LockIcon, "assets/images/ui/LockIcon.png");
+        this.load.image(TextureKeys.TickIcon, "assets/images/ui/TickIcon.png");
+        this.load.image(TextureKeys.BackButtonDefault, "assets/images/ui/BackButtonDefault.png");
+        this.load.image(TextureKeys.BackButtonHovered, "assets/images/ui/BackButtonHovered.png");
 
-        this.load.bitmapFont("monocraft", "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
+        this.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
     override create() {
@@ -90,7 +81,7 @@ export default class LevelSelectionScene extends BaseScene {
             .setOrigin(0, 0)
             .setPosition(0, 0);
 
-        this.add.bitmapText(GameWidth / 2, 30, "monocraft", Localization.getText(LocalizationKey.SelectLevelTitle))
+        this.add.bitmapText(GameWidth / 2, 30, FontKeys.Monocraft, Localization.getText(LocalizationKey.SelectLevelTitle))
             .setScale(2.0)
             .setOrigin(0.5, 0.5)
             .setTint(0x000000);
@@ -100,17 +91,12 @@ export default class LevelSelectionScene extends BaseScene {
     }
 
     private createBackButton() {
-        const button = this.add.image(30, 30, "back_button_default");
+        const button = this.add.image(30, 30, TextureKeys.BackButtonDefault);
 
-        button.setInteractive();
-        button.on("pointerover", () => {
-            button.setTexture("back_button_hovered");
-        });
-        button.on("pointerout", () => {
-            button.setTexture("back_button_default");
-        });
-        button.on("pointerup", () => {
-            this.scene.start("WelcomeScene");
+        createButton(button, {
+            defaultTexture: TextureKeys.BackButtonDefault,
+            hoveredTexture: TextureKeys.BackButtonHovered,
+            onClick: () => this.scene.start(SceneKeys.WelcomeScene)
         });
     }
 

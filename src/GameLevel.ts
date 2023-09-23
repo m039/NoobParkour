@@ -1,8 +1,8 @@
 import * as Phaser from 'phaser';
-import AudioManager from './AudioManager';
-import CoinManager from './CoinManager';
-import Player from './Player';
-import CloudManager from './CloudManager';
+import AudioManager from './Managers/AudioManager';
+import CoinManager from './Managers/CoinManager';
+import Player from './Managers/Player';
+import CloudManager from './Managers/CloudManager';
 import BaseScene from './Scenes/BaseScene';
 
 export default abstract class GameLevel extends BaseScene {

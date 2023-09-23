@@ -1,7 +1,10 @@
 import * as Phaser from 'phaser';
 import BaseScene from './BaseScene';
-import AudioManager from '../AudioManager';
-import CloudManager from '../CloudManager';
+import AudioManager from '../Managers/AudioManager';
+import CloudManager from '../Managers/CloudManager';
+import SettingsManager from '../Managers/SettingsManager';
+import TextureKeys from '../Consts/TextureKeys';
+import FontKeys from '../Consts/FontKeys';
 
 export default class PreloadScene extends BaseScene {
     constructor() {
@@ -9,8 +12,9 @@ export default class PreloadScene extends BaseScene {
 
         const cloudManager = new CloudManager(this);
         const audioManager = new AudioManager(this);
+        const settingsManager = new SettingsManager(this);
 
-        this.gameManagers.push(cloudManager, audioManager);
+        this.gameManagers.push(cloudManager, audioManager, settingsManager);
     }
 
     override preload(): void {
@@ -29,14 +33,14 @@ export default class PreloadScene extends BaseScene {
 
         // WelcomeScene.
 
-        this.load.image("title_en", "assets/images/ui/GameTitleEn.png");
-        this.load.image("title_ru", "assets/images/ui/GameTitleRu.png");
-        this.load.image("english_flag_default", "assets/images/ui/EnglishFlagDefault.png");
-        this.load.image("english_flag_hovered", "assets/images/ui/EnglishFlagHovered.png");
-        this.load.image("russian_flag_default", "assets/images/ui/RussianFlagDefault.png");
-        this.load.image("russian_flag_hovered", "assets/images/ui/RussianFlagHovered.png");
-        this.load.image("start_button_default", "assets/images/ui/StartButtonDefault.png");
-        this.load.image("start_button_hovered", "assets/images/ui/StartButtonHovered.png");
+        this.load.image(TextureKeys.TitleEn, "assets/images/ui/GameTitleEn.png");
+        this.load.image(TextureKeys.TitleRu, "assets/images/ui/GameTitleRu.png");
+        this.load.image(TextureKeys.EnglishFlagDefault, "assets/images/ui/EnglishFlagDefault.png");
+        this.load.image(TextureKeys.EnglishFlagHovered, "assets/images/ui/EnglishFlagHovered.png");
+        this.load.image(TextureKeys.RussianFlagDefault, "assets/images/ui/RussianFlagDefault.png");
+        this.load.image(TextureKeys.RussianFlagHovered, "assets/images/ui/RussianFlagHovered.png");
+        this.load.image(TextureKeys.StartButtonDefault, "assets/images/ui/StartButtonDefault.png");
+        this.load.image(TextureKeys.StartButtonHovered, "assets/images/ui/StartButtonHovered.png");
 
         this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.tilemapTiledJSON("map", "assets/levels/maps/WelcomeScene.json");
@@ -45,16 +49,16 @@ export default class PreloadScene extends BaseScene {
 
         // LevelSelectionScene.
 
-        this.load.image("level_button_default", "assets/images/ui/LevelButtonDefault.png");
-        this.load.image("level_button_hovered", "assets/images/ui/LevelButtonHovered.png");
-        this.load.image("star_icon_empty", "assets/images/ui/StarIconEmpty.png");
-        this.load.image("star_icon_fill", "assets/images/ui/StarIconFill.png");
-        this.load.image("lock_icon", "assets/images/ui/LockIcon.png");
-        this.load.image("tick_icon", "assets/images/ui/TickIcon.png");
-        this.load.image("back_button_default", "assets/images/ui/BackButtonDefault.png");
-        this.load.image("back_button_hovered", "assets/images/ui/BackButtonHovered.png");
+        this.load.image(TextureKeys.LevelButtonDefault, "assets/images/ui/LevelButtonDefault.png");
+        this.load.image(TextureKeys.LevelButtonHovered, "assets/images/ui/LevelButtonHovered.png");
+        this.load.image(TextureKeys.StarIconEmpty, "assets/images/ui/StarIconEmpty.png");
+        this.load.image(TextureKeys.StarIconFill, "assets/images/ui/StarIconFill.png");
+        this.load.image(TextureKeys.LockIcon, "assets/images/ui/LockIcon.png");
+        this.load.image(TextureKeys.TickIcon, "assets/images/ui/TickIcon.png");
+        this.load.image(TextureKeys.BackButtonDefault, "assets/images/ui/BackButtonDefault.png");
+        this.load.image(TextureKeys.BackButtonHovered, "assets/images/ui/BackButtonHovered.png");
 
-        this.load.bitmapFont("monocraft", "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
+        this.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
     override create(): void {
