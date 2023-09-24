@@ -1,8 +1,8 @@
 import * as Phaser from 'phaser';
-import { Localization, LocalizationKey } from '../LocalizationStaticManager';
+import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
 import { GameHeight, GameWidth } from '../Consts/Consts';
 import CloudManager from '../Managers/CloudManager';
-import { Progress } from '../ProgressStaticManager';
+import { Progress } from '../StaticManagers/ProgressStaticManager';
 import BaseScene from './BaseScene';
 import { createButton } from '../Utils';
 import TextureKeys from '../Consts/TextureKeys';

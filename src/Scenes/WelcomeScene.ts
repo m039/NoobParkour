@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { Language, Localization } from '../LocalizationStaticManager';
+import { Language, Localization } from '../StaticManagers/LocalizationStaticManager';
 import CloudManager from '../Managers/CloudManager';
 import { GameHeight, GameWidth } from '../Consts/Consts';
 import BaseScene from './BaseScene';

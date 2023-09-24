@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { GameManager } from '../Scenes/BaseScene';
+import { Prefs } from '../StaticManagers/PrefsStaticManager';
 
 export enum SoundId {
     Jump,
@@ -32,7 +33,27 @@ export default class AudioManager implements GameManager {
         
     }
 
+    public get soundEnabled() : boolean {
+        return Prefs.getSoundEnabled();
+    }
+
+    public set soundEnabled(enabled:boolean) {
+        Prefs.setSoundEnabled(enabled);
+    }
+
+    public get musicEnabled() : boolean {
+        return Prefs.getMusicEnabled();
+    }
+
+    public set musicEnabled(enabled: boolean) {
+        Prefs.setMusicEnabled(enabled);
+    }
+
     public play(soundId: SoundId) {
+        if (!this.soundEnabled) {
+            return;
+        }
+
         switch (soundId) {
             case SoundId.Jump:
                 this.scene.sound.play("jump2");

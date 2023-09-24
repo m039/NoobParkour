@@ -1,9 +1,9 @@
+import { Prefs } from "./PrefsStaticManager";
+
 export enum Language {
     Russian = "ru", 
     English = "en"
 }
-
-const LanguageStorageKey = "current_language";
 
 export enum LocalizationKey {
     SelectLevelTitle = "select_level_title",
@@ -37,11 +37,11 @@ class LocalizationStaticManager {
     }
 
     public get wasLanguagePreviouslySelected() : boolean {
-        return localStorage.getItem(LanguageStorageKey) !== null;
+        return Prefs.getLanguageCode() !== null;
     }
 
     public get currentLanguage() : Language {
-        var language = localStorage.getItem(LanguageStorageKey);
+        var language = Prefs.getLanguageCode();
 
         if (language === "en") {
             return Language.English;
@@ -66,9 +66,9 @@ class LocalizationStaticManager {
         }
         
         if (language === "ru" || language === "en") {
-            localStorage.setItem(LanguageStorageKey, language);
+            Prefs.setLanguageCode(language);
         } else {
-            localStorage.setItem(LanguageStorageKey, "en");
+            Prefs.setLanguageCode("en");
         }
     }
 

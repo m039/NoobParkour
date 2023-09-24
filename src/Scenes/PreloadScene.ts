@@ -6,6 +6,8 @@ import SettingsManager from '../Managers/SettingsManager';
 import TextureKeys from '../Consts/TextureKeys';
 import FontKeys from '../Consts/FontKeys';
 import SceneKeys from '../Consts/SceneKeys';
+import { Prefs } from '../StaticManagers/PrefsStaticManager';
+
 
 export default class PreloadScene extends BaseScene {
     constructor() {
@@ -62,7 +64,9 @@ export default class PreloadScene extends BaseScene {
         this.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
-    override create(): void {
+    override create() : void {
+        Prefs.load();
+
         this.scene.start(SceneKeys.Welcome);
     }
 }

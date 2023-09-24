@@ -4,12 +4,14 @@ import TextureKeys from "../Consts/TextureKeys";
 import { GameManager } from "../Scenes/BaseScene";
 import { createButton } from "../Utils";
 import FontKeys from '../Consts/FontKeys';
-import { Localization, LocalizationKey } from '../LocalizationStaticManager';
+import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
 import EventKeys from '../Consts/EventKeys';
 import SceneKeys from '../Consts/SceneKeys';
+import AudioScene from '../Scenes/AudioScene';
 
 class SettingsContainer extends Phaser.GameObjects.Container {
 
+    private shadow : Phaser.GameObjects.Rectangle;
     private titleText : Phaser.GameObjects.BitmapText;
     private backButtonText : Phaser.GameObjects.BitmapText;
     private menuButtonText : Phaser.GameObjects.BitmapText;
@@ -24,6 +26,11 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             .setOrigin(0.5, 0.5)
             .setScale(2);
         const backButton = scene.add.image(0, background.height / 2 - 25, TextureKeys.SettingsButtonDefault);
+        createButton(backButton, {
+            defaultTexture: TextureKeys.SettingsButtonDefault,
+            hoveredTexture: TextureKeys.SettingsButtonHovered,
+            onClick: () => this.hide()
+        });
         this.backButtonText = scene.add.bitmapText(0, backButton.y, FontKeys.Monocraft)
             .setOrigin(0.5, 0.5)
             .setTint(0x000000);
@@ -42,15 +49,38 @@ class SettingsContainer extends Phaser.GameObjects.Container {
                 onClick: () => this.scene.scene.start(SceneKeys.Welcome)
             });
 
-            py += 50;
+            py += 40;
         }
 
-        createButton(backButton, {
-            defaultTexture: TextureKeys.SettingsButtonDefault,
-            hoveredTexture: TextureKeys.SettingsButtonHovered,
-            onClick: () => this.hide()
+        const audioManager = (scene.scene.get(SceneKeys.Audio) as AudioScene).audioManager;
+
+        const musicIcon = scene.add.image(-25, py, TextureKeys.MusicIconDefault);
+        const disableMusicIcon = scene.add.image(musicIcon.x, musicIcon.y, TextureKeys.DisableIcon)
+            .setVisible(!audioManager.musicEnabled);
+
+        createButton(musicIcon, {
+            defaultTexture: TextureKeys.MusicIconDefault,
+            hoveredTexture: TextureKeys.MusicIconHovered,
+            onClick: () => { 
+                audioManager.musicEnabled = !audioManager.musicEnabled;
+                disableMusicIcon.visible = !audioManager.musicEnabled;
+             }
         });
 
+        const soundIcon = scene.add.image(25, py, TextureKeys.SoundIconDefault);
+        const disableSoundIcon = scene.add.image(soundIcon.x, soundIcon.y, TextureKeys.DisableIcon)
+            .setVisible(!audioManager.soundEnabled);
+
+        createButton(soundIcon, {
+            defaultTexture: TextureKeys.SoundIconDefault,
+            hoveredTexture: TextureKeys.SoundIconHovered,
+            onClick: () => { 
+                audioManager.soundEnabled = !audioManager.soundEnabled; 
+                disableSoundIcon.visible = !audioManager.soundEnabled;
+            }
+        });
+
+        // Add all images to the container.
         this.add(background);
         this.add(backButton);
         this.add(titleBackground);
@@ -59,13 +89,21 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             this.add(menuButton);
             this.add(this.menuButtonText);
         }
+        this.add(musicIcon);
+        this.add(disableMusicIcon);
+        this.add(soundIcon);
+        this.add(disableSoundIcon);
         this.add(backButton);
         this.add(this.backButtonText);
 
         this.visible = false;
         this.depth = 100;
 
-        background.setInteractive();
+        this.shadow = scene.add.rectangle(0, 0, GameWidth, GameHeight, 0x000000)
+            .setOrigin(0, 0)
+            .setVisible(false)
+            .setDepth(99)
+            .setInteractive();
 
         scene.events.on(EventKeys.LanguageSelected, this.updateText, this);
         this.on("destroy", () => {
@@ -90,6 +128,16 @@ class SettingsContainer extends Phaser.GameObjects.Container {
 
         this.isAnimating = true;
         this.visible = true;
+        
+        this.shadow.visible = true;
+        this.shadow.alpha = 0;
+        this.scene.tweens.add({
+            targets: this.shadow,
+            alpha: 0.5,
+            repeat: 0,
+            ease: Phaser.Math.Easing.Sine.Out,
+            duration: 800
+        });
 
         this.setPosition(GameWidth / 2, -GameHeight/2);
         this.scene.tweens.add({
@@ -109,6 +157,13 @@ class SettingsContainer extends Phaser.GameObjects.Container {
 
         this.isAnimating = true;
         this.scene.tweens.add({
+            targets: this.shadow,
+            alpha: 0.0,
+            repeat: 0,
+            ease: Phaser.Math.Easing.Sine.In,
+            duration: 800
+        });
+        this.scene.tweens.add({
             targets: this,
             y: -GameHeight / 2,
             repeat: 0,
@@ -117,6 +172,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             onComplete: () => {
                 this.isAnimating = false;
                 this.visible = false;
+                this.shadow.visible = false;
             }
         });
     }
@@ -125,9 +181,11 @@ class SettingsContainer extends Phaser.GameObjects.Container {
 export default class SettingsManager implements GameManager {
     private scene : Phaser.Scene;
     private settingsContainer : SettingsContainer;
+    private showMenuButton : boolean;
 
-    constructor(scene: Phaser.Scene) {
+    constructor(scene: Phaser.Scene, showMenuButton:boolean = false) {
         this.scene = scene;
+        this.showMenuButton = showMenuButton;
     }
 
     preload(): void {
@@ -137,13 +195,18 @@ export default class SettingsManager implements GameManager {
         this.scene.load.image(TextureKeys.SettingsTitleBackground, "assets/images/ui/SettingsTitleBackground.png");
         this.scene.load.image(TextureKeys.SettingsButtonDefault, "assets/images/ui/SettingsButtonDefault.png");
         this.scene.load.image(TextureKeys.SettingsButtonHovered, "assets/images/ui/SettingsButtonHovered.png");
+        this.scene.load.image(TextureKeys.SoundIconDefault, "assets/images/ui/SoundIconDefault.png");
+        this.scene.load.image(TextureKeys.SoundIconHovered, "assets/images/ui/SoundIconHovered.png");
+        this.scene.load.image(TextureKeys.MusicIconDefault, "assets/images/ui/MusicIconDefault.png");
+        this.scene.load.image(TextureKeys.MusicIconHovered, "assets/images/ui/MusicIconHovered.png");
+        this.scene.load.image(TextureKeys.DisableIcon, "assets/images/ui/DisableIcon.png");
 
         this.scene.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
     create(): void {
         const gearButton = this.scene.add.image(GameWidth - 22, 22, TextureKeys.GearIconDefault);
-        this.settingsContainer = new SettingsContainer(this.scene, GameWidth / 2, GameHeight / 2, true);
+        this.settingsContainer = new SettingsContainer(this.scene, GameWidth / 2, GameHeight / 2, this.showMenuButton);
 
         this.scene.add.existing(this.settingsContainer);
 

@@ -20,7 +20,12 @@ enum TextureKeys {
     SettingsBodyBackground = "settings_body_background",
     SettingsTitleBackground = "settings_title_background",
     SettingsButtonDefault = "settings_button_default",
-    SettingsButtonHovered = "settings_button_hovered"
+    SettingsButtonHovered = "settings_button_hovered",
+    MusicIconDefault = "music_icon_default",
+    MusicIconHovered = "music_icon_hovered",
+    SoundIconDefault = "sound_icon_default",
+    SoundIconHovered = "sound_icon_hovered",
+    DisableIcon = "disable_icon"
 }
 
 export default TextureKeys;
