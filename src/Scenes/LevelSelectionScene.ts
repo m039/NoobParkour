@@ -53,7 +53,7 @@ class LevelButton {
 
 export default class LevelSelectionScene extends BaseScene {
     constructor() {
-        super({key: "LevelSelectionScene"});
+        super({key: SceneKeys.LevelSelection});
         const cloudManager = new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)});
 
         this.gameManagers.push(cloudManager);
@@ -96,7 +96,7 @@ export default class LevelSelectionScene extends BaseScene {
         createButton(button, {
             defaultTexture: TextureKeys.BackButtonDefault,
             hoveredTexture: TextureKeys.BackButtonHovered,
-            onClick: () => this.scene.start(SceneKeys.WelcomeScene)
+            onClick: () => this.scene.start(SceneKeys.Welcome)
         });
     }
 

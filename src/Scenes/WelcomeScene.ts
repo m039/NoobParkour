@@ -7,6 +7,7 @@ import SettingsManager from '../Managers/SettingsManager';
 import { createButton } from '../Utils';
 import TextureKeys from '../Consts/TextureKeys';
 import SceneKeys from '../Consts/SceneKeys';
+import EventKeys from '../Consts/EventKeys';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
@@ -50,7 +51,7 @@ export default class WelcomeScene extends BaseScene {
     private englishFlag : FlagButton;
 
     constructor() {
-        super({ key: SceneKeys.WelcomeScene });
+        super({ key: SceneKeys.Welcome });
         this.gameManagers.push(
             new CloudManager(this, {count: 15, bounds: new Phaser.Geom.Rectangle(-40, 0, GameWidth+80, GameHeight)}),
             new SettingsManager(this)
@@ -76,6 +77,8 @@ export default class WelcomeScene extends BaseScene {
     }
 
     override create() {
+        //this.events.removeAllListeners(EventKeys.LanguageSelected);
+
         super.create();
 
         this.cameras.main.setZoom(4, 4).setOrigin(0, 0).setPosition(0, 0);
@@ -125,7 +128,7 @@ export default class WelcomeScene extends BaseScene {
         createButton(startButton, {
             defaultTexture: TextureKeys.StartButtonDefault,
             hoveredTexture: TextureKeys.StartButtonHovered,
-            onClick: () => { this.scene.start("LevelSelectionScene"); }
+            onClick: () => { this.scene.start(SceneKeys.LevelSelection); }
         })
 
         startButton.setRotation(-0.08);
@@ -154,5 +157,6 @@ export default class WelcomeScene extends BaseScene {
                 break;
         }
         Localization.currentLanguage = language;
+        this.events.emit(EventKeys.LanguageSelected);
     }
 }

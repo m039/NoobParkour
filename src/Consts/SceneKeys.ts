@@ -1,6 +1,8 @@
 enum SceneKeys {
-    AudioScene="AudioScene",
-    WelcomeScene="WelcomeScene"
+    Audio="audio",
+    Welcome="welcome",
+    Preload="preload",
+    LevelSelection="level-selection"
 }
 
 export default SceneKeys;

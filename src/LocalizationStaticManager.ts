@@ -6,7 +6,10 @@ export enum Language {
 const LanguageStorageKey = "current_language";
 
 export enum LocalizationKey {
-    SelectLevelTitle = "select_level_title"
+    SelectLevelTitle = "select_level_title",
+    SettingsTitle = "settings_title",
+    Back = "back",
+    SettingsMenuButton = "settings_menu_button"
 };
 
 class LocalizationStaticManager {
@@ -18,6 +21,18 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.SelectLevelTitle] = {
             en: "Select Level",
             ru: "Выберите уровень"
+        };
+        this.localizationTexts[LocalizationKey.SettingsTitle] = {
+            en: "Settings",
+            ru: "Настройки"
+        };
+        this.localizationTexts[LocalizationKey.Back] = {
+            en: "Back",
+            ru: "Назад"
+        };
+        this.localizationTexts[LocalizationKey.SettingsMenuButton] = {
+            en: "Main Menu",
+            ru: "В главное меню"
         };
     }
 
@@ -57,7 +72,7 @@ class LocalizationStaticManager {
         }
     }
 
-    public getText(key:string) {
+    public getText(key:LocalizationKey) {
         return this.localizationTexts[key][this.currentLanguage];
     }
 }

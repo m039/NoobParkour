@@ -5,10 +5,11 @@ import CloudManager from '../Managers/CloudManager';
 import SettingsManager from '../Managers/SettingsManager';
 import TextureKeys from '../Consts/TextureKeys';
 import FontKeys from '../Consts/FontKeys';
+import SceneKeys from '../Consts/SceneKeys';
 
 export default class PreloadScene extends BaseScene {
     constructor() {
-        super("PreloadScene");
+        super(SceneKeys.Preload);
 
         const cloudManager = new CloudManager(this);
         const audioManager = new AudioManager(this);
@@ -62,6 +63,6 @@ export default class PreloadScene extends BaseScene {
     }
 
     override create(): void {
-        this.scene.start("WelcomeScene");
+        this.scene.start(SceneKeys.Welcome);
     }
 }

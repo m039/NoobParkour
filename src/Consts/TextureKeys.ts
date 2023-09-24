@@ -16,7 +16,11 @@ enum TextureKeys {
     StarIconEmpty = "star_icon_empty",
     StarIconFill = "star_icon_fill",
     LockIcon = "lock_icon",
-    TickIcon = "tick_icon"
+    TickIcon = "tick_icon",
+    SettingsBodyBackground = "settings_body_background",
+    SettingsTitleBackground = "settings_title_background",
+    SettingsButtonDefault = "settings_button_default",
+    SettingsButtonHovered = "settings_button_hovered"
 }
 
 export default TextureKeys;

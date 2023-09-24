@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { getRandomElement } from '../Utils';
-import { GameLevelRestartEvent } from '../Events';
 import { GameManager } from '../Scenes/BaseScene';
+import EventKeys from '../Consts/EventKeys';
 
 type CloudManagerConfig = {
     count? : number;
@@ -54,7 +54,7 @@ export default class CloudManager implements GameManager {
 
         this.createClouds();
 
-        this.scene.events.on(GameLevelRestartEvent, () => this.createClouds());
+        this.scene.events.on(EventKeys.LevelRestart, () => this.createClouds());
     }
 
     update(time: number, delta: number): void {

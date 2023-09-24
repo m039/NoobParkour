@@ -3,11 +3,11 @@ import Player, { PlayerEvent }  from "./Managers/Player";
 import InputController from "./InputController";
 import GameLevel from './GameLevel';
 import { CoinPickUpEvent } from './Managers/CoinManager';
-import { GameLevelRestartEvent } from './Events';
 import WelcomeScene from './Scenes/WelcomeScene';
 import LevelSelectionScene from './Scenes/LevelSelectionScene';
 import PreloadScene from './Scenes/PreloadScene';
 import AudioScene from './Scenes/AudioScene';
+import EventKeys from './Consts/EventKeys';
 
 class UIScene extends Phaser.Scene {
     private coinImage : Phaser.GameObjects.Image;
@@ -32,7 +32,7 @@ class UIScene extends Phaser.Scene {
 
         this.scale.on("resize", () => this.updateUI());
         this.gameLevel.events.on(CoinPickUpEvent, () => this.updateUI());
-        this.gameLevel.events.on(GameLevelRestartEvent, () => this.updateUI());
+        this.gameLevel.events.on(EventKeys.LevelRestart, () => this.updateUI());
     }
 
     private updateUI() {
@@ -190,7 +190,7 @@ export class Level1 extends GameLevel
             );
         player.restartLevel(tint);
         this.coinManager.restartLevel();
-        this.events.emit(GameLevelRestartEvent);
+        this.events.emit(EventKeys.LevelRestart);
     }
 
     private centerCameraAtCharacter(player: Player) {
