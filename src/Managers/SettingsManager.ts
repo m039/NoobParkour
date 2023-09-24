@@ -13,6 +13,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
     private titleText : Phaser.GameObjects.BitmapText;
     private backButtonText : Phaser.GameObjects.BitmapText;
     private menuButtonText : Phaser.GameObjects.BitmapText;
+    private isAnimating : boolean;
 
     constructor(scene: Phaser.Scene, x: number, y: number, showMenuButton:boolean) {
         super(scene, x, y);
@@ -82,16 +83,42 @@ class SettingsContainer extends Phaser.GameObjects.Container {
         }
     }
 
-    get visibility() : boolean {
-        return this.visible;
-    }
-
     public show() {
+        if (this.isAnimating) {
+            return;
+        }
+
+        this.isAnimating = true;
         this.visible = true;
+
+        this.setPosition(GameWidth / 2, -GameHeight/2);
+        this.scene.tweens.add({
+            targets: this,
+            y : GameHeight / 2,
+            repeat: 0,
+            ease: Phaser.Math.Easing.Back.Out,
+            duration: 800,
+            onComplete: () => this.isAnimating = false
+        });
     }
 
     public hide() {
-        this.visible = false;
+        if (this.isAnimating) {
+            return;
+        }
+
+        this.isAnimating = true;
+        this.scene.tweens.add({
+            targets: this,
+            y: -GameHeight / 2,
+            repeat: 0,
+            ease: Phaser.Math.Easing.Back.In,
+            duration: 800,
+            onComplete: () => {
+                this.isAnimating = false;
+                this.visible = false;
+            }
+        });
     }
 }
 
@@ -124,7 +151,7 @@ export default class SettingsManager implements GameManager {
             defaultTexture: TextureKeys.GearIconDefault,
             hoveredTexture: TextureKeys.GearIconHovered,
             onClick: () => {
-                if (this.settingsContainer.visibility) {
+                if (this.settingsContainer.visible) {
                     this.settingsContainer.hide();
                 } else {
                     this.settingsContainer.show();
