@@ -75,7 +75,7 @@ export default class CoinManager implements GameManager {
                 return;
             }
             sprite.play("Pick Up");
-            this.gameLevel.audioManager.play(SoundId.PickUpCoin);
+            this.gameLevel.audioManager.playSound(SoundId.PickUpCoin);
             this.pickedCoins++;
             this.gameLevel.events.emit(CoinPickUpEvent);
             isPickingUp = true;

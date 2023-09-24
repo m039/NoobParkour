@@ -8,6 +8,8 @@ import { createButton } from '../Utils';
 import TextureKeys from '../Consts/TextureKeys';
 import SceneKeys from '../Consts/SceneKeys';
 import EventKeys from '../Consts/EventKeys';
+import AudioScene from './AudioScene';
+import { MusicId } from '../Managers/AudioManager';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
@@ -77,7 +79,7 @@ export default class WelcomeScene extends BaseScene {
     }
 
     override create() {
-        //this.events.removeAllListeners(EventKeys.LanguageSelected);
+        (this.scene.get(SceneKeys.Audio) as AudioScene).audioManager.playMusic(MusicId.Menu);
 
         super.create();
 

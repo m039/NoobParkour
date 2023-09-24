@@ -23,7 +23,7 @@ export function createButton(image:Phaser.GameObjects.Image, config:CreateButton
         if ((config.playSound === undefined || config.playSound) && 
             config.isSelected === undefined || !config.isSelected()) {
             const audioScene = image.scene.scene.get(SceneKeys.Audio) as AudioScene;
-            audioScene.audioManager.play(SoundId.Blip);
+            audioScene.audioManager.playSound(SoundId.Blip);
         }
     });
     image.on("pointerout", () => {

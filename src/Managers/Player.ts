@@ -201,7 +201,7 @@ export default class Player implements GameManager {
         this.body.setVelocityY(this.body.velocity.y - 400);
         this.inDoubleJump = true;
         this.showDust();
-        this.gameLevel.audioManager.play(SoundId.Jump);
+        this.gameLevel.audioManager.playSound(SoundId.Jump);
     }
 
     public stopJump() {
@@ -232,7 +232,7 @@ export default class Player implements GameManager {
         this.body.setVelocity(0, 0);
         this.body.setAllowGravity(false);
         this.gameLevel.cameras.main.roundPixels = true;
-        this.gameLevel.audioManager.play(SoundId.Loose);
+        this.gameLevel.audioManager.playSound(SoundId.Loose);
     }
 
     public restartLevel(tint: boolean) {
