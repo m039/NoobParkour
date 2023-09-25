@@ -1,13 +1,12 @@
 import * as Phaser from 'phaser';
 import Player from './Player';
-import GameLevel from '../GameLevel';
 import { SoundId } from './AudioManager';
 import { GameManager } from '../Scenes/BaseScene';
-
-export const CoinPickUpEvent = "coin_pick_up";
+import LevelScene from '../Scenes/LevelScene';
+import EventKeys from '../Consts/EventKeys';
 
 export default class CoinManager implements GameManager {
-    private gameLevel : GameLevel;
+    private levelScene : LevelScene;
 
     public coinsCount : number;
 
@@ -15,13 +14,13 @@ export default class CoinManager implements GameManager {
 
     private coins: Array<Phaser.GameObjects.Sprite>;
 
-    constructor(gameLevel: GameLevel) {
-        this.gameLevel = gameLevel;
+    constructor(levelScene: LevelScene) {
+        this.levelScene = levelScene;
         this.coins = [];
     }
 
     preload(): void {
-        this.gameLevel.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
+        this.levelScene.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
     }
 
     create(): void {
@@ -37,7 +36,7 @@ export default class CoinManager implements GameManager {
 
         this.coins.length = 0;
 
-        this.createCoins(this.gameLevel.player, this.gameLevel.map);
+        this.createCoins(this.levelScene.player, this.levelScene.map);
         this.pickedCoins = 0;
     }
 
@@ -51,12 +50,12 @@ export default class CoinManager implements GameManager {
     }
 
     private createCoin(player: Player, x: number, y: number) {
-        const sprite = this.gameLevel.add.sprite(x, y, "coin");
-        this.gameLevel.anims.createFromAseprite("coin", ["Idle", "Pick Up"], sprite);
+        const sprite = this.levelScene.add.sprite(x, y, "coin");
+        this.levelScene.anims.createFromAseprite("coin", ["Idle", "Pick Up"], sprite);
         sprite.play({key: "Idle", repeat: -1});
         sprite.depth = 1;
         
-        this.gameLevel.physics.add.existing(sprite);
+        this.levelScene.physics.add.existing(sprite);
         
         const body = sprite.body as Phaser.Physics.Arcade.Body;
         body.setAllowGravity(false);
@@ -70,19 +69,19 @@ export default class CoinManager implements GameManager {
             }
         });
 
-        this.gameLevel.physics.add.overlap(player.container, sprite, () => {
+        this.levelScene.physics.add.overlap(player.container, sprite, () => {
             if (isPickingUp) {
                 return;
             }
             sprite.play("Pick Up");
-            this.gameLevel.audioManager.playSound(SoundId.PickUpCoin);
+            this.levelScene.audioManager.playSound(SoundId.PickUpCoin);
             this.pickedCoins++;
-            this.gameLevel.events.emit(CoinPickUpEvent);
+            this.levelScene.events.emit(EventKeys.CoinPickUp);
             isPickingUp = true;
         });
 
         // Add up and down movement.
-        this.gameLevel.tweens.add({
+        this.levelScene.tweens.add({
             y: sprite.y - 4,
             targets: sprite,
             ease: Phaser.Math.Easing.Sine.InOut,

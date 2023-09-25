@@ -46,7 +46,11 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             createButton(menuButton, {
                 defaultTexture: TextureKeys.SettingsButtonDefault,
                 hoveredTexture: TextureKeys.SettingsButtonHovered,
-                onClick: () => this.scene.scene.start(SceneKeys.Welcome)
+                onClick: () => {
+                    this.scene.scene.stop(SceneKeys.Level);
+                    this.scene.scene.stop(SceneKeys.LevelUI);
+                    this.scene.scene.start(SceneKeys.Welcome);
+                }
             });
 
             py += 40;
@@ -106,7 +110,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             .setInteractive();
 
         scene.events.on(EventKeys.LanguageSelected, this.updateText, this);
-        this.on("destroy", () => {
+        this.on(Phaser.GameObjects.Events.DESTROY, () => {
             scene.events.off(EventKeys.LanguageSelected, this.updateText);
         });
 

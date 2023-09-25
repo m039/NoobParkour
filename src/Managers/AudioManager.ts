@@ -30,7 +30,7 @@ export default class AudioManager implements GameManager {
         this.scene.load.audio("loose1", "assets/audio/sounds/loose1.wav");
         this.scene.load.audio("blip1", "assets/audio/sounds/blipSelect1.wav");
         this.scene.load.audio("blip2", "assets/audio/sounds/blipSelect2.wav");
-        this.scene.load.audio(MusicId.Menu, "assets/audio/music/Retro Beat.ogg");
+        this.scene.load.audio(MusicId.Menu, "assets/audio/music/Retro Beat.mp3");
         this.scene.load.audio(MusicId.Game1, "assets/audio/music/Stage 1.mp3");
         this.scene.load.audio(MusicId.Game2, "assets/audio/music/Stage 2.mp3");
     }

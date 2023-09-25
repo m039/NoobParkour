@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
-import GameLevel from '../GameLevel';
 import { SoundId } from './AudioManager';
 import { GameManager } from '../Scenes/BaseScene';
+import LevelScene from '../Scenes/LevelScene';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -40,32 +40,32 @@ export default class Player implements GameManager {
 
     private isDead : boolean;
 
-    private gameLevel : GameLevel;
+    private levelScene : LevelScene;
 
     private dustEmmiter : Phaser.GameObjects.Particles.ParticleEmitter;
 
     private passedDistance : number;
     
-    constructor(gameLevel: GameLevel) {
-        this.gameLevel = gameLevel;
+    constructor(levelScene: LevelScene) {
+        this.levelScene = levelScene;
     }
 
     preload(): void {
-        this.gameLevel.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
+        this.levelScene.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
     }
 
     create(): void {
-        if (!this.gameLevel.anims.exists("Idle")) {
-            this.gameLevel.anims.createFromAseprite("noob");
+        if (!this.levelScene.anims.exists("Idle")) {
+            this.levelScene.anims.createFromAseprite("noob");
         }
 
         this.emmiter = new Phaser.Events.EventEmitter();
-        this.container = this.gameLevel.add.container(400, 400);
-        this.sprite = this.gameLevel.add.sprite(-1, -2, "noob");
+        this.container = this.levelScene.add.container(400, 400);
+        this.sprite = this.levelScene.add.sprite(-1, -2, "noob");
         this.container.add(this.sprite);
         this.container.setSize(this.bodySize.width, this.bodySize.height);
         this.container.depth = 1;
-        this.gameLevel.physics.world.enableBody(this.container);
+        this.levelScene.physics.world.enableBody(this.container);
         this.body = this.container.body as Phaser.Physics.Arcade.Body;
         this.play(PlayerAnimation.Idle);
         this.flipX = false;
@@ -77,7 +77,7 @@ export default class Player implements GameManager {
                 this.inDieInAir = false;
             }
         });
-        this.dustEmmiter = this.gameLevel.add.particles(0, 0, "pixel", {
+        this.dustEmmiter = this.levelScene.add.particles(0, 0, "pixel", {
             lifespan: 1000,
             speed: {min: 10, max: 20},
             scale: {start: 5, end: 0},
@@ -201,7 +201,7 @@ export default class Player implements GameManager {
         this.body.setVelocityY(this.body.velocity.y - 400);
         this.inDoubleJump = true;
         this.showDust();
-        this.gameLevel.audioManager.playSound(SoundId.Jump);
+        this.levelScene.audioManager.playSound(SoundId.Jump);
     }
 
     public stopJump() {
@@ -231,16 +231,16 @@ export default class Player implements GameManager {
         this.isDead = true;
         this.body.setVelocity(0, 0);
         this.body.setAllowGravity(false);
-        this.gameLevel.cameras.main.roundPixels = true;
-        this.gameLevel.audioManager.playSound(SoundId.Loose);
+        this.levelScene.cameras.main.roundPixels = true;
+        this.levelScene.audioManager.playSound(SoundId.Loose);
     }
 
     public restartLevel(tint: boolean) {
-        this.gameLevel.cameras.main.roundPixels = false;
+        this.levelScene.cameras.main.roundPixels = false;
         this.container.scale = 0;
         const self = this;
 
-        this.gameLevel.tweens.add({
+        this.levelScene.tweens.add({
             targets: [this.container],
             scale: 1,
             yoyo: false,

@@ -30,7 +30,12 @@ class LevelButton {
         createButton(this.image, {
             defaultTexture: TextureKeys.LevelButtonDefault,
             hoveredTexture: TextureKeys.LevelButtonHovered,
-            onClick: () => {}
+            onClick: () => {
+                if (Progress.isLevelOpen(level)) {
+                    scene.scene.start(SceneKeys.Level, {level: level});
+                    scene.scene.launch(SceneKeys.LevelUI);
+                }
+            }
         });
     }
 
