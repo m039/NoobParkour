@@ -85,7 +85,7 @@ export default class CoinManager implements GameManager {
             y: sprite.y - 4,
             targets: sprite,
             ease: Phaser.Math.Easing.Sine.InOut,
-            duration: 1000 + Math.random() * 1000,
+            duration: Phaser.Math.Between(1000, 2000),
             yoyo: true,
             repeat: -1,
         });

@@ -8,7 +8,6 @@ import CloudManager from '../Managers/CloudManager';
 import SceneKeys from '../Consts/SceneKeys';
 import InputController from '../InputController';
 import EventKeys from '../Consts/EventKeys';
-import SettingsManager from '../Managers/SettingsManager';
 import AudioScene from './AudioScene';
 
 export default class LevelScene extends BaseScene {
