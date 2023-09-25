@@ -54,6 +54,14 @@ class LevelButton {
     public setTickVisible(visible: boolean) {
         this.tick.visible = visible;
     }
+
+    public setButtonInteractive(value: boolean) {
+        if (value) {
+            this.image.setInteractive();
+        } else {
+            this.image.disableInteractive();
+        }
+    }
 }
 
 export default class LevelSelectionScene extends BaseScene {
@@ -123,6 +131,7 @@ export default class LevelSelectionScene extends BaseScene {
 
                 levelButton.setStarFill(Progress.isLevelCompletedFully(level));
                 levelButton.setTickVisible(Progress.isLevelCompleted(level));
+                levelButton.setButtonInteractive(Progress.isLevelOpen(level));
 
                 if (Progress.isLevelOpen(level) || Progress.isLevelCompleted(level)) {
                     levelButton.setLockVisible(false);
@@ -131,6 +140,7 @@ export default class LevelSelectionScene extends BaseScene {
                     levelButton.setLockVisible(true);
                     levelButton.setStarVisible(false);
                 }
+
 
                 level++;
             }
