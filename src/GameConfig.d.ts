@@ -1,0 +1,1 @@
+declare let gameConfig : {startLevelScene: boolean}

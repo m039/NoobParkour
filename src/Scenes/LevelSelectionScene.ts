@@ -83,6 +83,7 @@ export default class LevelSelectionScene extends BaseScene {
         this.load.image(TextureKeys.TickIcon, "assets/images/ui/TickIcon.png");
         this.load.image(TextureKeys.BackButtonDefault, "assets/images/ui/BackButtonDefault.png");
         this.load.image(TextureKeys.BackButtonHovered, "assets/images/ui/BackButtonHovered.png");
+        this.load.image(TextureKeys.TitleBackground, "assets/images/ui/TitleBackground.png");
 
         this.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
@@ -94,10 +95,12 @@ export default class LevelSelectionScene extends BaseScene {
             .setOrigin(0, 0)
             .setPosition(0, 0);
 
-        this.add.bitmapText(GameWidth / 2, 30, FontKeys.Monocraft, Localization.getText(LocalizationKey.SelectLevelTitle))
+        this.add.image(GameWidth / 2, 30, TextureKeys.TitleBackground)
+            .setAlpha(0.7);
+
+        this.add.bitmapText(GameWidth / 2, 28, FontKeys.Monocraft, Localization.getText(LocalizationKey.SelectLevelTitle))
             .setScale(2.0)
-            .setOrigin(0.5, 0.5)
-            .setTint(0x000000);
+            .setOrigin(0.5, 0.5);
 
         this.createButtons();
         this.createBackButton();

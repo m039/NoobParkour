@@ -7,6 +7,7 @@ import TextureKeys from '../Consts/TextureKeys';
 import FontKeys from '../Consts/FontKeys';
 import SceneKeys from '../Consts/SceneKeys';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
+import development from "consts:development";
 
 
 export default class PreloadScene extends BaseScene {
@@ -67,6 +68,14 @@ export default class PreloadScene extends BaseScene {
     override create() : void {
         Prefs.load();
 
+        if (development && typeof gameConfig !== "undefined") {
+            if (gameConfig.startLevelScene) {
+                this.scene.start(SceneKeys.Level);
+                this.scene.launch(SceneKeys.LevelUI);
+                return;
+            }
+        }       
+        
         this.scene.start(SceneKeys.Welcome);
     }
 }

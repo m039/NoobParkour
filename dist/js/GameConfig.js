@@ -1,0 +1,3 @@
+window.gameConfig = {
+    startLevelScene: true
+};

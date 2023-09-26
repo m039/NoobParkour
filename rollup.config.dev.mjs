@@ -3,6 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import serve from 'rollup-plugin-serve';
 import typescript from '@rollup/plugin-typescript';
+import consts from "rollup-plugin-consts";
 
 export default {
 
@@ -35,6 +36,8 @@ export default {
             'typeof PLUGIN_FBINSTANT': JSON.stringify(false),
             'typeof FEATURE_SOUND': JSON.stringify(true)
         }),
+
+        consts({development: true}),
 
         //  Parse our .ts source files
         nodeResolve({

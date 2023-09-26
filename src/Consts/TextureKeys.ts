@@ -26,7 +26,8 @@ enum TextureKeys {
     SoundIconDefault = "sound_icon_default",
     SoundIconHovered = "sound_icon_hovered",
     DisableIcon = "disable_icon",
-    CoinUI = "coin_ui"
+    CoinUI = "coin_ui",
+    TitleBackground = "title_background"
 }
 
 export default TextureKeys;

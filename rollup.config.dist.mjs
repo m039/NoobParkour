@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import consts from "rollup-plugin-consts";
 
 export default {
 
@@ -35,6 +36,8 @@ export default {
             'typeof PLUGIN_FBINSTANT': JSON.stringify(false),
             'typeof FEATURE_SOUND': JSON.stringify(true)
         }),
+
+        consts({development: false}),
 
         //  Parse our .ts source files
         nodeResolve({

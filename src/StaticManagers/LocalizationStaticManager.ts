@@ -31,8 +31,8 @@ class LocalizationStaticManager {
             ru: "Назад"
         };
         this.localizationTexts[LocalizationKey.SettingsMenuButton] = {
-            en: "Main Menu",
-            ru: "В главное меню"
+            en: "Start Screen",
+            ru: "В начальный экран"
         };
     }
 

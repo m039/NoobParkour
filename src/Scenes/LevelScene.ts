@@ -79,7 +79,7 @@ export default class LevelScene extends BaseScene {
 
         this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
             this.placeCharacterAtStart(this.player, this.map, true);
-        })
+        });
 
         this.physics.add.collider(this.player.container, groundLayer);
 
