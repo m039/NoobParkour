@@ -9,6 +9,8 @@ import SceneKeys from '../Consts/SceneKeys';
 import InputController from '../InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
+import { InstantGamesBridge } from '../instant-games-bridge';
+import FontKeys from '../Consts/FontKeys';
 
 export default class LevelScene extends BaseScene {
 
@@ -32,6 +34,8 @@ export default class LevelScene extends BaseScene {
     private upKeyPressed : Phaser.Input.Keyboard.Key;
     
     private canDoubleJump : boolean = false;
+
+    private lowEndDevice : boolean = false;
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -60,6 +64,8 @@ export default class LevelScene extends BaseScene {
     }
 
     public override create(): void {
+        this.lowEndDevice = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
+
         this.map = this.make.tilemap({ key: "map1"});
 
         (this.scene.get(SceneKeys.Audio) as AudioScene).audioManager.playMusic(MusicId.Game1);
@@ -101,23 +107,25 @@ export default class LevelScene extends BaseScene {
                 .shader("portal", gate.x, gate.y, gate.width, gate.height)
                 .setOrigin(0, 0);
 
-            // Add particles.
-            this.add.particles(
-                gate.x + gate.width / 2, 
-                gate.y + gate.height / 2,
-                "pixel", {
-                    x: {min: -8, max: 8},
-                    y: {min: -12, max: 12},
-                    scale: { min: 1.0, max: 4.0},
-                    speed: { min: 5, max: 20 },
-                    alpha: {start: 1, end: 0},
-                    rotate: {min: 0, max: 360},
-                    color: [ 0xff6d2aa7, 0xffc354cd, 0xfff4a2bc ],
-                    lifespan: 4000,
-                    frequency: 100,
-                    blendMode: "ADD",
-                    advance: 3000
-                });
+            if (!this.lowEndDevice) {
+                // Add particles.
+                this.add.particles(
+                    gate.x + gate.width / 2, 
+                    gate.y + gate.height / 2,
+                    "pixel", {
+                        x: {min: -8, max: 8},
+                        y: {min: -12, max: 12},
+                        scale: { min: 1.0, max: 4.0},
+                        speed: { min: 5, max: 20 },
+                        alpha: {start: 1, end: 0},
+                        rotate: {min: 0, max: 360},
+                        color: [ 0xff6d2aa7, 0xffc354cd, 0xfff4a2bc ],
+                        lifespan: 4000,
+                        frequency: 100,
+                        blendMode: "ADD",
+                        advance: 3000
+                    });
+            }
         }
     }
 
@@ -132,23 +140,25 @@ export default class LevelScene extends BaseScene {
 
             this.physics.add.existing(lavaObject, true);
 
-            // Add particles.
-            this.add.particles(
-                lava.x + lava.width / 2, 
-                lava.y + offset,
-                "pixel", {
-                    x: {min: -lava.width / 2, max: lava.width / 2},
-                    y: {min: -offset, max: -offset/2},
-                    scale: { min: 1.0, max: 2.0},
-                    speed: { min: 1, max: 3 },
-                    alpha: {start: 1, end: 0},
-                    color: [ 0xffff00, 0xec1800 ],
-                    lifespan: 500,
-                    frequency: 100,
-                    blendMode: "ADD",
-                    advance: 3000,
-                    gravityY: -20
-                });
+            if (!this.lowEndDevice) {
+                // Add particles.
+                this.add.particles(
+                    lava.x + lava.width / 2, 
+                    lava.y + offset,
+                    "pixel", {
+                        x: {min: -lava.width / 2, max: lava.width / 2},
+                        y: {min: -offset, max: -offset/2},
+                        scale: { min: 1.0, max: 2.0},
+                        speed: { min: 1, max: 3 },
+                        alpha: {start: 1, end: 0},
+                        color: [ 0xffff00, 0xec1800 ],
+                        lifespan: 500,
+                        frequency: 100,
+                        blendMode: "ADD",
+                        advance: 3000,
+                        gravityY: -20
+                    });
+            }
 
             // Collider.
             this.physics.add.collider(this.player.container, lavaObject, () => this.player.dieInAir());
