@@ -68,8 +68,8 @@ export default class PreloadScene extends BaseScene {
     override create() : void {
         Prefs.load();
 
-        if (development && typeof gameConfig !== "undefined") {
-            if (gameConfig.startLevelScene) {
+        if (development && typeof debugConfig !== "undefined") {
+            if (debugConfig.startLevelScene) {
                 this.scene.start(SceneKeys.Level);
                 this.scene.launch(SceneKeys.LevelUI);
                 return;

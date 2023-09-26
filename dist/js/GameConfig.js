@@ -1,3 +1,3 @@
-window.gameConfig = {
+window.debugConfig = {
     startLevelScene: true
 };

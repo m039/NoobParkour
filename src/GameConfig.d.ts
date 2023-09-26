@@ -1,1 +1,1 @@
-declare let gameConfig : {startLevelScene: boolean}
+declare let debugConfig : {startLevelScene: boolean}
