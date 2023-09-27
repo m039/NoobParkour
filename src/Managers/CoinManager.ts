@@ -20,7 +20,6 @@ export default class CoinManager implements GameManager {
     }
 
     preload(): void {
-        this.levelScene.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
     }
 
     create(): void {

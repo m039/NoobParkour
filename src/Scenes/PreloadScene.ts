@@ -98,6 +98,10 @@ export default class PreloadScene extends BaseScene {
         // LevelUIScene.
 
         this.load.image(TextureKeys.CoinUI, "assets/images/CoinUI_16x16.png");
+
+        // Other
+
+        this.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
     }
 
     override create() : void {
