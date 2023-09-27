@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { GameManager } from '../Scenes/BaseScene';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
+import SoundKeys from '../Consts/SoundKeys';
 
 export enum SoundId {
     Jump,
@@ -10,9 +11,9 @@ export enum SoundId {
 }
 
 export enum MusicId {
-    Menu = "menu-music",
-    Game1 = "game-1-music",
-    Game2 = "game-2-music"
+    Menu = SoundKeys.MenuMusic,
+    Game1 = SoundKeys.Game1Music,
+    Game2 = SoundKeys.Game2Music
 }
 
 export default class AudioManager implements GameManager {
@@ -24,15 +25,6 @@ export default class AudioManager implements GameManager {
     }
 
     preload(): void {
-        this.scene.load.audio("jump1", "assets/audio/sounds/jump1.wav");
-        this.scene.load.audio("jump2", "assets/audio/sounds/jump2.ogg");
-        this.scene.load.audio("coin1", "assets/audio/sounds/coin1.wav");
-        this.scene.load.audio("loose1", "assets/audio/sounds/loose1.wav");
-        this.scene.load.audio("blip1", "assets/audio/sounds/blipSelect1.wav");
-        this.scene.load.audio("blip2", "assets/audio/sounds/blipSelect2.wav");
-        this.scene.load.audio(MusicId.Menu, "assets/audio/music/Retro Beat.mp3");
-        this.scene.load.audio(MusicId.Game1, "assets/audio/music/Stage 1.mp3");
-        this.scene.load.audio(MusicId.Game2, "assets/audio/music/Stage 2.mp3");
     }
 
     create(): void {
@@ -91,16 +83,16 @@ export default class AudioManager implements GameManager {
 
         switch (soundId) {
             case SoundId.Jump:
-                this.scene.sound.play("jump2");
+                this.scene.sound.play(SoundKeys.Jump2);
                 break;
             case SoundId.PickUpCoin:
-                this.scene.sound.play("coin1");
+                this.scene.sound.play(SoundKeys.Coin1);
                 break;
             case SoundId.Loose:
-                this.scene.sound.play("loose1");
+                this.scene.sound.play(SoundKeys.Loose1);
                 break;
             case SoundId.Blip:
-                this.scene.sound.play("blip1");
+                this.scene.sound.play(SoundKeys.Blip1);
                 break;
         }
     }

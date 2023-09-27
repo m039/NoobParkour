@@ -10,7 +10,7 @@ import InputController from '../InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
 import { InstantGamesBridge } from '../instant-games-bridge';
-import FontKeys from '../Consts/FontKeys';
+import TextureKeys from '../Consts/TextureKeys';
 
 export default class LevelScene extends BaseScene {
 
@@ -52,17 +52,6 @@ export default class LevelScene extends BaseScene {
         );
     }
 
-    public override preload(): void {
-        this.load.tilemapTiledJSON("map1", "assets/levels/maps/Level1.json");
-
-        super.preload();
-
-        this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
-        this.load.image("pixel", "assets/images/Pixel.png");
-        this.load.glsl("portal", "assets/shaders/Portal.frag");
-        this.load.glsl("lava", "assets/shaders/Lava.frag");
-    }
-
     public override create(): void {
         this.lowEndDevice = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
 
@@ -72,7 +61,7 @@ export default class LevelScene extends BaseScene {
 
         super.create();
 
-        const tileset = this.map.addTilesetImage("NoobParkourTileset", "tiles");
+        const tileset = this.map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles);
         const groundLayer = this.map.createLayer("Ground", tileset);
         this.map.createLayer("Back", tileset);
         
@@ -112,7 +101,7 @@ export default class LevelScene extends BaseScene {
                 this.add.particles(
                     gate.x + gate.width / 2, 
                     gate.y + gate.height / 2,
-                    "pixel", {
+                    TextureKeys.Pixel, {
                         x: {min: -8, max: 8},
                         y: {min: -12, max: 12},
                         scale: { min: 1.0, max: 4.0},
@@ -145,7 +134,7 @@ export default class LevelScene extends BaseScene {
                 this.add.particles(
                     lava.x + lava.width / 2, 
                     lava.y + offset,
-                    "pixel", {
+                    TextureKeys.Pixel, {
                         x: {min: -lava.width / 2, max: lava.width / 2},
                         y: {min: -offset, max: -offset/2},
                         scale: { min: 1.0, max: 2.0},

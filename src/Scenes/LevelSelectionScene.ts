@@ -72,22 +72,6 @@ export default class LevelSelectionScene extends BaseScene {
         this.gameManagers.push(cloudManager);
     }
 
-    override preload() {
-        super.preload();
-
-        this.load.image(TextureKeys.LevelButtonDefault, "assets/images/ui/LevelButtonDefault.png");
-        this.load.image(TextureKeys.LevelButtonHovered, "assets/images/ui/LevelButtonHovered.png");
-        this.load.image(TextureKeys.StarIconEmpty, "assets/images/ui/StarIconEmpty.png");
-        this.load.image(TextureKeys.StarIconFill, "assets/images/ui/StarIconFill.png");
-        this.load.image(TextureKeys.LockIcon, "assets/images/ui/LockIcon.png");
-        this.load.image(TextureKeys.TickIcon, "assets/images/ui/TickIcon.png");
-        this.load.image(TextureKeys.BackButtonDefault, "assets/images/ui/BackButtonDefault.png");
-        this.load.image(TextureKeys.BackButtonHovered, "assets/images/ui/BackButtonHovered.png");
-        this.load.image(TextureKeys.TitleBackground, "assets/images/ui/TitleBackground.png");
-
-        this.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
-    }
-
     override create() {
         super.create();
 

@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { getRandomElement } from '../Utils';
 import { GameManager } from '../Scenes/BaseScene';
 import EventKeys from '../Consts/EventKeys';
+import TextureKeys from '../Consts/TextureKeys';
 
 type CloudManagerConfig = {
     count? : number;
@@ -33,11 +34,6 @@ export default class CloudManager implements GameManager {
     }
 
     preload(): void {
-        const directory = "clouds_a";
-
-        this.scene.load.image("cloud1", `assets/images/${directory}/Cloud1.png`);
-        this.scene.load.image("cloud2", `assets/images/${directory}/Cloud2.png`);
-        this.scene.load.image("cloud3", `assets/images/${directory}/Cloud3.png`);
     }
 
     create(): void {
@@ -81,7 +77,7 @@ export default class CloudManager implements GameManager {
     }
 
     private createCloud() {
-        const key = getRandomElement(["cloud1", "cloud2", "cloud3"]);
+        const key = getRandomElement([TextureKeys.Cloud1, TextureKeys.Cloud2, TextureKeys.Cloud3]);
         const yRatio = Math.random();
         const x = this.cloudBounds.left + this.cloudBounds.width * Math.random();
         const y = this.cloudBounds.top + this.cloudBounds.height * yRatio;

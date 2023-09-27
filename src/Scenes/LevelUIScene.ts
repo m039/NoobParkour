@@ -18,14 +18,6 @@ export default class LevelUIScene extends BaseScene {
         this.gameManagers.push(settingsManager);
     }
 
-    override preload(): void {
-        super.preload();
-
-        this.load.image(TextureKeys.CoinUI, "assets/images/CoinUI_16x16.png");
-
-        this.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
-    }
-
     override create(): void {
         this.cameras.main.setZoom(4, 4).setOrigin(0, 0).setPosition(0, 0);
         super.create();
@@ -46,6 +38,10 @@ export default class LevelUIScene extends BaseScene {
     }
 
     private updateUI() {
+        if (this.levelScene.coinManager.pickedCoins === undefined || 
+            this.levelScene.coinManager.coinsCount === undefined)
+            return;
+
         this.coinText.setText(`${this.levelScene.coinManager.pickedCoins}/${this.levelScene.coinManager.coinsCount}`);
     }
 }

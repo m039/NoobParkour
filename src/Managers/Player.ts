@@ -51,7 +51,6 @@ export default class Player implements GameManager {
     }
 
     preload(): void {
-        this.levelScene.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
     }
 
     create(): void {

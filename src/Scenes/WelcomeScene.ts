@@ -60,24 +60,6 @@ export default class WelcomeScene extends BaseScene {
         );
     }
 
-    override preload() {
-        super.preload();
-
-        this.load.image(TextureKeys.TitleEn, "assets/images/ui/GameTitleEn.png");
-        this.load.image(TextureKeys.TitleRu, "assets/images/ui/GameTitleRu.png");
-        this.load.image(TextureKeys.EnglishFlagDefault, "assets/images/ui/EnglishFlagDefault.png");
-        this.load.image(TextureKeys.EnglishFlagHovered, "assets/images/ui/EnglishFlagHovered.png");
-        this.load.image(TextureKeys.RussianFlagDefault, "assets/images/ui/RussianFlagDefault.png");
-        this.load.image(TextureKeys.RussianFlagHovered, "assets/images/ui/RussianFlagHovered.png");
-        this.load.image(TextureKeys.StartButtonDefault, "assets/images/ui/StartButtonDefault.png");
-        this.load.image(TextureKeys.StartButtonHovered, "assets/images/ui/StartButtonHovered.png");
-
-        this.load.image("tiles", "assets/levels/tilesets/NoobParkourTileset.png");
-        this.load.tilemapTiledJSON("map", "assets/levels/maps/WelcomeScene.json");
-
-        this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
-    }
-
     override create() {
         (this.scene.get(SceneKeys.Audio) as AudioScene).audioManager.playMusic(MusicId.Menu);
 
@@ -85,8 +67,8 @@ export default class WelcomeScene extends BaseScene {
 
         this.cameras.main.setZoom(4, 4).setOrigin(0, 0).setPosition(0, 0);
 
-        const map = this.make.tilemap({ key: "map"});
-        const tileset = map.addTilesetImage("NoobParkourTileset", "tiles", 16, 16);
+        const map = this.make.tilemap({ key: "map0"});
+        const tileset = map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles, 16, 16);
         const groundLayer = map.createLayer("Ground", tileset, -200, -20);
         groundLayer.setSkipCull(true);
 

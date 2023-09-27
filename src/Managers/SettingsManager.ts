@@ -193,19 +193,6 @@ export default class SettingsManager implements GameManager {
     }
 
     preload(): void {
-        this.scene.load.image(TextureKeys.GearIconDefault, "assets/images/ui/GearIconDefault.png");
-        this.scene.load.image(TextureKeys.GearIconHovered, "assets/images/ui/GearIconHovered.png");
-        this.scene.load.image(TextureKeys.SettingsBodyBackground, "assets/images/ui/SettingsBodyBackground.png");
-        this.scene.load.image(TextureKeys.SettingsTitleBackground, "assets/images/ui/SettingsTitleBackground.png");
-        this.scene.load.image(TextureKeys.SettingsButtonDefault, "assets/images/ui/SettingsButtonDefault.png");
-        this.scene.load.image(TextureKeys.SettingsButtonHovered, "assets/images/ui/SettingsButtonHovered.png");
-        this.scene.load.image(TextureKeys.SoundIconDefault, "assets/images/ui/SoundIconDefault.png");
-        this.scene.load.image(TextureKeys.SoundIconHovered, "assets/images/ui/SoundIconHovered.png");
-        this.scene.load.image(TextureKeys.MusicIconDefault, "assets/images/ui/MusicIconDefault.png");
-        this.scene.load.image(TextureKeys.MusicIconHovered, "assets/images/ui/MusicIconHovered.png");
-        this.scene.load.image(TextureKeys.DisableIcon, "assets/images/ui/DisableIcon.png");
-
-        this.scene.load.bitmapFont(FontKeys.Monocraft, "assets/fonts/Monocraft.png", "assets/fonts/Monocraft.fnt");
     }
 
     create(): void {
