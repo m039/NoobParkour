@@ -9,7 +9,9 @@ export enum LocalizationKey {
     SelectLevelTitle = "select_level_title",
     SettingsTitle = "settings_title",
     Back = "back",
-    SettingsMenuButton = "settings_menu_button"
+    SettingsMenuButton = "settings_menu_button",
+    Tutorial1Desktop = "tutorial1_desktop",
+    Tutorial2Desktop = "tutorial2_desktop"
 };
 
 class LocalizationStaticManager {
@@ -33,6 +35,14 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.SettingsMenuButton] = {
             en: "Start Screen",
             ru: "В начальный экран"
+        };
+        this.localizationTexts[LocalizationKey.Tutorial1Desktop] = {
+            en: "Press A or D to move.\nOr use left or right arrow keys.",
+            ru: "Нажмите A или D, чтобы двигаться.\nИли используйте клавиши со стрелочками."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial2Desktop] = {
+            en: "Press space or up to jump.",
+            ru: "Нажмите пробел или вверх, чтобы прыгнуть."
         };
     }
 

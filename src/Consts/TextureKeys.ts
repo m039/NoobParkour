@@ -32,7 +32,10 @@ enum TextureKeys {
     Cloud2 = "cloud2",
     Cloud3 = "cloud3",
     Tiles = "tiles",
-    Pixel = "pixel"
+    Pixel = "pixel",
+    SignPostDefault = "sign_post_default",
+    SignPostHovered = "sign_post_hovered",
+    HelpBoxBackground = "help_box_background"
 }
 
 export default TextureKeys;

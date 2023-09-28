@@ -320,6 +320,53 @@
         }, 
         {
          "draworder":"topdown",
+         "id":8,
+         "name":"Tutorial",
+         "objects":[
+                {
+                 "height":0,
+                 "id":18,
+                 "name":"Tutorial1",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"TextKeyDesktop",
+                         "type":"string",
+                         "value":"tutorial1_desktop"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":45,
+                 "y":176
+                }, 
+                {
+                 "height":0,
+                 "id":20,
+                 "name":"Tutorial2",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"TextKeyDesktop",
+                         "type":"string",
+                         "value":"tutorial2_desktop"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":176,
+                 "y":175.708333333333
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":6,
          "name":"Lava",
          "objects":[
@@ -387,8 +434,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":8,
- "nextobjectid":18,
+ "nextlayerid":9,
+ "nextobjectid":21,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

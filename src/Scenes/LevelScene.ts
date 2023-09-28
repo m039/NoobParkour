@@ -12,6 +12,51 @@ import AudioScene from './AudioScene';
 import { InstantGamesBridge } from '../instant-games-bridge';
 import TextureKeys from '../Consts/TextureKeys';
 
+class TutorialSignPost extends Phaser.GameObjects.Image {
+    arcadeBody : Phaser.Physics.Arcade.Body;
+    overlap : boolean;
+    wasOverlap : boolean;
+    textKey : string;
+
+    constructor(levelScene: LevelScene, x:number, y:number, textKey:string) {
+        super(levelScene, Math.round(x), Math.round(y), TextureKeys.SignPostDefault);
+
+        this.setOrigin(0.5, 1);
+        this.textKey = textKey;
+
+        levelScene.physics.add.existing(this, true);
+
+        this.arcadeBody = this.body as Phaser.Physics.Arcade.Body;
+        this.arcadeBody.setSize(50, 50);
+
+        levelScene.physics.add.overlap(this, levelScene.player.container, () => {
+            this.overlap = true;
+        });
+
+        this.on("overlapstart", () => {
+            this.setTexture(TextureKeys.SignPostHovered);
+            levelScene.events.emit(EventKeys.ShowHelpBox, this.textKey);
+        });
+        this.on("overlapend", () => {
+            this.setTexture(TextureKeys.SignPostDefault);
+            levelScene.events.emit(EventKeys.HideHelpBox);
+        });
+    }
+
+    update() {
+        if (this.overlap && !this.wasOverlap) {
+            this.emit("overlapstart");
+        }
+
+        if (!this.overlap && this.wasOverlap) {
+            this.emit("overlapend");
+        }
+
+        this.wasOverlap = this.overlap;
+        this.overlap = false;
+    }
+}
+
 export default class LevelScene extends BaseScene {
 
     public audioManager : AudioManager;
@@ -36,6 +81,8 @@ export default class LevelScene extends BaseScene {
     private canDoubleJump : boolean = false;
 
     private lowEndDevice : boolean = false;
+
+    private tutorialSignPosts : Array<TutorialSignPost>
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -69,6 +116,7 @@ export default class LevelScene extends BaseScene {
 
         this.createPortals();
         this.createLava();
+        this.createTutorial();
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -154,6 +202,35 @@ export default class LevelScene extends BaseScene {
         }
     }
 
+    private createTutorial() {
+        const tutorialLayer = this.map.getObjectLayer("Tutorial");
+        if (!tutorialLayer) {
+            return;
+        }
+
+        this.tutorialSignPosts = [];
+
+        for (var tiledObject of tutorialLayer.objects) {
+            const signPost = new TutorialSignPost(
+                this, tiledObject.x, tiledObject.y, this.getTextKeyProperty(tiledObject)
+            );
+            this.add.existing(signPost);
+            this.tutorialSignPosts.push(signPost);
+        }
+    }
+
+    private getTextKeyProperty(tiledObject: Phaser.Types.Tilemaps.TiledObject) : string {
+        for (var property of tiledObject.properties) {
+            if (this.lowEndDevice && property.name === "TextKeyMobile") {
+                return property.value;
+            } else if (property.name === "TextKeyDesktop") {
+                return property.value;
+            }
+        }
+
+        return undefined;
+    }
+
     private placeCharacterAtStart(
         player: Player, 
         map: Phaser.Tilemaps.Tilemap,
@@ -210,6 +287,12 @@ export default class LevelScene extends BaseScene {
             this.placeCharacterAtStart(this.player, this.map, true);
         } else if (this.player.getPosition().y > this.bottomLine1.y) {
             this.player.fly();
+        }
+
+        // Update sign posts.
+
+        for (var signPost of this.tutorialSignPosts) {
+            signPost.update();
         }
     }
 }

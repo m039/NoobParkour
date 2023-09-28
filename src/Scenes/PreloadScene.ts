@@ -95,9 +95,13 @@ export default class PreloadScene extends BaseScene {
         this.load.glsl("portal", "assets/shaders/Portal.frag");
         this.load.glsl("lava", "assets/shaders/Lava.frag");
 
+        this.load.image(TextureKeys.SignPostDefault, "assets/images/SignPostDefault.png");
+        this.load.image(TextureKeys.SignPostHovered, "assets/images/SignPostHovered.png");
+
         // LevelUIScene.
 
         this.load.image(TextureKeys.CoinUI, "assets/images/CoinUI_16x16.png");
+        this.load.image(TextureKeys.HelpBoxBackground, "assets/images/ui/HelpBoxBackground.png");
 
         // Other
 
