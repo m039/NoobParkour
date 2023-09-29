@@ -2,6 +2,8 @@ import * as Phaser from 'phaser';
 import { SoundId } from './AudioManager';
 import { GameManager } from '../Scenes/BaseScene';
 import LevelScene from '../Scenes/LevelScene';
+import SceneKeys from '../Consts/SceneKeys';
+import AudioScene from '../Scenes/AudioScene';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -200,7 +202,9 @@ export default class Player implements GameManager {
         this.body.setVelocityY(this.body.velocity.y - 400);
         this.inDoubleJump = true;
         this.showDust();
-        this.levelScene.audioManager.playSound(SoundId.Jump);
+
+        const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
+        audioScene.audioManager.playSound(SoundId.Jump);
     }
 
     public stopJump() {
@@ -230,12 +234,12 @@ export default class Player implements GameManager {
         this.isDead = true;
         this.body.setVelocity(0, 0);
         this.body.setAllowGravity(false);
-        this.levelScene.cameras.main.roundPixels = true;
-        this.levelScene.audioManager.playSound(SoundId.Loose);
+
+        const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
+        audioScene.audioManager.playSound(SoundId.Loose);
     }
 
     public restartLevel(tint: boolean) {
-        this.levelScene.cameras.main.roundPixels = false;
         this.container.scale = 0;
         const self = this;
 

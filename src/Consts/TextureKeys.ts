@@ -39,7 +39,13 @@ enum TextureKeys {
     BigStarEmpty = "big_star_empty",
     BigStarFill = "big_star_fill",
     NextButtonDefault = "next_button_default",
-    NextButtonHovered = "next_button_hovered"
+    NextButtonHovered = "next_button_hovered",
+    LeftButtonDefault = "left_button_default",
+    LeftButtonHovered = "left_button_hovered",
+    RightButtonDefault = "right_button_default",
+    RightButtonHovered = "right_button_hovered",
+    UpButtonDefault = "up_button_default",
+    UpButtonHovered = "up_button_hovered"
 }
 
 export default TextureKeys;

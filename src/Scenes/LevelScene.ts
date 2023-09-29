@@ -56,8 +56,6 @@ class TutorialSignPost extends Phaser.GameObjects.Image {
 }
 
 export default class LevelScene extends BaseScene {
-    public audioManager : AudioManager;
-
     public map : Phaser.Tilemaps.Tilemap;
 
     public player : Player;
@@ -86,13 +84,11 @@ export default class LevelScene extends BaseScene {
     constructor() {
         super({key:SceneKeys.Level});
 
-        this.audioManager = new AudioManager(this);
         this.coinManager = new CoinManager(this);
         this.player = new Player(this);
         this.cloudManager = new CloudManager(this, {tilemap: () => this.map});
         this.gameManagers.push(
             this.player, 
-            this.audioManager, 
             this.coinManager, 
             this.cloudManager
         );
@@ -139,7 +135,7 @@ export default class LevelScene extends BaseScene {
 
         this.placeCharacterAtStart(this.player, this.map, false);
         this.centerCameraAtCharacter(this.player);
-        this.cameras.main.setZoom(4, 4);
+        this.cameras.main.setZoom(4, 4).setRoundPixels(true);
         this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
         this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);

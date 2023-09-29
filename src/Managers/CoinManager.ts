@@ -4,6 +4,8 @@ import { SoundId } from './AudioManager';
 import { GameManager } from '../Scenes/BaseScene';
 import LevelScene from '../Scenes/LevelScene';
 import EventKeys from '../Consts/EventKeys';
+import SceneKeys from '../Consts/SceneKeys';
+import AudioScene from '../Scenes/AudioScene';
 
 export default class CoinManager implements GameManager {
     private levelScene : LevelScene;
@@ -73,7 +75,8 @@ export default class CoinManager implements GameManager {
                 return;
             }
             sprite.play("Pick Up");
-            this.levelScene.audioManager.playSound(SoundId.PickUpCoin);
+            const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
+            audioScene.audioManager.playSound(SoundId.PickUpCoin);
             this.pickedCoins++;
             this.levelScene.events.emit(EventKeys.CoinPickUp);
             isPickingUp = true;

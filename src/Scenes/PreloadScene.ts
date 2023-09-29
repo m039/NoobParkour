@@ -111,6 +111,15 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.NextButtonDefault, "assets/images/ui/NextButtonDefault.png");
         this.load.image(TextureKeys.NextButtonHovered, "assets/images/ui/NextButtonHovered.png");
 
+        // Input controller.
+        this.load.image(TextureKeys.LeftButtonDefault, "assets/images/ui/LeftButtonDefault.png");
+        this.load.image(TextureKeys.LeftButtonHovered, "assets/images/ui/LeftButtonHovered.png");
+        this.load.image(TextureKeys.RightButtonDefault, "assets/images/ui/RightButtonDefault.png");
+        this.load.image(TextureKeys.RightButtonHovered, "assets/images/ui/RightButtonHovered.png");
+        this.load.image(TextureKeys.UpButtonDefault, "assets/images/ui/UpButtonDefault.png");
+        this.load.image(TextureKeys.UpButtonHovered, "assets/images/ui/UpButtonHovered.png");
+
+
         // Other
 
         this.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
@@ -121,7 +130,7 @@ export default class PreloadScene extends BaseScene {
             if (debugConfig.clearLocalStorage) {
                 Prefs.clear();
             }
-            
+
             if (debugConfig.startLevelScene) {
                 this.scene.start(SceneKeys.Level, { level: debugConfig.levelSceneLevel ?? 1 });
                 this.scene.launch(SceneKeys.LevelUI);
