@@ -1,1 +1,5 @@
-declare let debugConfig : {startLevelScene: boolean}
+declare let debugConfig : {
+    startLevelScene: boolean,
+    levelSceneLevel: number,
+    clearLocalStorage: boolean
+}

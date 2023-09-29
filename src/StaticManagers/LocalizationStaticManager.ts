@@ -8,6 +8,7 @@ export enum Language {
 export enum LocalizationKey {
     SelectLevelTitle = "select_level_title",
     SettingsTitle = "settings_title",
+    LevelCompleTitle = "level_complete_title",
     Back = "back",
     SettingsMenuButton = "settings_menu_button",
     Tutorial1Desktop = "tutorial1_desktop",
@@ -38,11 +39,15 @@ class LocalizationStaticManager {
         };
         this.localizationTexts[LocalizationKey.Tutorial1Desktop] = {
             en: "Press A or D to move.\nOr use left or right arrow keys.",
-            ru: "Нажмите A или D, чтобы двигаться.\nИли используйте клавиши со стрелочками."
+            ru: "Нажмите A или D, чтобы двигаться.\nИли используйте клавиши со стрелками."
         };
         this.localizationTexts[LocalizationKey.Tutorial2Desktop] = {
-            en: "Press space or up to jump.",
-            ru: "Нажмите пробел или вверх, чтобы прыгнуть."
+            en: "Press W or up to jump.",
+            ru: "Нажмите W или вверх, чтобы прыгнуть."
+        };
+        this.localizationTexts[LocalizationKey.LevelCompleTitle] = {
+            en: "Level\nCompleted",
+            ru: "Уровень\nпройден"
         };
     }
 

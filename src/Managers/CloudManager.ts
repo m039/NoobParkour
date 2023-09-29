@@ -21,16 +21,13 @@ export default class CloudManager implements GameManager {
     private cloudBounds : Phaser.Geom.Rectangle;
     private direction : number;
     private cloudsData : Array<{sprite : Phaser.GameObjects.Sprite, speed : number}>;
+    private cloudConfig : CloudManagerConfig;
 
     constructor(scene: Phaser.Scene, cloudConfig?: CloudManagerConfig) {
         this.scene = scene;
         this.cloudsData = [];
 
-        if (cloudConfig) {
-            this.CloudsCount = Math.max(cloudConfig.count ?? this.CloudsCount, 0);
-            this.cloudBounds = cloudConfig.bounds;
-            this.tilemap = cloudConfig.tilemap;
-        }
+        this.cloudConfig = cloudConfig;
     }
 
     preload(): void {
@@ -40,8 +37,15 @@ export default class CloudManager implements GameManager {
         this.clouds = this.scene.add.group();
         this.direction = Math.random() < 0.5? -1 : 1;
 
-        if (this.cloudBounds === undefined) {
-            this.cloudBounds = this.getCloudBounds();
+        if (this.cloudConfig) {
+            this.CloudsCount = Math.max(this.cloudConfig.count ?? this.CloudsCount, 0);
+            this.tilemap = this.cloudConfig.tilemap;
+
+            if (this.cloudConfig.bounds) {
+                this.cloudBounds = this.cloudConfig.bounds;
+            } else {
+                this.cloudBounds = this.getCloudBounds();
+            }
         }
 
         if (this.cloudBounds === undefined) {

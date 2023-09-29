@@ -35,7 +35,11 @@ enum TextureKeys {
     Pixel = "pixel",
     SignPostDefault = "sign_post_default",
     SignPostHovered = "sign_post_hovered",
-    HelpBoxBackground = "help_box_background"
+    HelpBoxBackground = "help_box_background",
+    BigStarEmpty = "big_star_empty",
+    BigStarFill = "big_star_fill",
+    NextButtonDefault = "next_button_default",
+    NextButtonHovered = "next_button_hovered"
 }
 
 export default TextureKeys;

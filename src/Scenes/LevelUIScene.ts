@@ -8,6 +8,7 @@ import BaseScene from "./BaseScene";
 import LevelScene from "./LevelScene";
 import { GameWidth } from '../Consts/Consts';
 import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
+import LevelCompleteManager from '../Managers/LevelCompleteManager';
 
 export default class LevelUIScene extends BaseScene {
     private coinText : Phaser.GameObjects.BitmapText;
@@ -19,7 +20,8 @@ export default class LevelUIScene extends BaseScene {
         super(SceneKeys.LevelUI);
 
         const settingsManager = new SettingsManager(this, true);
-        this.gameManagers.push(settingsManager);
+        const levelCompleteManager = new LevelCompleteManager(this);
+        this.gameManagers.push(settingsManager, levelCompleteManager);
     }
 
     override create(): void {

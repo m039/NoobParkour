@@ -69,7 +69,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.StartButtonHovered, "assets/images/ui/StartButtonHovered.png");
 
         this.load.image(TextureKeys.Tiles, "assets/levels/tilesets/NoobParkourTileset.png");
-        this.load.tilemapTiledJSON("map0", "assets/levels/maps/WelcomeScene.json");
+        this.load.tilemapTiledJSON("map0", "assets/levels/maps/WelcomeScene.tmj");
 
         this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
 
@@ -89,7 +89,8 @@ export default class PreloadScene extends BaseScene {
 
         // LevelScene.
 
-        this.load.tilemapTiledJSON("map1", "assets/levels/maps/Level1.json");
+        this.load.tilemapTiledJSON("map1", "assets/levels/maps/Level1.tmj");
+        this.load.tilemapTiledJSON("map2", "assets/levels/maps/Level2.tmj");
 
         this.load.image(TextureKeys.Pixel, "assets/images/Pixel.png");
         this.load.glsl("portal", "assets/shaders/Portal.frag");
@@ -103,21 +104,32 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.CoinUI, "assets/images/CoinUI_16x16.png");
         this.load.image(TextureKeys.HelpBoxBackground, "assets/images/ui/HelpBoxBackground.png");
 
+        // Level complete screen.
+
+        this.load.image(TextureKeys.BigStarEmpty, "assets/images/ui/BigStarEmpty.png");
+        this.load.image(TextureKeys.BigStarFill, "assets/images/ui/BigStarFill.png");
+        this.load.image(TextureKeys.NextButtonDefault, "assets/images/ui/NextButtonDefault.png");
+        this.load.image(TextureKeys.NextButtonHovered, "assets/images/ui/NextButtonHovered.png");
+
         // Other
 
         this.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
     }
 
     override create() : void {
-        Prefs.load();
-
         if (development && typeof debugConfig !== "undefined") {
+            if (debugConfig.clearLocalStorage) {
+                Prefs.clear();
+            }
+            
             if (debugConfig.startLevelScene) {
-                this.scene.start(SceneKeys.Level);
+                this.scene.start(SceneKeys.Level, { level: debugConfig.levelSceneLevel ?? 1 });
                 this.scene.launch(SceneKeys.LevelUI);
                 return;
             }
-        }       
+        }
+
+        Prefs.load();
         
         this.scene.start(SceneKeys.Welcome);
     }

@@ -11,12 +11,16 @@ import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
 import { InstantGamesBridge } from '../instant-games-bridge';
 import TextureKeys from '../Consts/TextureKeys';
+import { MaxLevels } from '../Consts/Consts';
+import { Progress } from '../StaticManagers/ProgressStaticManager';
 
 class TutorialSignPost extends Phaser.GameObjects.Image {
     arcadeBody : Phaser.Physics.Arcade.Body;
     overlap : boolean;
     wasOverlap : boolean;
     textKey : string;
+    player : Player;
+    bounds : Phaser.Geom.Rectangle;
 
     constructor(levelScene: LevelScene, x:number, y:number, textKey:string) {
         super(levelScene, Math.round(x), Math.round(y), TextureKeys.SignPostDefault);
@@ -24,14 +28,8 @@ class TutorialSignPost extends Phaser.GameObjects.Image {
         this.setOrigin(0.5, 1);
         this.textKey = textKey;
 
-        levelScene.physics.add.existing(this, true);
-
-        this.arcadeBody = this.body as Phaser.Physics.Arcade.Body;
-        this.arcadeBody.setSize(50, 50);
-
-        levelScene.physics.add.overlap(this, levelScene.player.container, () => {
-            this.overlap = true;
-        });
+        this.player = levelScene.player;
+        this.bounds = new Phaser.Geom.Rectangle(x - 25, y - 25, 50, 50);
 
         this.on("overlapstart", () => {
             this.setTexture(TextureKeys.SignPostHovered);
@@ -53,12 +51,11 @@ class TutorialSignPost extends Phaser.GameObjects.Image {
         }
 
         this.wasOverlap = this.overlap;
-        this.overlap = false;
+        this.overlap = Phaser.Geom.Intersects.RectangleToRectangle(this.bounds, this.player.container.getBounds());
     }
 }
 
 export default class LevelScene extends BaseScene {
-
     public audioManager : AudioManager;
 
     public map : Phaser.Tilemaps.Tilemap;
@@ -68,6 +65,8 @@ export default class LevelScene extends BaseScene {
     public coinManager : CoinManager;
 
     private cloudManager : CloudManager;
+
+    public level : number;
 
 
     private inputController : InputController;
@@ -99,10 +98,22 @@ export default class LevelScene extends BaseScene {
         );
     }
 
+    public init(config: {level:number}) {
+        if (!config) {
+            this.level = 1;
+        } else {
+            this.level = config.level;
+        }
+
+        if (this.level > MaxLevels) {
+            this.level = 1;
+        }
+    }
+
     public override create(): void {
         this.lowEndDevice = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
 
-        this.map = this.make.tilemap({ key: "map1"});
+        this.map = this.make.tilemap({ key: "map" + this.level});
 
         (this.scene.get(SceneKeys.Audio) as AudioScene).audioManager.playMusic(MusicId.Game1);
 
@@ -140,9 +151,21 @@ export default class LevelScene extends BaseScene {
 
         for (var gate of [startGate, endGate]) {
             // Add vortex.
-            this.add
+            const object = this.add
                 .shader("portal", gate.x, gate.y, gate.width, gate.height)
                 .setOrigin(0, 0);
+
+            if (gate === endGate) {
+                this.physics.add.existing(object, true);
+
+                const gateBody = object.body as Phaser.Physics.Arcade.Body;
+                gateBody.setSize(gate.width / 4, gate.height);
+
+                const collider = this.physics.add.overlap(object, this.player.container, () => {
+                    this.onEndReached();
+                    collider.destroy();
+                });
+            }
 
             if (!this.lowEndDevice) {
                 // Add particles.
@@ -166,10 +189,25 @@ export default class LevelScene extends BaseScene {
         }
     }
 
+    private onEndReached() {
+        this.inputController.enabled = false;
+        this.events.emit(EventKeys.LevelCompleted);
+
+        Progress.setLevelCompleted(this.level);
+        if (this.coinManager.coinsCount === this.coinManager.pickedCoins) {
+            Progress.setLevelCompletedFully(this.level);
+        }
+    }
+
     private createLava() {
+        const lavaLayer = this.map.getObjectLayer("Lava");
+        if (!lavaLayer) {
+            return;
+        }
+
         const offset = 10.0;
 
-        for (var lava of this.map.getObjectLayer("Lava").objects) {
+        for (var lava of lavaLayer.objects) {
             // Add lava effect.
             const lavaObject = this.add
                 .shader("lava", lava.x, lava.y, lava.width, lava.height)
@@ -291,8 +329,10 @@ export default class LevelScene extends BaseScene {
 
         // Update sign posts.
 
-        for (var signPost of this.tutorialSignPosts) {
-            signPost.update();
+        if (this.tutorialSignPosts) {
+            for (var signPost of this.tutorialSignPosts) {
+                signPost.update();
+            }
         }
     }
 }
