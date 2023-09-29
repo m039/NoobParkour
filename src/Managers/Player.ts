@@ -165,21 +165,21 @@ export default class Player implements GameManager {
         return new Phaser.Math.Vector2(this.container.x, this.container.y);
     }
 
-    public moveLeft() {
+    public moveLeft(strength: number) {
         if (this.isDead) {
             return;
         }
 
-        this.body.setVelocityX(-100);
+        this.body.setVelocityX(-100 * strength);
         this.flipX = true;
     }
 
-    public moveRight() {
+    public moveRight(strength: number) {
         if (this.isDead) {
             return;
         }
 
-        this.body.setVelocityX(100);
+        this.body.setVelocityX(100 * strength);
         this.flipX = false;
     }
 

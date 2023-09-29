@@ -6,7 +6,7 @@ import Player, { PlayerEvent } from '../Managers/Player';
 import CoinManager from '../Managers/CoinManager';
 import CloudManager from '../Managers/CloudManager';
 import SceneKeys from '../Consts/SceneKeys';
-import InputController from '../InputController';
+import InputController, { InputButton } from '../InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
 import { InstantGamesBridge } from '../instant-games-bridge';
@@ -75,7 +75,7 @@ export default class LevelScene extends BaseScene {
 
     private bottomLine2 : Phaser.Types.Tilemaps.TiledObject;
 
-    private upKeyPressed : Phaser.Input.Keyboard.Key;
+    private upKeyPressed : InputButton;
     
     private canDoubleJump : boolean = false;
 
@@ -293,9 +293,9 @@ export default class LevelScene extends BaseScene {
         super.update(time, delta);
 
         if (this.inputController.isLeftDown) {
-            this.player.moveLeft();
+            this.player.moveLeft(this.inputController.strength);
         } else if (this.inputController.isRightDown) {
-            this.player.moveRight();
+            this.player.moveRight(this.inputController.strength);
         } else {
             this.player.stay();
         }
