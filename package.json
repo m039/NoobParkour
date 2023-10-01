@@ -1,8 +1,7 @@
 {
-    "name": "phaser3-typescript-project-template",
-    "version": "1.2.0",
-    "description": "A Phaser 3 Project Template using Rollup and TypeScript",
-    "main": "src/game.ts",
+    "name": "super-noob-parkour",
+    "version": "0.1.0",
+    "main": "src/Game.ts",
     "scripts": {
         "dev": "rollup --config rollup.config.dev.mjs",
         "build": "rollup --config rollup.config.dist.mjs",
@@ -10,14 +9,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/photonstorm/phaser3-typescript-project-template.git"
+        "url": "git+https://github.com/m039/NoobParkour.git"
     },
-    "author": "Richard Davey <rich@photonstorm.com> (http://www.photonstorm.com)",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/photonstorm/phaser3-typescript-project-template/issues"
-    },
-    "homepage": "https://github.com/photonstorm/phaser3-typescript-project-template#readme",
+    "author": "Dmitry Mozgin <m0391n@gmail.com>",
     "devDependencies": {
         "@rollup/plugin-commonjs": "^24.0.1",
         "@rollup/plugin-node-resolve": "^15.0.2",
