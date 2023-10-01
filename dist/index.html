@@ -8,6 +8,8 @@
     <script src="./js/instant-games-bridge.js"></script>
   </head>
   <body>
+    <span id="loader" class="loader center"></span>
+
     <script>
       bridge.initialize().then(() => {
         let scriptElement = document.createElement("script");

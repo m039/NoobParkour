@@ -14,6 +14,11 @@ export default class PreloadScene extends BaseScene {
     }
 
     override preload(): void {
+        var loader = document.getElementById("loader");
+        if (loader) {
+            loader.style.display = "none";
+        }
+
         var progress = this.add.graphics();
         this.load.on('progress', function (value) {
             progress.clear();
