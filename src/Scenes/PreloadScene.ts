@@ -14,6 +14,11 @@ export default class PreloadScene extends BaseScene {
     }
 
     override preload(): void {
+        // Load and sync the preferences.
+        Prefs.load();
+        Prefs.syncFromCloud();
+
+        // Hide the loader.
         var loader = document.getElementById("loader");
         if (loader) {
             loader.style.display = "none";
@@ -147,8 +152,6 @@ export default class PreloadScene extends BaseScene {
                 return;
             }
         }
-
-        Prefs.load();
         
         this.scene.start(SceneKeys.Welcome);
     }

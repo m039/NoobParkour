@@ -21,6 +21,22 @@ class PrefsStaticManager {
         this.starLevels = JSON.parse(this.getItem(StarLevelsKey, "[]"));
     }
 
+    public syncFromCloud() {
+        bridge.storage.get([CompletedLevelKey, StarLevelsKey]).then(data => {
+            if (data[0] !== undefined && data[0] !== null && data[0] != "undefined") {
+                this.setCompletedLevel(data[0]);
+            }
+
+            if (data[1] !== undefined && data[1] !== null && data[1] != "undefined") {
+                this.setStarLevels(data[1]);
+            }
+        });
+    }
+
+    public syncToCloud() {
+        bridge.storage.set([CompletedLevelKey, StarLevelsKey], [this.completedLevel, this.starLevels]);
+    }
+
     public clear() {
         if (this.isLocalStorageAvailable()) {
             localStorage.clear();

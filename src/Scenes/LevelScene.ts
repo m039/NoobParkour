@@ -14,6 +14,7 @@ import TextureKeys from '../Consts/TextureKeys';
 import { MaxLevels } from '../Consts/Consts';
 import { Progress } from '../StaticManagers/ProgressStaticManager';
 import LevelUIScene from './LevelUIScene';
+import { Prefs } from '../StaticManagers/PrefsStaticManager';
 
 class TutorialSignPost extends Phaser.GameObjects.Image {
     arcadeBody : Phaser.Physics.Arcade.Body;
@@ -194,6 +195,7 @@ export default class LevelScene extends BaseScene {
         if (this.coinManager.coinsCount === this.coinManager.pickedCoins) {
             Progress.setLevelCompletedFully(this.level);
         }
+        Prefs.syncToCloud();
     }
 
     private createLava() {

@@ -7,6 +7,11 @@ export namespace InstantGamesBridge {
     }
 }
 
+declare interface Storage {
+    get(key: string | Array<string>, options?: any) : Promise<any>
+    set(key: string | Array<string>, value: any, options?: any) : Promise<void>
+}
+
 declare interface Device {
     get type() : InstantGamesBridge.DEVICE_TYPE
 }
@@ -18,6 +23,7 @@ declare interface Platform {
 declare class InstantGamesBridgeInternal {
     get platform() : Platform;
     get device() : Device;
+    get storage() : Storage;
 }
 
 declare global {
