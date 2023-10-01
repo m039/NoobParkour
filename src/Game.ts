@@ -15,7 +15,8 @@ const config : Phaser.Types.Core.GameConfig = {
         height: 1080,
     },
     input: {
-        gamepad: true
+        gamepad: true,
+        activePointers: 3
     },
     backgroundColor: '#92b9e3',
     pixelArt: true,

@@ -12,7 +12,9 @@ export enum LocalizationKey {
     Back = "back",
     SettingsMenuButton = "settings_menu_button",
     Tutorial1Desktop = "tutorial1_desktop",
-    Tutorial2Desktop = "tutorial2_desktop"
+    Tutorial2Desktop = "tutorial2_desktop",
+    Tutorial1Mobile = "tutorial1_mobile",
+    Tutorial2Mobile = "tutorial2_mobile"
 };
 
 class LocalizationStaticManager {
@@ -44,6 +46,14 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.Tutorial2Desktop] = {
             en: "Press W or up to jump.",
             ru: "Нажмите W или вверх, чтобы прыгнуть."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial1Mobile] = {
+            en: "Press buttons in the left bottom\ncorner to move.",
+            ru: "Нажмите на клавиши в левом углу\nэкрана, чтобы двигаться."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial2Mobile] = {
+            en: "Press button in the right bottom\ncorner to jump.",
+            ru: "Нажмите на клавишу в правом углу\nэкрана, чтобы прыгнуть."
         };
         this.localizationTexts[LocalizationKey.LevelCompleTitle] = {
             en: "Level\nCompleted",

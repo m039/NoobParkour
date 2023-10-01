@@ -6,13 +6,14 @@ import Player, { PlayerEvent } from '../Managers/Player';
 import CoinManager from '../Managers/CoinManager';
 import CloudManager from '../Managers/CloudManager';
 import SceneKeys from '../Consts/SceneKeys';
-import InputController, { InputButton } from '../InputController';
+import InputController, { InputButton } from '../Managers/InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
 import { InstantGamesBridge } from '../instant-games-bridge';
 import TextureKeys from '../Consts/TextureKeys';
 import { MaxLevels } from '../Consts/Consts';
 import { Progress } from '../StaticManagers/ProgressStaticManager';
+import LevelUIScene from './LevelUIScene';
 
 class TutorialSignPost extends Phaser.GameObjects.Image {
     arcadeBody : Phaser.Physics.Arcade.Body;
@@ -77,7 +78,7 @@ export default class LevelScene extends BaseScene {
     
     private canDoubleJump : boolean = false;
 
-    private lowEndDevice : boolean = false;
+    private isMobile : boolean = false;
 
     private tutorialSignPosts : Array<TutorialSignPost>
 
@@ -107,7 +108,7 @@ export default class LevelScene extends BaseScene {
     }
 
     public override create(): void {
-        this.lowEndDevice = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
+        this.isMobile = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
 
         this.map = this.make.tilemap({ key: "map" + this.level});
 
@@ -119,7 +120,7 @@ export default class LevelScene extends BaseScene {
         const groundLayer = this.map.createLayer("Ground", tileset);
         this.map.createLayer("Back", tileset);
         
-        this.inputController = new InputController(this);
+        this.inputController = (this.scene.get(SceneKeys.LevelUI) as LevelUIScene).inputController;
 
         this.createPortals();
         this.createLava();
@@ -163,7 +164,7 @@ export default class LevelScene extends BaseScene {
                 });
             }
 
-            if (!this.lowEndDevice) {
+            if (!this.isMobile) {
                 // Add particles.
                 this.add.particles(
                     gate.x + gate.width / 2, 
@@ -211,7 +212,7 @@ export default class LevelScene extends BaseScene {
 
             this.physics.add.existing(lavaObject, true);
 
-            if (!this.lowEndDevice) {
+            if (!this.isMobile) {
                 // Add particles.
                 this.add.particles(
                     lava.x + lava.width / 2, 
@@ -255,10 +256,8 @@ export default class LevelScene extends BaseScene {
 
     private getTextKeyProperty(tiledObject: Phaser.Types.Tilemaps.TiledObject) : string {
         for (var property of tiledObject.properties) {
-            if (this.lowEndDevice && property.name === "TextKeyMobile") {
-                return property.value;
-            } else if (property.name === "TextKeyDesktop") {
-                return property.value;
+            if (property.name === "TextKey") {
+                return property.value + (this.isMobile? "_mobile" : "_desktop");
             }
         }
 

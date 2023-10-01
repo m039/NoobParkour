@@ -34,7 +34,7 @@ export default class PreloadScene extends BaseScene {
 
         // Sounds and music.
 
-        this.load.audio(SoundKeys.Jump2, "assets/audio/sounds/jump2.ogg");
+        this.load.audio(SoundKeys.Jump2, "assets/audio/sounds/jump2.wav");
         this.load.audio(SoundKeys.Coin1, "assets/audio/sounds/coin1.wav");
         this.load.audio(SoundKeys.Loose1, "assets/audio/sounds/loose1.wav");
         this.load.audio(SoundKeys.Blip1, "assets/audio/sounds/blipSelect1.wav");
@@ -108,6 +108,12 @@ export default class PreloadScene extends BaseScene {
 
         this.load.image(TextureKeys.CoinUI, "assets/images/CoinUI_16x16.png");
         this.load.image(TextureKeys.HelpBoxBackground, "assets/images/ui/HelpBoxBackground.png");
+        this.load.image(TextureKeys.LeftButtonDefault, "assets/images/ui/LeftButtonDefault.png");
+        this.load.image(TextureKeys.LeftButtonHovered, "assets/images/ui/LeftButtonHovered.png");
+        this.load.image(TextureKeys.RightButtonDefault, "assets/images/ui/RightButtonDefault.png");
+        this.load.image(TextureKeys.RightButtonHovered, "assets/images/ui/RightButtonHovered.png");
+        this.load.image(TextureKeys.UpButtonDefault, "assets/images/ui/UpButtonDefault.png");
+        this.load.image(TextureKeys.UpButtonHovered, "assets/images/ui/UpButtonHovered.png");
 
         // Level complete screen.
 
@@ -123,7 +129,6 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.RightButtonHovered, "assets/images/ui/RightButtonHovered.png");
         this.load.image(TextureKeys.UpButtonDefault, "assets/images/ui/UpButtonDefault.png");
         this.load.image(TextureKeys.UpButtonHovered, "assets/images/ui/UpButtonHovered.png");
-
 
         // Other
 

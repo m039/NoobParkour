@@ -9,19 +9,22 @@ import LevelScene from "./LevelScene";
 import { GameWidth } from '../Consts/Consts';
 import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
 import LevelCompleteManager from '../Managers/LevelCompleteManager';
+import InputController from '../Managers/InputController';
 
 export default class LevelUIScene extends BaseScene {
     private coinText : Phaser.GameObjects.BitmapText;
     private levelScene : LevelScene;
     private helpBoxBackground : Phaser.GameObjects.Image;
     private helpBoxText : Phaser.GameObjects.BitmapText;
+    public inputController : InputController;
 
     constructor() {
         super(SceneKeys.LevelUI);
 
         const settingsManager = new SettingsManager(this, true);
         const levelCompleteManager = new LevelCompleteManager(this);
-        this.gameManagers.push(settingsManager, levelCompleteManager);
+        this.inputController = new InputController(this);
+        this.gameManagers.push(settingsManager, levelCompleteManager, this.inputController);
     }
 
     override create(): void {

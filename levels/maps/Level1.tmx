@@ -208,13 +208,13 @@
  <objectgroup id="8" name="Tutorial">
   <object id="18" name="Tutorial1" x="45" y="176">
    <properties>
-    <property name="TextKeyDesktop" value="tutorial1_desktop"/>
+    <property name="TextKey" value="tutorial1"/>
    </properties>
    <point/>
   </object>
   <object id="20" name="Tutorial2" x="176" y="175.708">
    <properties>
-    <property name="TextKeyDesktop" value="tutorial2_desktop"/>
+    <property name="TextKey" value="tutorial2"/>
    </properties>
    <point/>
   </object>

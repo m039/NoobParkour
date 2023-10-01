@@ -330,9 +330,9 @@
                  "point":true,
                  "properties":[
                         {
-                         "name":"TextKeyDesktop",
+                         "name":"TextKey",
                          "type":"string",
-                         "value":"tutorial1_desktop"
+                         "value":"tutorial1"
                         }],
                  "rotation":0,
                  "type":"",
@@ -348,9 +348,9 @@
                  "point":true,
                  "properties":[
                         {
-                         "name":"TextKeyDesktop",
+                         "name":"TextKey",
                          "type":"string",
-                         "value":"tutorial2_desktop"
+                         "value":"tutorial2"
                         }],
                  "rotation":0,
                  "type":"",
