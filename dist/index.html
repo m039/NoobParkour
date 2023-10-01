@@ -8,7 +8,10 @@
     <script src="./js/instant-games-bridge.js"></script>
   </head>
   <body>
-    <span id="loader" class="loader center"></span>
+    <div id="loader" class="loader-container center">
+      <img src="images/Logo.png" class="loader-image"></img>
+      <span class="loader top-margin"></span>
+    </div>
 
     <script>
       bridge.initialize().then(() => {
