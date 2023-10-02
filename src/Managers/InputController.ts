@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 import { GameManager } from '../Scenes/BaseScene';
 import TextureKeys from '../Consts/TextureKeys';
 import { GameHeight, GameWidth } from '../Consts/Consts';
-import { InstantGamesBridge } from '../instant-games-bridge';
+import { InstantGamesBridge } from 'instant-games-bridge';
 
 export interface InputButton {
     get isUp() : boolean;

@@ -1,6 +1,4 @@
-import * as Phaser from 'phaser';
 import BaseScene from './BaseScene';
-import SettingsManager from '../Managers/SettingsManager';
 import TextureKeys from '../Consts/TextureKeys';
 import FontKeys from '../Consts/FontKeys';
 import SceneKeys from '../Consts/SceneKeys';

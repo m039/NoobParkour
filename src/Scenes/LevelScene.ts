@@ -9,7 +9,7 @@ import SceneKeys from '../Consts/SceneKeys';
 import InputController, { InputButton } from '../Managers/InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
-import { InstantGamesBridge } from '../instant-games-bridge';
+import { InstantGamesBridge } from 'instant-games-bridge';
 import TextureKeys from '../Consts/TextureKeys';
 import { MaxLevels } from '../Consts/Consts';
 import { Progress } from '../StaticManagers/ProgressStaticManager';
