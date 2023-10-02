@@ -16,3 +16,5 @@ node_modules/
 dist/Game.js
 dist/Game.js.map
 dist.zip
+
+package-lock.json
