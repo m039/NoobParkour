@@ -25,7 +25,8 @@ class FlagButton {
         y:number, 
         defaultTexture:TextureKeys, 
         hoveredTexture:TextureKeys,
-        language:Language) {
+        language:Language
+    ) {
         this.welcomeScene = welcomeScene;
         this.image = welcomeScene.add.image(x, y, defaultTexture);
         this.defaultTexture = defaultTexture;
@@ -78,13 +79,13 @@ export default class WelcomeScene extends BaseScene {
         const noob = this.add.sprite(127, 227, "noob");
         noob.play({key:"Sit", repeat: -1});
 
-        this.title = this.add.image(240, 100, "title_ru");
+        this.title = this.add.image(240, 100, TextureKeys.TitleRu);
         this.constructStartButton();
 
         this.englishFlag = new FlagButton(
             this, 
-            480 - 56, 
-            270 - 20, 
+            GameWidth - 56, 
+            GameHeight - 20, 
             TextureKeys.EnglishFlagDefault, 
             TextureKeys.EnglishFlagHovered, 
             Language.English
@@ -92,8 +93,8 @@ export default class WelcomeScene extends BaseScene {
 
         this.russianFlag = new FlagButton(
             this,
-            480 - 25, 
-            270 - 20,
+            GameWidth - 25, 
+            GameHeight - 20,
             TextureKeys.RussianFlagDefault,
             TextureKeys.RussianFlagHovered,
             Language.Russian
@@ -129,13 +130,13 @@ export default class WelcomeScene extends BaseScene {
     public setLanguage(language : Language) {
         switch (language) {
             case Language.Russian:
-                this.title.setTexture("title_ru");
+                this.title.setTexture(TextureKeys.TitleRu);
                 this.russianFlag.setSelected(true);
                 this.englishFlag.setSelected(false);
                 break;
             default:
             case Language.English:
-                this.title.setTexture("title_en");
+                this.title.setTexture(TextureKeys.TitleEn);
                 this.russianFlag.setSelected(false);
                 this.englishFlag.setSelected(true);
                 break;
