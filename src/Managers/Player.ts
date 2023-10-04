@@ -199,7 +199,7 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityY(this.body.velocity.y - 400);
+        this.body.setVelocityY(-300);
         this.inDoubleJump = true;
         this.showDust();
 

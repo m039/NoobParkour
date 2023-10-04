@@ -95,8 +95,10 @@ export default class InputController implements GameManager {
     private rightKeyOnScreen : OnScreenInputButton;
     private upKeyOnScreen : OnScreenInputButton;
 
-    private gamepadAJustPressed : number;
-    private upKeyOnScreenJustPressed : number;
+    private gamepadAJustPressed : number = 0;
+    private upKeyOnScreenJustPressed : number = 0;
+    private wKeyJustPressed : number = 0;
+    private upKeyJustPressed : number = 0;
     
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
@@ -145,6 +147,11 @@ export default class InputController implements GameManager {
     }
 
     update(time: number, delta: number): void {
+        this.handleJustPressed();
+    }
+
+    private handleJustPressed() : void {
+        // Gamepad.
         const pad = this.scene.input.gamepad.getPad(0);
         if (pad && pad.A) {
             this.gamepadAJustPressed = Math.min(this.gamepadAJustPressed + 1, 2);
@@ -152,12 +159,26 @@ export default class InputController implements GameManager {
             this.gamepadAJustPressed = 0;
         }
 
+        // Up key (on screen).
         if (this.upKeyOnScreen) {
             if (this.upKeyOnScreen.isDown) {
                 this.upKeyOnScreenJustPressed = Math.min(this.upKeyOnScreenJustPressed + 1, 2);
             } else {
                 this.upKeyOnScreenJustPressed = 0;
             }
+        }
+
+        // Up key.
+        if (this.upKey.isDown) {
+            this.upKeyJustPressed = Math.min(this.upKeyJustPressed + 1, 2);
+        } else {
+            this.upKeyJustPressed = 0;
+        }
+
+        if (this.wKey.isDown) {
+            this.wKeyJustPressed = Math.min(this.wKeyJustPressed + 1, 2);
+        } else {
+            this.wKeyJustPressed = 0;
         }
     }
 
@@ -214,8 +235,7 @@ export default class InputController implements GameManager {
             return true;
         }
 
-        return Phaser.Input.Keyboard.JustDown(this.upKey) || 
-            Phaser.Input.Keyboard.JustDown(this.wKey);
+        return this.upKeyJustPressed == 1 || this.wKeyJustPressed == 1;
     }
 
     get isUpDown() : boolean {
