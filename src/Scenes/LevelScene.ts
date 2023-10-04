@@ -117,7 +117,7 @@ export default class LevelScene extends BaseScene {
 
         super.create();
 
-        const tileset = this.map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles);
+        const tileset = this.map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles, 16, 16, 1, 2);
         const groundLayer = this.map.createLayer("Ground", tileset);
         this.map.createLayer("Back", tileset);
         
@@ -137,7 +137,7 @@ export default class LevelScene extends BaseScene {
 
         this.placeCharacterAtStart(this.player, this.map, false);
         this.centerCameraAtCharacter(this.player);
-        this.cameras.main.setZoom(4, 4).setRoundPixels(true);
+        this.cameras.main.setZoom(5, 5).setRoundPixels(true);
         this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
         this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);

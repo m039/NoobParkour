@@ -69,7 +69,7 @@ export default class WelcomeScene extends BaseScene {
         this.cameras.main.setZoom(4, 4).setOrigin(0, 0).setPosition(0, 0);
 
         const map = this.make.tilemap({ key: "map0"});
-        const tileset = map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles, 16, 16);
+        const tileset = map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles, 16, 16, 1, 2);
         const groundLayer = map.createLayer("Ground", tileset, -200, -20);
         groundLayer.setSkipCull(true);
 
