@@ -94,6 +94,9 @@ export default class InputController implements GameManager {
     private leftKeyOnScreen : OnScreenInputButton;
     private rightKeyOnScreen : OnScreenInputButton;
     private upKeyOnScreen : OnScreenInputButton;
+
+    private gamepadAJustPressed : number;
+    private upKeyOnScreenJustPressed : number;
     
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
@@ -142,6 +145,20 @@ export default class InputController implements GameManager {
     }
 
     update(time: number, delta: number): void {
+        const pad = this.scene.input.gamepad.getPad(0);
+        if (pad && pad.A) {
+            this.gamepadAJustPressed = Math.min(this.gamepadAJustPressed + 1, 2);
+        } else {
+            this.gamepadAJustPressed = 0;
+        }
+
+        if (this.upKeyOnScreen) {
+            if (this.upKeyOnScreen.isDown) {
+                this.upKeyOnScreenJustPressed = Math.min(this.upKeyOnScreenJustPressed + 1, 2);
+            } else {
+                this.upKeyOnScreenJustPressed = 0;
+            }
+        }
     }
 
     get isLeftDown() : boolean {
@@ -182,6 +199,23 @@ export default class InputController implements GameManager {
         }
 
         return this.rightKey.isDown || this.dKey.isDown;
+    }
+
+    get isUpJustDown() : boolean {
+        if (!this.enabled) {
+            return false;
+        }
+
+        if (this.upKeyOnScreenJustPressed == 1) {
+            return true;
+        }
+
+        if (this.gamepadAJustPressed == 1) {
+            return true;
+        }
+
+        return Phaser.Input.Keyboard.JustDown(this.upKey) || 
+            Phaser.Input.Keyboard.JustDown(this.wKey);
     }
 
     get isUpDown() : boolean {

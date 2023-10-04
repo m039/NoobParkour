@@ -137,7 +137,7 @@ export default class LevelScene extends BaseScene {
 
         this.placeCharacterAtStart(this.player, this.map, false);
         this.centerCameraAtCharacter(this.player);
-        this.cameras.main.setZoom(5, 5).setRoundPixels(true);
+        this.cameras.main.setZoom(5, 5);
         this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
         this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);
@@ -301,10 +301,10 @@ export default class LevelScene extends BaseScene {
             this.canDoubleJump = true;
         }
 
-        if (this.inputController.isUpDown && this.player.body.blocked.down) {
+        if (this.inputController.isUpJustDown && this.player.body.blocked.down) {
             this.player.jump();
             this.upKeyPressed = this.inputController.upKeyPressed;
-        } else if (this.inputController.isUpDown && 
+        } else if (this.inputController.isUpJustDown && 
             this.canDoubleJump && 
             this.player.body.velocity.y !== 0 && 
             this.upKeyPressed === undefined) 
