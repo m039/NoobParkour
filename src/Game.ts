@@ -5,6 +5,7 @@ import PreloadScene from './Scenes/PreloadScene';
 import AudioScene from './Scenes/AudioScene';
 import LevelScene from './Scenes/LevelScene';
 import LevelUIScene from './Scenes/LevelUIScene';
+import { MovementConsts } from './Managers/Player';
 
 const config : Phaser.Types.Core.GameConfig = {
     type: Phaser.WEBGL,
@@ -24,7 +25,6 @@ const config : Phaser.Types.Core.GameConfig = {
         default: 'arcade',
         arcade: {
             debug: false,
-            gravity: { y: 600}
         }
     },
     scene: [

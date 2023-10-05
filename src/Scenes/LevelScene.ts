@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 
 import AudioManager, { MusicId } from "../Managers/AudioManager";
 import BaseScene from "./BaseScene";
-import Player, { PlayerEvent } from '../Managers/Player';
+import Player, { MovementConsts, PlayerEvent } from '../Managers/Player';
 import CoinManager from '../Managers/CoinManager';
 import CloudManager from '../Managers/CloudManager';
 import SceneKeys from '../Consts/SceneKeys';
@@ -76,12 +76,16 @@ export default class LevelScene extends BaseScene {
     private bottomLine2 : Phaser.Types.Tilemaps.TiledObject;
 
     private upKeyPressed : InputButton;
+
+    private upKeyDownTimer : number = -1;
+
+    private coyoteTimer : number = -1;
     
     private canDoubleJump : boolean = false;
 
     private isMobile : boolean = false;
 
-    private tutorialSignPosts : Array<TutorialSignPost>
+    private tutorialSignPosts : Array<TutorialSignPost>;
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -289,6 +293,25 @@ export default class LevelScene extends BaseScene {
     override update(time : number, delta : number) {
         super.update(time, delta);
 
+        if (this.upKeyDownTimer >= 0) {
+            this.upKeyDownTimer += delta;
+        }
+
+        if (this.inputController.isUpJustDown) {
+            this.upKeyDownTimer = 0;
+        }
+
+        if (this.coyoteTimer >= 0) {
+            this.coyoteTimer += delta;
+        }
+
+        if (this.player.body.blocked.down) {
+            this.coyoteTimer = -1;
+            this.canDoubleJump = true;
+        } else if (this.coyoteTimer < 0) {
+            this.coyoteTimer = 0;
+        }
+
         if (this.inputController.isLeftDown) {
             this.player.moveLeft(this.inputController.strength);
         } else if (this.inputController.isRightDown) {
@@ -297,16 +320,14 @@ export default class LevelScene extends BaseScene {
             this.player.stay();
         }
 
-        if (this.player.body.blocked.down) {
-            this.canDoubleJump = true;
-        }
-
-        if (this.inputController.isUpJustDown && this.player.body.blocked.down) {
+        if (this.upKeyDownTimer >= 0 && this.upKeyDownTimer < MovementConsts.JumpBufferTimeMs &&
+            (this.coyoteTimer < 0 || this.coyoteTimer < MovementConsts.CoyoteTimeMs)) {
             this.player.jump();
             this.upKeyPressed = this.inputController.upKeyPressed;
+            this.upKeyDownTimer = -1;
+            this.coyoteTimer = -1;
         } else if (this.inputController.isUpJustDown && 
             this.canDoubleJump && 
-            this.player.body.velocity.y !== 0 && 
             this.upKeyPressed === undefined) 
         {
             this.canDoubleJump = false;

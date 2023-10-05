@@ -19,6 +19,17 @@ export enum PlayerEvent {
     DeathInAir = "DeathInAir"
 }
 
+export const MovementConsts = {
+    JumpBufferTimeMs: 70,
+    CoyoteTimeMs: 140,
+    JumpCutOffMultiplier: 0.4,
+    MaxFallSpeed: 300,
+    HorizontalSpeed: 100,
+    JumpSpeed: 250,
+    GravityUp: 500,
+    GravityDown: 800
+};
+
 export default class Player implements GameManager {
     container : Phaser.GameObjects.Container;
 
@@ -149,6 +160,18 @@ export default class Player implements GameManager {
 
             this.passedDistance = 0;
         }
+
+        // Limit vertical velocity.
+        if (this.body.velocity.y > MovementConsts.MaxFallSpeed) {
+            this.body.velocity.y = MovementConsts.MaxFallSpeed;
+        }
+
+        // Set gravity.
+        if (this.body.velocity.y > 0) {
+            this.body.gravity.y = MovementConsts.GravityDown;
+        } else {
+            this.body.gravity.y = MovementConsts.GravityUp;
+        }
     }
 
     public setPosition(x?:number, y?:number) {
@@ -172,7 +195,7 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityX(-100 * strength);
+        this.body.setVelocityX(-MovementConsts.HorizontalSpeed * strength);
         this.flipX = true;
     }
 
@@ -181,7 +204,7 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityX(100 * strength);
+        this.body.setVelocityX(MovementConsts.HorizontalSpeed * strength);
         this.flipX = false;
     }
 
@@ -190,7 +213,7 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityY(-300);
+        this.body.setVelocityY(-MovementConsts.JumpSpeed);
         this.showDust();
     }
 
@@ -199,7 +222,7 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityY(-300);
+        this.body.setVelocityY(-MovementConsts.JumpSpeed);
         this.inDoubleJump = true;
         this.showDust();
 
@@ -213,7 +236,7 @@ export default class Player implements GameManager {
         }
 
         if (this.body.velocity.y < 0) {
-            this.body.setVelocityY(0);
+            this.body.setVelocityY(this.body.velocity.y * MovementConsts.JumpCutOffMultiplier);
         }
     }
 
