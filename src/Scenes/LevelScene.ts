@@ -136,8 +136,9 @@ export default class LevelScene extends BaseScene {
         this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
             this.placeCharacterAtStart(this.player, this.map, true);
         });
-
+        
         this.physics.add.collider(this.player.container, groundLayer);
+        this.player.groundLayer = groundLayer;
 
         this.placeCharacterAtStart(this.player, this.map, false);
         this.centerCameraAtCharacter(this.player);
@@ -314,8 +315,7 @@ export default class LevelScene extends BaseScene {
         }
 
         if (this.player.body.blocked.down || 
-            (this.inputController.isLeftDown && this.player.body.blocked.left ||
-             this.inputController.isRightDown && this.player.body.blocked.right)) {
+            (this.player.isTouchingLeft || this.player.isTouchingRight)) {
             this.coyoteTimer = -1;
             this.canDoubleJump = true;
         } else if (this.coyoteTimer < 0) {
@@ -324,19 +324,21 @@ export default class LevelScene extends BaseScene {
 
         if (this.upKeyDownTimer >= 0 && this.upKeyDownTimer < MovementConsts.JumpBufferTimeMs &&
             (this.coyoteTimer < 0 || this.coyoteTimer < MovementConsts.CoyoteTimeMs)) {
-            if (this.player.body.blocked.left && !this.player.body.blocked.down) {
+            if (this.player.isTouchingLeft && !this.player.body.blocked.down) {
                 this.player.wallJump(1);
-            } else if (this.player.body.blocked.right && !this.player.body.blocked.down) {
+            } else if (this.player.isTouchingRight && !this.player.body.blocked.down) {
                 this.player.wallJump(-1);
             } else {
                 this.player.jump();
                 this.upKeyPressed = this.inputController.upKeyPressed;
-            }            
+            }
             this.upKeyDownTimer = -1;
             this.coyoteTimer = -1;
+            
         } else if (this.upKeyDownTimer >= 0 && 
             this.canDoubleJump && 
-            this.upKeyPressed === undefined) 
+            this.upKeyPressed === undefined && 
+            !this.player.body.blocked.down) 
         {
             this.upKeyDownTimer = -1;
             this.canDoubleJump = false;

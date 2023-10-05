@@ -43,6 +43,8 @@ export default class Player implements GameManager {
 
     public emmiter : Phaser.Events.EventEmitter;
 
+    public groundLayer : Phaser.Tilemaps.TilemapLayer;
+
     private sprite : Phaser.GameObjects.Sprite;    
 
     private currentAnimation? : PlayerAnimation;
@@ -131,10 +133,32 @@ export default class Player implements GameManager {
         }
     }
 
+    public get isTouchingLeft() {
+        if (this.groundLayer === undefined) {
+            return false;
+        }
+
+        return this.groundLayer.getTileAtWorldXY(
+            this.container.x - this.bodySize.width / 2 - 1,
+            this.container.y
+        ) !== null;
+    }
+
+    public get isTouchingRight() {
+        if (this.groundLayer === undefined) {
+            return false;
+        }
+
+        return this.groundLayer.getTileAtWorldXY(
+            this.container.x + this.bodySize.width / 2 + 1,
+            this.container.y
+        ) !== null;
+    }
+
     update(time: number, delta: number) {
         if (this.inDieInAir) {
             this.play(PlayerAnimation.DeathInAir, false);
-        } else if ((this.body.blocked.right || this.body.blocked.left) && 
+        } else if ((this.isTouchingLeft || this.isTouchingRight) && 
                     !this.body.blocked.down) {
             this.play(PlayerAnimation.WallSlide);
         } else if (this.inDoubleJump) {
@@ -186,8 +210,8 @@ export default class Player implements GameManager {
 
         // Wall slide.
 
-        if ((this.body.blocked.right ||
-             this.body.blocked.left) && 
+        if ((this.isTouchingLeft ||
+             this.isTouchingRight) && 
             !this.body.blocked.down) {
             this.body.velocity.y = Math.min(this.body.velocity.y, MovementConsts.WallSlideFallSpeed);
         }
