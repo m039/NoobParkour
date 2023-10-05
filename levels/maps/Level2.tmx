@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="9" nextobjectid="21">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="9" nextobjectid="22">
  <editorsettings>
-  <export target="../../dist/assets/levels/maps/Level1.json" format="json"/>
+  <export target="../../dist/assets/levels/maps/Level2.tmj" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="50" columns="10">
   <image source="../tilesets/NoobParkourTileset.png" width="160" height="80"/>
  </tileset>
  <layer id="1" name="Ground" width="35" height="20">
   <data encoding="csv">
+   <chunk x="-16" y="0" width="16" height="16">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,35,35,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,35,35,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,35,35,36,36,36,36,36,36,36,36,36,36,0,0,0,
+0,35,35,35,35,35,35,35,35,35,35,35,35,0,0,0,
+0,39,39,39,39,39,39,39,40,40,39,39,39,0,0,0,
+0,0,0,0,0,0,0,0,39,39,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
    <chunk x="0" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -95,16 +113,19 @@
   <object id="10" name="BottomLine1" x="-0.333333" y="231.333">
    <point/>
   </object>
-  <object id="17" name="CloudBounds" x="-284" y="-72" width="1056" height="232"/>
+  <object id="17" name="CloudBounds" x="-508" y="-72" width="1280" height="232"/>
  </objectgroup>
  <objectgroup id="7" name="Coins">
-  <object id="14" name="Coin" x="254" y="80.8333">
+  <object id="14" name="Coin" x="256" y="80">
    <point/>
   </object>
   <object id="15" name="Coin" x="254.417" y="106.583">
    <point/>
   </object>
   <object id="16" name="Coin" x="254.667" y="128.417">
+   <point/>
+  </object>
+  <object id="21" name="Coin" x="-97" y="8.5">
    <point/>
   </object>
  </objectgroup>

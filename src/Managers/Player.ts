@@ -12,7 +12,8 @@ enum PlayerAnimation {
     Fall = "Fall",
     DoubleJump = "Double Jump",
     DeathInAir = "Death In Air",
-    Fly = "Fly"
+    Fly = "Fly",
+    WallSlide = "Wall Slide"
 }
 
 export enum PlayerEvent {
@@ -27,17 +28,20 @@ export const MovementConsts = {
     HorizontalSpeed: 100,
     JumpSpeed: 250,
     GravityUp: 500,
-    GravityDown: 800
+    GravityDown: 800,
+    WallSlideFallSpeed: 50,
+    WallSlideHorizontalSpeed: 150,
+    WallSlideCooldownMs: 200
 };
 
 export default class Player implements GameManager {
-    container : Phaser.GameObjects.Container;
+    public container : Phaser.GameObjects.Container;
 
-    readonly bodySize = { width: 7, height: 16 };
+    public readonly bodySize = { width: 7, height: 16 };
 
-    body : Phaser.Physics.Arcade.Body;
+    public body : Phaser.Physics.Arcade.Body;
 
-    emmiter : Phaser.Events.EventEmitter;
+    public emmiter : Phaser.Events.EventEmitter;
 
     private sprite : Phaser.GameObjects.Sprite;    
 
@@ -58,6 +62,10 @@ export default class Player implements GameManager {
     private dustEmmiter : Phaser.GameObjects.Particles.ParticleEmitter;
 
     private passedDistance : number;
+
+    private wallSlideTimer : number = 0;
+
+    private velocityX : number;
     
     constructor(levelScene: LevelScene) {
         this.levelScene = levelScene;
@@ -126,6 +134,9 @@ export default class Player implements GameManager {
     update(time: number, delta: number) {
         if (this.inDieInAir) {
             this.play(PlayerAnimation.DeathInAir, false);
+        } else if ((this.body.blocked.right || this.body.blocked.left) && 
+                    !this.body.blocked.down) {
+            this.play(PlayerAnimation.WallSlide);
         } else if (this.inDoubleJump) {
             this.play(PlayerAnimation.DoubleJump, false);
         } else if (this.inFly) {
@@ -134,25 +145,25 @@ export default class Player implements GameManager {
             this.play(PlayerAnimation.Jump);
         } else if (this.body.velocity.y > 0) {
             this.play(PlayerAnimation.Fall);
-        } else if (Math.abs(this.body.velocity.x) > 0 && this.body.blocked.down) {
+        } else if (Math.abs(this.velocityX) > 0 && this.body.blocked.down) {
             this.play(PlayerAnimation.Run);
         } else if (this.body.blocked.down || this.inIdle) {
             this.play(PlayerAnimation.Idle);
         }
 
         // Show dust particles when the direction of movement is changed.
-        this.passedDistance += this.body.velocity.x * delta / 1000;
+        this.passedDistance += this.velocityX * delta / 1000;
 
-        if (this.body.velocity.x > 0 && this.passedDistance < 0 ||
-            this.body.velocity.x < 0 && this.passedDistance > 0 || 
-            this.body.velocity.x === 0 && Math.abs(this.passedDistance) > 0) {
+        if (this.velocityX > 0 && this.passedDistance < 0 ||
+            this.velocityX < 0 && this.passedDistance > 0 || 
+            this.velocityX === 0 && Math.abs(this.passedDistance) > 0) {
             
             // Only when the player is standing on the ground.
             if (this.body.blocked.down) {
                 const passedDistanceOld = this.passedDistance;
                 setTimeout(() => {
-                    if (this.body.velocity.x > 0 && passedDistanceOld < 0 ||
-                        this.body.velocity.x < 0 && passedDistanceOld > 0) {
+                    if (this.velocityX > 0 && passedDistanceOld < 0 ||
+                        this.velocityX < 0 && passedDistanceOld > 0) {
                         this.showDust();
                     }
                 }, 100);
@@ -172,6 +183,21 @@ export default class Player implements GameManager {
         } else {
             this.body.gravity.y = MovementConsts.GravityUp;
         }
+
+        // Wall slide.
+
+        if ((this.body.blocked.right ||
+             this.body.blocked.left) && 
+            !this.body.blocked.down) {
+            this.body.velocity.y = Math.min(this.body.velocity.y, MovementConsts.WallSlideFallSpeed);
+        }
+
+        if (this.wallSlideTimer > 0) {
+            this.wallSlideTimer -= delta;
+        }
+
+        // Update velocity.
+        this.body.velocity.x = this.velocityX;
     }
 
     public setPosition(x?:number, y?:number) {
@@ -195,8 +221,10 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityX(-MovementConsts.HorizontalSpeed * strength);
-        this.flipX = true;
+        if (this.wallSlideTimer <= 0) {
+            this.velocityX = -MovementConsts.HorizontalSpeed * strength;
+            this.flipX = true;
+        }
     }
 
     public moveRight(strength: number) {
@@ -204,8 +232,10 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityX(MovementConsts.HorizontalSpeed * strength);
-        this.flipX = false;
+        if (this.wallSlideTimer <= 0) {
+            this.velocityX = MovementConsts.HorizontalSpeed * strength;
+            this.flipX = false;
+        }
     }
 
     public jump() {
@@ -213,7 +243,7 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityY(-MovementConsts.JumpSpeed);
+        this.body.velocity.y = -MovementConsts.JumpSpeed;
         this.showDust();
     }
 
@@ -222,12 +252,24 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityY(-MovementConsts.JumpSpeed);
+        this.body.velocity.y = -MovementConsts.JumpSpeed;
         this.inDoubleJump = true;
         this.showDust();
 
         const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
         audioScene.audioManager.playSound(SoundId.Jump);
+    }
+
+    public wallJump(direction: number) {
+        if (this.isDead) {
+            return;
+        }
+
+        this.body.velocity.y = -MovementConsts.JumpSpeed;
+        this.velocityX = direction * MovementConsts.WallSlideHorizontalSpeed;
+        this.showDust();
+        this.wallSlideTimer = MovementConsts.WallSlideCooldownMs;
+        this.flipX = direction == -1;
     }
 
     public stopJump() {
@@ -236,7 +278,7 @@ export default class Player implements GameManager {
         }
 
         if (this.body.velocity.y < 0) {
-            this.body.setVelocityY(this.body.velocity.y * MovementConsts.JumpCutOffMultiplier);
+            this.body.velocity.y = this.body.velocity.y * MovementConsts.JumpCutOffMultiplier;
         }
     }
 
@@ -245,7 +287,9 @@ export default class Player implements GameManager {
             return;
         }
 
-        this.body.setVelocityX(0);
+        if (this.wallSlideTimer <= 0) {
+            this.velocityX = 0;
+        }
     }
 
     public dieInAir() {
@@ -256,6 +300,7 @@ export default class Player implements GameManager {
         this.inDieInAir = true;
         this.isDead = true;
         this.body.setVelocity(0, 0);
+        this.velocityX = 0;
         this.body.setAllowGravity(false);
 
         const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
@@ -302,6 +347,7 @@ export default class Player implements GameManager {
         this.flipX = false;
         this.inFly = false;
         this.body.setVelocity(0, 0);
+        this.velocityX = 0;
         this.body.setAllowGravity(false);
     }
 

@@ -330,7 +330,7 @@
    { "name": "Death", "from": 23, "to": 27, "direction": "forward", "color": "#000000ff" },
    { "name": "Death In Air", "from": 28, "to": 33, "direction": "forward", "color": "#000000ff" },
    { "name": "Double Jump", "from": 34, "to": 36, "direction": "forward", "color": "#000000ff" },
-   { "name": "Wall Jump", "from": 37, "to": 38, "direction": "forward", "color": "#000000ff" }
+   { "name": "Wall Slide", "from": 37, "to": 38, "direction": "forward", "color": "#000000ff" }
   ],
   "layers": [
    { "name": "Noob", "opacity": 255, "blendMode": "normal" }
