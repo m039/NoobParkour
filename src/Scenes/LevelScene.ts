@@ -123,6 +123,7 @@ export default class LevelScene extends BaseScene {
 
         const tileset = this.map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles, 16, 16, 1, 2);
         const groundLayer = this.map.createLayer("Ground", tileset);
+        
         this.map.createLayer("Back", tileset);
         
         this.inputController = (this.scene.get(SceneKeys.LevelUI) as LevelUIScene).inputController;
@@ -133,11 +134,22 @@ export default class LevelScene extends BaseScene {
 
         groundLayer.setCollisionByExclusion([-1]);
 
+        // Spikes.
+        if (this.map.getLayer("Spikes")) {
+            const spikesLayer = this.map.createLayer("Spikes", tileset);
+            spikesLayer.setCollisionByExclusion([-1]);
+
+            this.physics.add.overlap(this.player.container, spikesLayer, () => {
+                this.player.dieInAir();
+            }, this.processSpikes, this);
+        }        
+
         this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
             this.placeCharacterAtStart(this.player, this.map, true);
         });
         
         this.physics.add.collider(this.player.container, groundLayer);
+        
         this.player.groundLayer = groundLayer;
 
         this.placeCharacterAtStart(this.player, this.map, false);
@@ -146,6 +158,73 @@ export default class LevelScene extends BaseScene {
         this.bottomLine1 = this.map.findObject("Objects", o => o.name === "BottomLine1");
         this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);
+
+        if (debugConfig.debugSpikes) {
+            this.debugGraphics = this.add.graphics();
+            this.debugGraphics.depth = 100;
+        }
+
+        this.rectangle1 = new Phaser.Geom.Rectangle();
+        this.rectangle2 = new Phaser.Geom.Rectangle();
+    }
+
+    private debugGraphics : Phaser.GameObjects.Graphics;
+    private rectangle1 : Phaser.Geom.Rectangle;
+    private rectangle2 : Phaser.Geom.Rectangle;
+
+    private processSpikes(
+        player: Phaser.Types.Physics.Arcade.GameObjectWithBody,
+        tile : Phaser.Tilemaps.Tile
+    ) : boolean {
+        this.rectangle1.x = player.body.left;
+        this.rectangle1.y = player.body.top;
+        this.rectangle1.width = player.body.width;
+        this.rectangle1.height = player.body.height;
+
+        if (tile.index === 44) {
+            // Bottom.
+            this.rectangle2.x = tile.getLeft();
+            this.rectangle2.width = tile.width;
+            this.rectangle2.height = 6;
+            this.rectangle2.y = tile.getTop() + tile.height - 6;
+        } else if (tile.index === 45) {
+            // Left
+            this.rectangle2.x = tile.getLeft();
+            this.rectangle2.width = 6;
+            this.rectangle2.height = tile.height;
+            this.rectangle2.y = tile.getTop();
+        } else if (tile.index === 46) {
+            // Top
+            this.rectangle2.x = tile.getLeft();
+            this.rectangle2.width = tile.width;
+            this.rectangle2.height = 6;
+            this.rectangle2.y = tile.getTop();
+        } else if (tile.index === 47) {
+            // Right
+            this.rectangle2.x = tile.getLeft() + tile.width - 6;
+            this.rectangle2.width = 6;
+            this.rectangle2.height = tile.height;
+            this.rectangle2.y = tile.getTop();
+        } else {
+            return false;
+        }
+
+        this.rectangle2.x += 2;
+        this.rectangle2.y += 2;
+        this.rectangle2.width -= 4;
+        this.rectangle2.height -= 4;
+        
+        if (this.debugGraphics) {
+            this.debugGraphics.clear();
+
+            this.debugGraphics.fillStyle(0x0000af, 1);
+            this.debugGraphics.fillRect(this.rectangle1.x, this.rectangle1.y, this.rectangle1.width, this.rectangle1.height);
+
+            this.debugGraphics.fillStyle(0x0000ff, 1);
+            this.debugGraphics.fillRect(this.rectangle2.x, this.rectangle2.y, this.rectangle2.width, this.rectangle2.height);
+        }
+
+        return Phaser.Geom.Intersects.RectangleToRectangle(this.rectangle1, this.rectangle2);
     }
 
     private createPortals() {

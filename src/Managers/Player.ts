@@ -246,7 +246,7 @@ export default class Player implements GameManager {
         }
 
         if (this.wallSlideTimer <= 0) {
-            this.velocityX = -MovementConsts.HorizontalSpeed * strength;
+            this.setVelocityX(-MovementConsts.HorizontalSpeed * strength);
             this.flipX = true;
         }
     }
@@ -257,7 +257,7 @@ export default class Player implements GameManager {
         }
 
         if (this.wallSlideTimer <= 0) {
-            this.velocityX = MovementConsts.HorizontalSpeed * strength;
+            this.setVelocityX(MovementConsts.HorizontalSpeed * strength);
             this.flipX = false;
         }
     }
@@ -290,7 +290,7 @@ export default class Player implements GameManager {
         }
 
         this.body.velocity.y = -MovementConsts.JumpSpeed;
-        this.velocityX = direction * MovementConsts.WallSlideHorizontalSpeed;
+        this.setVelocityX(direction * MovementConsts.WallSlideHorizontalSpeed);
         this.showDust();
         this.wallSlideTimer = MovementConsts.WallSlideCooldownMs;
         this.flipX = direction == -1;
@@ -312,7 +312,7 @@ export default class Player implements GameManager {
         }
 
         if (this.wallSlideTimer <= 0) {
-            this.velocityX = 0;
+            this.setVelocityX(0);
         }
     }
 
@@ -324,7 +324,7 @@ export default class Player implements GameManager {
         this.inDieInAir = true;
         this.isDead = true;
         this.body.setVelocity(0, 0);
-        this.velocityX = 0;
+        this.setVelocityX(0);
         this.body.setAllowGravity(false);
 
         const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
@@ -371,8 +371,12 @@ export default class Player implements GameManager {
         this.flipX = false;
         this.inFly = false;
         this.body.setVelocity(0, 0);
-        this.velocityX = 0;
+        this.setVelocityX(0);
         this.body.setAllowGravity(false);
+    }
+
+    private setVelocityX(x:number) {
+        this.velocityX = x;
     }
 
     public fly() {
