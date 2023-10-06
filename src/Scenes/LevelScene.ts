@@ -16,6 +16,52 @@ import { Progress } from '../StaticManagers/ProgressStaticManager';
 import LevelUIScene from './LevelUIScene';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
 
+class SandTile {
+    public isHidden : boolean;
+    private sprite : Phaser.GameObjects.Sprite;
+    private timer : number;
+    private cooldown : number;
+
+    constructor(sprite: Phaser.GameObjects.Sprite) {
+        this.sprite = sprite;
+
+        sprite.scene.physics.add.existing(sprite, true);
+        sprite.setData("data", this);
+        this.timer = -1;
+        this.cooldown = -1;
+        this.isHidden = false;
+    }
+
+    public startHide() : void {
+        if (this.timer < 0) {
+            this.timer = 0;
+        }
+    }
+
+    public update(delta: number) : void {
+        if (this.timer >= 0) {
+            if (this.timer < 600) {
+                this.timer += delta;
+            } else {
+                this.sprite.visible = false;
+                this.isHidden = true;
+                this.timer = -1;
+                this.cooldown = 0;
+            }
+        }
+
+        if (this.cooldown >= 0) {
+            if (this.cooldown < 2000) {
+                this.cooldown += delta;
+            } else {
+                this.sprite.visible = true;
+                this.isHidden = false;
+                this.cooldown = -1;
+            }
+        }
+    }
+}
+
 class TutorialSignPost extends Phaser.GameObjects.Image {
     arcadeBody : Phaser.Physics.Arcade.Body;
     overlap : boolean;
@@ -93,6 +139,10 @@ export default class LevelScene extends BaseScene {
 
     private rectangle2 : Phaser.Geom.Rectangle;
 
+    private sandTiles : Array<SandTile>;
+
+    private sandTilesGroup : Phaser.GameObjects.Group;
+
     constructor() {
         super({key:SceneKeys.Level});
 
@@ -137,6 +187,7 @@ export default class LevelScene extends BaseScene {
         this.createPortals();
         this.createLava();
         this.createTutorial();
+        this.createSandTiles(groundLayer);
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -342,6 +393,38 @@ export default class LevelScene extends BaseScene {
         }
     }
 
+    private createSandTiles(groundLayer:Phaser.Tilemaps.TilemapLayer) {
+        this.sandTilesGroup = this.add.group();
+        this.sandTiles = [];
+        
+        var tiles = groundLayer.createFromTiles(32, -1, { key: TextureKeys.SandTile });
+        if (tiles) {
+            for (var tile of tiles) {
+                tile.x += tile.width / 2;
+                tile.y += tile.height / 2;
+
+                this.sandTiles.push(new SandTile(tile));
+                this.sandTilesGroup.add(tile);
+            }
+        }
+
+        this.physics.add.collider(
+            this.player.container, 
+            this.sandTilesGroup, 
+            undefined, 
+            (player : any, tile : any) => {
+                var sandTile = tile.getData("data") as SandTile;
+                if (sandTile.isHidden) {
+                    return false;
+                }
+
+                sandTile.startHide();
+
+                return true;
+            }, 
+            this);
+    }
+
     private getTextKeyProperty(tiledObject: Phaser.Types.Tilemaps.TiledObject) : string {
         for (var property of tiledObject.properties) {
             if (property.name === "TextKey") {
@@ -442,6 +525,14 @@ export default class LevelScene extends BaseScene {
         if (this.tutorialSignPosts) {
             for (var signPost of this.tutorialSignPosts) {
                 signPost.update();
+            }
+        }
+
+        // Update sand tiles.
+
+        if (this.sandTiles) {
+            for (var tile of this.sandTiles) {
+                tile.update(delta);
             }
         }
     }

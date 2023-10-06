@@ -45,7 +45,8 @@ enum TextureKeys {
     RightButtonDefault = "right_button_default",
     RightButtonHovered = "right_button_hovered",
     UpButtonDefault = "up_button_default",
-    UpButtonHovered = "up_button_hovered"
+    UpButtonHovered = "up_button_hovered",
+    SandTile = "sand_tile"
 }
 
 export default TextureKeys;

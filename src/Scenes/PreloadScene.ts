@@ -106,6 +106,7 @@ export default class PreloadScene extends BaseScene {
 
         this.load.image(TextureKeys.SignPostDefault, "assets/images/SignPostDefault.png");
         this.load.image(TextureKeys.SignPostHovered, "assets/images/SignPostHovered.png");
+        this.load.image(TextureKeys.SandTile, "assets/images/SandTile.png");
 
         // LevelUIScene.
 
