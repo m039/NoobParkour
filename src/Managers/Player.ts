@@ -294,6 +294,7 @@ export default class Player implements GameManager {
         this.showDust();
         this.wallSlideTimer = MovementConsts.WallSlideCooldownMs;
         this.flipX = direction == -1;
+        this.inDoubleJump = false;
     }
 
     public stopJump() {

@@ -87,6 +87,12 @@ export default class LevelScene extends BaseScene {
 
     private tutorialSignPosts : Array<TutorialSignPost>;
 
+    private debugGraphics : Phaser.GameObjects.Graphics;
+
+    private rectangle1 : Phaser.Geom.Rectangle;
+
+    private rectangle2 : Phaser.Geom.Rectangle;
+
     constructor() {
         super({key:SceneKeys.Level});
 
@@ -168,10 +174,6 @@ export default class LevelScene extends BaseScene {
         this.rectangle2 = new Phaser.Geom.Rectangle();
     }
 
-    private debugGraphics : Phaser.GameObjects.Graphics;
-    private rectangle1 : Phaser.Geom.Rectangle;
-    private rectangle2 : Phaser.Geom.Rectangle;
-
     private processSpikes(
         player: Phaser.Types.Physics.Arcade.GameObjectWithBody,
         tile : Phaser.Tilemaps.Tile
@@ -214,7 +216,7 @@ export default class LevelScene extends BaseScene {
         this.rectangle2.width -= 4;
         this.rectangle2.height -= 4;
         
-        if (this.debugGraphics) {
+        if (debugConfig.debugSpikes) {
             this.debugGraphics.clear();
 
             this.debugGraphics.fillStyle(0x0000af, 1);
