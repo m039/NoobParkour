@@ -27,6 +27,7 @@ export const MovementConsts = {
     MaxFallSpeed: 300,
     HorizontalSpeed: 100,
     JumpSpeed: 250,
+    LongJumpSpeed: 320,
     GravityUp: 500,
     GravityDown: 800,
     WallSlideFallSpeed: 50,
@@ -268,6 +269,15 @@ export default class Player implements GameManager {
         }
 
         this.body.velocity.y = -MovementConsts.JumpSpeed;
+        this.showDust();
+    }
+
+    public longJump() {
+        if (this.isDead) {
+            return;
+        }
+
+        this.body.velocity.y = -MovementConsts.LongJumpSpeed;
         this.showDust();
     }
 

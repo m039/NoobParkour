@@ -16,6 +16,51 @@ import { Progress } from '../StaticManagers/ProgressStaticManager';
 import LevelUIScene from './LevelUIScene';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
 
+class JumpTile {
+    private sprite : Phaser.GameObjects.Sprite;
+    private isAnimating : boolean;
+
+    constructor(sprite: Phaser.GameObjects.Sprite) {
+        this.sprite = sprite;
+        this.sprite.setOrigin(0.5, 1);
+        this.sprite.y += this.sprite.height / 2;
+        this.isAnimating = false;
+    }
+
+    public squash() {
+        if (this.isAnimating) {
+            return;
+        }
+
+        this.isAnimating = true;
+
+        this.sprite.setTexture(TextureKeys.JumpTileHighlighted);
+        this.sprite.scene.tweens.add({
+            targets: this.sprite,
+            scaleY: 0.3,
+            scaleX: 1.2,
+            duration: 200,
+            ease: Phaser.Math.Easing.Quintic.Out,
+            onComplete: () => {
+                this.sprite.setTexture(TextureKeys.JumpTile);
+
+                this.sprite.scene.tweens.add({
+                    targets: this.sprite,
+                    scaleY: 1.2,
+                    scaleX: 0.8,
+                    duration: 200,
+                    ease: Phaser.Math.Easing.Back.Out,
+                    onComplete: () => {
+                        this.sprite.scaleY = 1;
+                        this.sprite.scaleX = 1;
+                        this.isAnimating = false;
+                    }
+                });
+            }
+        });
+    }
+}
+
 class SandTile {
     public isHidden : boolean;
     private sprite : Phaser.GameObjects.Sprite;
@@ -23,12 +68,11 @@ class SandTile {
     private cooldown : number;
     private initPosition : {x:number, y:number};
     private shakeCooldown : number;
+    private isShaking : boolean;
 
     constructor(sprite: Phaser.GameObjects.Sprite) {
         this.sprite = sprite;
 
-        sprite.scene.physics.add.existing(sprite, true);
-        sprite.setData("data", this);
         this.timer = -1;
         this.cooldown = -1;
         this.isHidden = false;
@@ -39,23 +83,27 @@ class SandTile {
         if (this.timer < 0) {
             this.timer = 0;
             this.shakeCooldown = 0;
+            this.isShaking = true;
         }
     }
 
     public update(delta: number) : void {
-        const SandTileShakeOffset = 2;
+        if (this.isShaking) {
+            this.shakeCooldown += delta;
+            const offset = 0.1;
+
+            if (this.shakeCooldown > 40) {
+                this.sprite.setOrigin(
+                    0.5 - offset / 2 + offset * Math.random(),
+                    0.5 - offset / 2 + offset * Math.random()
+                );
+                this.shakeCooldown = 0;
+            }
+        }
 
         if (this.timer >= 0) {
-            if (this.timer < 600) {
+            if (this.timer < 300) {
                 this.timer += delta;
-                this.shakeCooldown += delta;
-
-                if (this.shakeCooldown > 20) {
-                    this.sprite.x = this.initPosition.x + Math.random() * SandTileShakeOffset;
-                    this.sprite.y = this.initPosition.y + Math.random() * SandTileShakeOffset;
-                    this.shakeCooldown = 0;
-                }
-
             } else {
                 this.sprite.x = this.initPosition.x;
                 this.sprite.y = this.initPosition.y;
@@ -69,6 +117,7 @@ class SandTile {
                     onComplete: () => {
                         this.sprite.visible = false;
                         this.cooldown = 0;
+                        this.isShaking = false;
                     }
                 });
 
@@ -84,7 +133,8 @@ class SandTile {
                 this.sprite.visible = true;
                 this.sprite.alpha = 0.0;
                 this.sprite.x = this.initPosition.x;
-                this.sprite.y = this.initPosition.y - 35;
+                this.sprite.y = this.initPosition.y - 10;
+                this.sprite.setOrigin(0.5, 0.5);
                 this.sprite.scene.tweens.add({
                     targets: this.sprite,
                     y: this.initPosition.y,
@@ -181,6 +231,8 @@ export default class LevelScene extends BaseScene {
 
     private sandTiles : Array<SandTile>;
 
+    private performLongJump : boolean;
+
     constructor() {
         super({key:SceneKeys.Level});
 
@@ -226,7 +278,8 @@ export default class LevelScene extends BaseScene {
         this.createLava();
         this.createTutorial();
         this.createSandTiles(groundLayer);
-        this.createSpikes(tileset);
+        this.createJumpTiles(groundLayer);
+        this.createSpikes(tileset);        
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -247,6 +300,7 @@ export default class LevelScene extends BaseScene {
 
         this.rectangle1 = new Phaser.Geom.Rectangle();
         this.rectangle2 = new Phaser.Geom.Rectangle();
+        this.performLongJump = false;
     }
 
     private createSpikes(tileset : Phaser.Tilemaps.Tileset) : void {
@@ -443,7 +497,12 @@ export default class LevelScene extends BaseScene {
                 tile.x += tile.width / 2;
                 tile.y += tile.height / 2;
 
-                this.sandTiles.push(new SandTile(tile));
+                const sandTile = new SandTile(tile);
+
+                this.physics.add.existing(tile, true);
+                tile.setData("data", sandTile);
+
+                this.sandTiles.push(sandTile);
                 sandTilesGroup.add(tile);
             }
         }
@@ -462,6 +521,33 @@ export default class LevelScene extends BaseScene {
 
                 return true;
             }, 
+            this);
+    }
+
+    private createJumpTiles(groundLayer:Phaser.Tilemaps.TilemapLayer) {
+        const jumpTilesGroup = this.add.group();
+        
+        var tiles = groundLayer.createFromTiles(48, -1, { key: TextureKeys.JumpTile });
+        if (tiles) {
+            for (var tile of tiles) {
+                tile.x += tile.width / 2;
+                tile.y += tile.height / 2;
+
+                tile.setData("data", new JumpTile(tile));
+                this.physics.add.existing(tile, true);
+                jumpTilesGroup.add(tile);
+            }
+        }
+
+        this.physics.add.collider(
+            this.player.container, 
+            jumpTilesGroup, 
+            (player:any, tile:any) => {
+                const jumpTile = tile.getData("data") as JumpTile;
+                jumpTile.squash();
+                this.performLongJump = true;
+            }, 
+            undefined, 
             this);
     }
 
@@ -526,7 +612,11 @@ export default class LevelScene extends BaseScene {
             this.coyoteTimer = 0;
         }
 
-        if (this.upKeyDownTimer >= 0 && this.upKeyDownTimer < MovementConsts.JumpBufferTimeMs &&
+        if (this.performLongJump) {
+            this.player.longJump();
+            this.performLongJump = false;
+            this.upKeyDownTimer = MovementConsts.JumpBufferTimeMs;
+        } else if (this.upKeyDownTimer >= 0 && this.upKeyDownTimer < MovementConsts.JumpBufferTimeMs &&
             (this.coyoteTimer < 0 || this.coyoteTimer < MovementConsts.CoyoteTimeMs)) {
             if (this.player.isTouchingLeft && !this.player.body.blocked.down) {
                 this.player.wallJump(1);
@@ -539,7 +629,7 @@ export default class LevelScene extends BaseScene {
             this.upKeyDownTimer = -1;
             this.coyoteTimer = -1;
             
-        } else if (this.upKeyDownTimer >= 0 && 
+        } else if (this.upKeyDownTimer == 0 && 
             this.canDoubleJump && 
             this.upKeyPressed === undefined && 
             !this.player.body.blocked.down) 
