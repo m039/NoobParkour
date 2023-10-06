@@ -21,6 +21,8 @@ class SandTile {
     private sprite : Phaser.GameObjects.Sprite;
     private timer : number;
     private cooldown : number;
+    private initPosition : {x:number, y:number};
+    private shakeCooldown : number;
 
     constructor(sprite: Phaser.GameObjects.Sprite) {
         this.sprite = sprite;
@@ -30,23 +32,48 @@ class SandTile {
         this.timer = -1;
         this.cooldown = -1;
         this.isHidden = false;
+        this.initPosition = {x: sprite.x, y: sprite.y};
     }
 
     public startHide() : void {
         if (this.timer < 0) {
             this.timer = 0;
+            this.shakeCooldown = 0;
         }
     }
 
     public update(delta: number) : void {
+        const SandTileShakeOffset = 2;
+
         if (this.timer >= 0) {
             if (this.timer < 600) {
                 this.timer += delta;
+                this.shakeCooldown += delta;
+
+                if (this.shakeCooldown > 20) {
+                    this.sprite.x = this.initPosition.x + Math.random() * SandTileShakeOffset;
+                    this.sprite.y = this.initPosition.y + Math.random() * SandTileShakeOffset;
+                    this.shakeCooldown = 0;
+                }
+
             } else {
-                this.sprite.visible = false;
+                this.sprite.x = this.initPosition.x;
+                this.sprite.y = this.initPosition.y;
+                this.sprite.alpha = 1.0;
+                this.sprite.scene.tweens.add({
+                    targets: this.sprite,
+                    y: this.sprite.y + 70,
+                    alpha: 0,
+                    ease: Phaser.Math.Easing.Cubic.In,
+                    duration: 1000,
+                    onComplete: () => {
+                        this.sprite.visible = false;
+                        this.cooldown = 0;
+                    }
+                });
+
                 this.isHidden = true;
                 this.timer = -1;
-                this.cooldown = 0;
             }
         }
 
@@ -55,7 +82,20 @@ class SandTile {
                 this.cooldown += delta;
             } else {
                 this.sprite.visible = true;
-                this.isHidden = false;
+                this.sprite.alpha = 0.0;
+                this.sprite.x = this.initPosition.x;
+                this.sprite.y = this.initPosition.y - 35;
+                this.sprite.scene.tweens.add({
+                    targets: this.sprite,
+                    y: this.initPosition.y,
+                    alpha: 1.0,
+                    ease: Phaser.Math.Easing.Cubic.Out,
+                    duration: 500,
+                    onComplete: () => {
+                        this.isHidden = false;
+                    }
+                });
+                
                 this.cooldown = -1;
             }
         }
@@ -141,8 +181,6 @@ export default class LevelScene extends BaseScene {
 
     private sandTiles : Array<SandTile>;
 
-    private sandTilesGroup : Phaser.GameObjects.Group;
-
     constructor() {
         super({key:SceneKeys.Level});
 
@@ -188,18 +226,9 @@ export default class LevelScene extends BaseScene {
         this.createLava();
         this.createTutorial();
         this.createSandTiles(groundLayer);
+        this.createSpikes(tileset);
 
         groundLayer.setCollisionByExclusion([-1]);
-
-        // Spikes.
-        if (this.map.getLayer("Spikes")) {
-            const spikesLayer = this.map.createLayer("Spikes", tileset);
-            spikesLayer.setCollisionByExclusion([-1]);
-
-            this.physics.add.overlap(this.player.container, spikesLayer, () => {
-                this.player.dieInAir();
-            }, this.processSpikes, this);
-        }        
 
         this.player.emmiter.on(PlayerEvent.DeathInAir, () => {
             this.placeCharacterAtStart(this.player, this.map, true);
@@ -216,13 +245,24 @@ export default class LevelScene extends BaseScene {
         this.bottomLine2 = this.map.findObject("Objects", o => o.name === "BottomLine2");
         this.cameras.main.startFollow(this.player.container);
 
+        this.rectangle1 = new Phaser.Geom.Rectangle();
+        this.rectangle2 = new Phaser.Geom.Rectangle();
+    }
+
+    private createSpikes(tileset : Phaser.Tilemaps.Tileset) : void {
+        if (this.map.getLayer("Spikes")) {
+            const spikesLayer = this.map.createLayer("Spikes", tileset);
+            spikesLayer.setCollisionByExclusion([-1]);
+
+            this.physics.add.overlap(this.player.container, spikesLayer, () => {
+                this.player.dieInAir();
+            }, this.processSpikes, this);
+        }
+
         if (debugConfig.debugSpikes) {
             this.debugGraphics = this.add.graphics();
             this.debugGraphics.depth = 100;
         }
-
-        this.rectangle1 = new Phaser.Geom.Rectangle();
-        this.rectangle2 = new Phaser.Geom.Rectangle();
     }
 
     private processSpikes(
@@ -394,7 +434,7 @@ export default class LevelScene extends BaseScene {
     }
 
     private createSandTiles(groundLayer:Phaser.Tilemaps.TilemapLayer) {
-        this.sandTilesGroup = this.add.group();
+        const sandTilesGroup = this.add.group();
         this.sandTiles = [];
         
         var tiles = groundLayer.createFromTiles(32, -1, { key: TextureKeys.SandTile });
@@ -404,13 +444,13 @@ export default class LevelScene extends BaseScene {
                 tile.y += tile.height / 2;
 
                 this.sandTiles.push(new SandTile(tile));
-                this.sandTilesGroup.add(tile);
+                sandTilesGroup.add(tile);
             }
         }
 
         this.physics.add.collider(
             this.player.container, 
-            this.sandTilesGroup, 
+            sandTilesGroup, 
             undefined, 
             (player : any, tile : any) => {
                 var sandTile = tile.getData("data") as SandTile;
