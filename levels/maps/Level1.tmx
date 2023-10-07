@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="9" nextobjectid="21">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="9" nextobjectid="22">
  <editorsettings>
   <export target="../../dist/assets/levels/maps/Level1.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="50" columns="10">
-  <image source="../tilesets/NoobParkourTileset.png" width="160" height="80"/>
+ <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="60" columns="10">
+  <image source="../tilesets/NoobParkourTileset.png" width="160" height="96"/>
  </tileset>
  <layer id="1" name="Ground" width="35" height="20">
   <data encoding="csv">
@@ -215,6 +215,12 @@
   <object id="20" name="Tutorial2" x="176" y="175.708">
    <properties>
     <property name="TextKey" value="tutorial2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="21" name="Tutorial2" x="376" y="160">
+   <properties>
+    <property name="TextKey" value="tutorial3"/>
    </properties>
    <point/>
   </object>

@@ -20,6 +20,7 @@ import SawBlade from './LevelElements/SawBlade';
 import JumpTile from './LevelElements/JumpTile';
 import SandTile from './LevelElements/SandTile';
 import TutorialSignPost from './LevelElements/TutorialSignPost';
+import { Localization, LocalizationKey } from 'src/StaticManagers/LocalizationStaticManager';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -478,9 +479,18 @@ export default class LevelScene extends BaseScene {
     }
 
     private getTextKeyProperty(tiledObject: Phaser.Types.Tilemaps.TiledObject) : string {
-        for (var property of tiledObject.properties) {
+        for (let property of tiledObject.properties) {
             if (property.name === "TextKey") {
-                return property.value + (this.isMobile? "_mobile" : "_desktop");
+                const key = property.value + (this.isMobile? "_mobile" : "_desktop");
+                if (Localization.getText(key as LocalizationKey)) {
+                    return key;
+                }
+
+                if (Localization.getText(property.value as LocalizationKey)) {
+                    return property.value;
+                }
+
+                throw new Error(`Can't find localization for '${property.value}'`);
             }
         }
 

@@ -14,7 +14,8 @@ export enum LocalizationKey {
     Tutorial1Desktop = "tutorial1_desktop",
     Tutorial2Desktop = "tutorial2_desktop",
     Tutorial1Mobile = "tutorial1_mobile",
-    Tutorial2Mobile = "tutorial2_mobile"
+    Tutorial2Mobile = "tutorial2_mobile",
+    Tutorial3 = "tutorial3"
 };
 
 class LocalizationStaticManager {
@@ -59,6 +60,10 @@ class LocalizationStaticManager {
             en: "Level\nCompleted",
             ru: "Уровень\nпройден"
         };
+        this.localizationTexts[LocalizationKey.Tutorial3] = {
+            en: "Beware of lava!",
+            ru: "Осторожно, лава!"
+        };
     }
 
     public get wasLanguagePreviouslySelected() : boolean {
@@ -97,8 +102,12 @@ class LocalizationStaticManager {
         }
     }
 
-    public getText(key:LocalizationKey) {
-        return this.localizationTexts[key][this.currentLanguage];
+    public getText(key:LocalizationKey) : string {
+        if (key in this.localizationTexts) {
+            return this.localizationTexts[key][this.currentLanguage];
+        } else {
+            return null;
+        }
     }
 }
 

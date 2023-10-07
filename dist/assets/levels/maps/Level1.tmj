@@ -358,6 +358,24 @@
                  "width":0,
                  "x":176,
                  "y":175.708
+                }, 
+                {
+                 "height":0,
+                 "id":21,
+                 "name":"Tutorial2",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"TextKey",
+                         "type":"string",
+                         "value":"tutorial3"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":376,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -435,7 +453,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":21,
+ "nextobjectid":22,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
@@ -445,12 +463,12 @@
          "columns":10,
          "firstgid":1,
          "image":"..\/..\/..\/..\/levels\/tilesets\/NoobParkourTileset.png",
-         "imageheight":80,
+         "imageheight":96,
          "imagewidth":160,
          "margin":0,
          "name":"NoobParkourTileset",
          "spacing":0,
-         "tilecount":50,
+         "tilecount":60,
          "tileheight":16,
          "tilewidth":16
         }],
