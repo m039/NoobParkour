@@ -51,7 +51,9 @@ enum TextureKeys {
     JumpTileHighlighted = "jump_tile_highlighted",
     SawBlades = "saw_blades",
     SawGrooveBody = "saw_groove_body",
-    SawGrooveHead = "saw_groove_head"
+    SawGrooveHead = "saw_groove_head",
+    RepeatButtonDefault = "repeat_button_default",
+    RepeatButtonHovered = "repeat_button_hovered"
 }
 
 export default TextureKeys;

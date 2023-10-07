@@ -36,7 +36,7 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             .setOrigin(0, 0.5)
             .setText(coinManager.pickedCoins + "/" + coinManager.coinsCount);
         
-        const nextButton = scene.add.image(0, 50, TextureKeys.NextButtonDefault);
+        const nextButton = scene.add.image(30, 50, TextureKeys.NextButtonDefault);
 
         createButton(nextButton, {
             defaultTexture: TextureKeys.NextButtonDefault,
@@ -50,6 +50,20 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             }
         });
 
+        const repeatButton = scene.add.image(-30, 50, TextureKeys.RepeatButtonDefault);
+
+        createButton(repeatButton, {
+            defaultTexture: TextureKeys.RepeatButtonDefault,
+            hoveredTexture: TextureKeys.RepeatButtonHovered,
+            onClick: () => {
+                const levelScene = this.scene.scene.get(SceneKeys.Level) as LevelScene;
+                levelScene.scene.restart({level: levelScene.level});
+
+                const levelUIScene = this.scene.scene.get(SceneKeys.LevelUI);
+                levelUIScene.scene.restart();
+            }
+        });
+
         this.add(background);
         this.add(titleBackground);
         this.add(titleText);
@@ -57,6 +71,7 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
         this.add(coin);
         this.add(coinText);
         this.add(nextButton);
+        this.add(repeatButton);
 
         this.visible = false;
         this.depth = 100;

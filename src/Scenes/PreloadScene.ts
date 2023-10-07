@@ -137,6 +137,8 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.BigStarFill, "assets/images/ui/BigStarFill.png");
         this.load.image(TextureKeys.NextButtonDefault, "assets/images/ui/NextButtonDefault.png");
         this.load.image(TextureKeys.NextButtonHovered, "assets/images/ui/NextButtonHovered.png");
+        this.load.image(TextureKeys.RepeatButtonDefault, "assets/images/ui/RepeatButtonDefault.png");
+        this.load.image(TextureKeys.RepeatButtonHovered, "assets/images/ui/RepeatButtonHovered.png");
 
         // Input controller.
         this.load.image(TextureKeys.LeftButtonDefault, "assets/images/ui/LeftButtonDefault.png");

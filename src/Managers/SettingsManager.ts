@@ -8,6 +8,7 @@ import { Localization, LocalizationKey } from '../StaticManagers/LocalizationSta
 import EventKeys from '../Consts/EventKeys';
 import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
+import LevelScene from 'src/Scenes/LevelScene';
 
 class SettingsContainer extends Phaser.GameObjects.Container {
 
@@ -84,6 +85,24 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             }
         });
 
+        let repeatButton : Phaser.GameObjects.Image;
+
+        if (showMenuButton) {
+            repeatButton = scene.add.image(100, py, TextureKeys.RepeatButtonDefault);
+
+            createButton(repeatButton, {
+                defaultTexture: TextureKeys.RepeatButtonDefault,
+                hoveredTexture: TextureKeys.RepeatButtonHovered,
+                onClick: () => {
+                    const levelScene = this.scene.scene.get(SceneKeys.Level) as LevelScene;
+                    levelScene.scene.restart({level: levelScene.level});
+    
+                    const levelUIScene = this.scene.scene.get(SceneKeys.LevelUI);
+                    levelUIScene.scene.restart();
+                }
+            });
+        }
+
         // Add all images to the container.
         this.add(background);
         this.add(backButton);
@@ -99,6 +118,9 @@ class SettingsContainer extends Phaser.GameObjects.Container {
         this.add(disableSoundIcon);
         this.add(backButton);
         this.add(this.backButtonText);
+        if (showMenuButton) {
+            this.add(repeatButton);
+        }
 
         this.visible = false;
         this.depth = 100;
