@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../../dist/assets/levels/maps/Level2.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="50" columns="10">
-  <image source="../tilesets/NoobParkourTileset.png" width="160" height="80"/>
+ <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="60" columns="10">
+  <image source="../tilesets/NoobParkourTileset.png" width="160" height="96"/>
  </tileset>
  <layer id="1" name="Ground" width="35" height="20">
   <data encoding="csv">
@@ -74,10 +74,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,47,0,0,0,0,0,0,
-0,0,0,45,0,0,0,0,0,0,0,46,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,46,0,0,0,0,0,
-0,0,0,0,0,0,44,44,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,53,0,0,0,0,0,0,
+0,0,0,51,0,0,0,0,0,0,0,52,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,52,0,0,0,0,0,
+0,0,0,0,0,0,50,50,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

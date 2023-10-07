@@ -27,7 +27,7 @@ class JumpTile {
         this.isAnimating = false;
     }
 
-    public squash() {
+    public squashAndStretch() {
         if (this.isAnimating) {
             return;
         }
@@ -327,29 +327,37 @@ export default class LevelScene extends BaseScene {
         this.rectangle1.y = player.body.top;
         this.rectangle1.width = player.body.width;
         this.rectangle1.height = player.body.height;
+        
+        var spikesSize;
 
-        if (tile.index === 44) {
+        if (tile.index >= 44 && tile.index <= 47) {
+            spikesSize = 6;
+        } else {
+            spikesSize = 8;
+        }
+
+        if (tile.index === 44 || tile.index === 50) {
             // Bottom.
             this.rectangle2.x = tile.getLeft();
             this.rectangle2.width = tile.width;
-            this.rectangle2.height = 6;
-            this.rectangle2.y = tile.getTop() + tile.height - 6;
-        } else if (tile.index === 45) {
+            this.rectangle2.height = spikesSize;
+            this.rectangle2.y = tile.getTop() + tile.height - spikesSize;
+        } else if (tile.index === 45 || tile.index === 51) {
             // Left
             this.rectangle2.x = tile.getLeft();
-            this.rectangle2.width = 6;
+            this.rectangle2.width = spikesSize;
             this.rectangle2.height = tile.height;
             this.rectangle2.y = tile.getTop();
-        } else if (tile.index === 46) {
+        } else if (tile.index === 46 || tile.index === 52) {
             // Top
             this.rectangle2.x = tile.getLeft();
             this.rectangle2.width = tile.width;
-            this.rectangle2.height = 6;
+            this.rectangle2.height = spikesSize;
             this.rectangle2.y = tile.getTop();
-        } else if (tile.index === 47) {
+        } else if (tile.index === 47 || tile.index == 53) {
             // Right
-            this.rectangle2.x = tile.getLeft() + tile.width - 6;
-            this.rectangle2.width = 6;
+            this.rectangle2.x = tile.getLeft() + tile.width - spikesSize;
+            this.rectangle2.width = spikesSize;
             this.rectangle2.height = tile.height;
             this.rectangle2.y = tile.getTop();
         } else {
@@ -544,7 +552,7 @@ export default class LevelScene extends BaseScene {
             jumpTilesGroup, 
             (player:any, tile:any) => {
                 const jumpTile = tile.getData("data") as JumpTile;
-                jumpTile.squash();
+                jumpTile.squashAndStretch();
                 this.performLongJump = true;
             }, 
             undefined, 
