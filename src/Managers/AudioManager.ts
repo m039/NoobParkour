@@ -7,7 +7,10 @@ export enum SoundId {
     Jump,
     PickUpCoin,
     Loose,
-    Blip
+    Blip,
+    SandTile,
+    LongJump,
+    LongJumpTrampoline
 }
 
 export enum MusicId {
@@ -93,6 +96,15 @@ export default class AudioManager implements GameManager {
                 break;
             case SoundId.Blip:
                 this.scene.sound.play(SoundKeys.Blip1);
+                break;
+            case SoundId.SandTile:
+                this.scene.sound.play(SoundKeys.SandTile);
+                break;
+            case SoundId.LongJump:
+                this.scene.sound.play(SoundKeys.LongJump);
+                break;
+            case SoundId.LongJumpTrampoline:
+                this.scene.sound.play(SoundKeys.LongJumpTrampoline);
                 break;
         }
     }

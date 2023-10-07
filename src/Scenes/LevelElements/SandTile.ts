@@ -1,4 +1,7 @@
 import * as Phaser from 'phaser';
+import SceneKeys from 'src/Consts/SceneKeys';
+import AudioScene from '../AudioScene';
+import { SoundId } from 'src/Managers/AudioManager';
 
 export default class SandTile {
     public isHidden : boolean;
@@ -23,6 +26,10 @@ export default class SandTile {
             this.timer = 0;
             this.shakeCooldown = 0;
             this.isShaking = true;
+
+            (this.sprite.scene.scene.get(SceneKeys.Audio) as AudioScene)
+                    .audioManager
+                    .playSound(SoundId.SandTile);
         }
     }
 
@@ -44,6 +51,8 @@ export default class SandTile {
             if (this.timer < 300) {
                 this.timer += delta;
             } else {
+                
+
                 this.sprite.x = this.initPosition.x;
                 this.sprite.y = this.initPosition.y;
                 this.sprite.alpha = 1.0;

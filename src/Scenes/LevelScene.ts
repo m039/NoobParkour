@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 
-import { MusicId } from "../Managers/AudioManager";
+import { MusicId, SoundId } from "../Managers/AudioManager";
 import BaseScene from "./BaseScene";
 import Player, { MovementConsts, PlayerEvent } from '../Managers/Player';
 import CoinManager from '../Managers/CoinManager';
@@ -62,6 +62,8 @@ export default class LevelScene extends BaseScene {
     private performLongJump : boolean;
 
     private sawBlades : Array<SawBlade>;
+
+    private longJumpCooldown : number;
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -383,9 +385,16 @@ export default class LevelScene extends BaseScene {
             this.player.container, 
             jumpTilesGroup, 
             (player:any, tile:any) => {
+                if (this.longJumpCooldown > 0) {
+                    return;
+                }
+
                 const jumpTile = tile.getData("data") as JumpTile;
                 jumpTile.squashAndStretch();
                 this.performLongJump = true;
+
+                const audioScene = this.scene.get(SceneKeys.Audio) as AudioScene;
+                audioScene.audioManager.playSound(SoundId.LongJump);
             }, 
             undefined, 
             this);
@@ -420,8 +429,15 @@ export default class LevelScene extends BaseScene {
             this.player.container, 
             trampolineGroup, 
             (player:any, tile:any) => {
+                if (this.longJumpCooldown > 0) {
+                    return;
+                }
+
                 this.performLongJump = true;
                 tile.play({key:"Trampoline.Jump", repeat: 0});
+
+                const audioScene = this.scene.get(SceneKeys.Audio) as AudioScene;
+                audioScene.audioManager.playSound(SoundId.LongJumpTrampoline);
             }, 
             undefined, 
             this);
@@ -500,6 +516,8 @@ export default class LevelScene extends BaseScene {
     override update(time : number, delta : number) {
         super.update(time, delta);
 
+        this.longJumpCooldown = Math.max(this.longJumpCooldown - delta, 0);
+
         if (this.inputController.isLeftDown) {
             this.player.moveLeft(this.inputController.strength);
         } else if (this.inputController.isRightDown) {
@@ -532,6 +550,7 @@ export default class LevelScene extends BaseScene {
             this.player.longJump();
             this.performLongJump = false;
             this.upKeyDownTimer = MovementConsts.JumpBufferTimeMs;
+            this.longJumpCooldown = 50;
         } else if (this.upKeyDownTimer >= 0 && this.upKeyDownTimer < MovementConsts.JumpBufferTimeMs &&
             (this.coyoteTimer < 0 || this.coyoteTimer < MovementConsts.CoyoteTimeMs)) {
             if (this.player.isTouchingLeft && !this.player.body.blocked.down) {
