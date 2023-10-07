@@ -333,7 +333,7 @@ export default class LevelScene extends BaseScene {
         
         var tiles = groundLayer.createFromTiles(32, -1, { key: TextureKeys.SandTile });
         if (tiles) {
-            for (var tile of tiles) {
+            for (let tile of tiles) {
                 tile.x += tile.width / 2;
                 tile.y += tile.height / 2;
 
@@ -369,7 +369,7 @@ export default class LevelScene extends BaseScene {
         
         var tiles = groundLayer.createFromTiles(48, -1, { key: TextureKeys.JumpTile });
         if (tiles) {
-            for (var tile of tiles) {
+            for (let tile of tiles) {
                 tile.x += tile.width / 2;
                 tile.y += tile.height / 2;
 
@@ -396,19 +396,23 @@ export default class LevelScene extends BaseScene {
         
         var tiles = groundLayer.createFromTiles(54, -1, { key: AsepriteKeys.Trampoline });
         if (tiles) {
-            for (var tile of tiles) {
-                tile.y += 15;
+            for (let tile of tiles) {
+                tile.y += 17;
                 tile.setOrigin(0, 1);
 
                 this.physics.add.existing(tile, true);
 
                 const body = tile.body as Phaser.Physics.Arcade.Body;
                 body.setSize(16, 8);
-                body.setOffset(0, tile.height - 9);
+                body.setOffset(0, tile.height - 11);
 
                 trampolineGroup.add(tile);
 
-                tile.play("Trampoline.Idle");
+                tile.play({key:"Trampoline.Idle", repeat: -1});
+
+                tile.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+                    tile.play({key:"Trampoline.Idle", repeat: -1});
+                }, tile);
             }
         }
 
@@ -417,7 +421,7 @@ export default class LevelScene extends BaseScene {
             trampolineGroup, 
             (player:any, tile:any) => {
                 this.performLongJump = true;
-                tile.play("Trampoline.Jump");
+                tile.play({key:"Trampoline.Jump", repeat: 0});
             }, 
             undefined, 
             this);
