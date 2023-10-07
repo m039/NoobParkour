@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { Language, Localization } from '../StaticManagers/LocalizationStaticManager';
 import CloudManager from '../Managers/CloudManager';
-import { GameHeight, GameWidth } from '../Consts/Consts';
+import { ButtonScale, GameHeight, GameWidth } from '../Consts/Consts';
 import BaseScene from './BaseScene';
 import SettingsManager from '../Managers/SettingsManager';
 import { createButton } from '../Utils';

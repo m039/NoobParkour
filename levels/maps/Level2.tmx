@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="10" nextobjectid="22">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="26">
  <editorsettings>
   <export target="../../dist/assets/levels/maps/Level2.tmj" format="json"/>
  </editorsettings>
@@ -71,13 +71,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,53,0,0,0,0,0,0,
+53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,51,0,0,0,0,0,0,0,52,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,52,0,0,0,0,0,
-0,0,0,0,0,0,44,50,0,0,0,0,0,0,0,0,
+53,0,0,0,0,0,44,50,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -136,6 +136,16 @@
    <point/>
   </object>
   <object id="17" name="CloudBounds" x="-508" y="-72" width="1280" height="232"/>
+ </objectgroup>
+ <objectgroup id="10" name="Saws">
+  <object id="25" name="Saw" type="Saw" x="-111" y="23">
+   <properties>
+    <property name="InverseStartDirection" type="bool" value="false"/>
+    <property name="Speed" type="float" value="50"/>
+    <property name="StartPosition" type="float" value="0.3"/>
+   </properties>
+   <polyline points="-1,117 -1,22"/>
+  </object>
  </objectgroup>
  <objectgroup id="7" name="Coins">
   <object id="14" name="Coin" x="256" y="80">

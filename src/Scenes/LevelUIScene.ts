@@ -6,7 +6,7 @@ import TextureKeys from "../Consts/TextureKeys";
 import SettingsManager from "../Managers/SettingsManager";
 import BaseScene from "./BaseScene";
 import LevelScene from "./LevelScene";
-import { GameWidth } from '../Consts/Consts';
+import { ButtonScale, GameWidth } from '../Consts/Consts';
 import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
 import LevelCompleteManager from '../Managers/LevelCompleteManager';
 import InputController from '../Managers/InputController';
@@ -33,8 +33,8 @@ export default class LevelUIScene extends BaseScene {
 
         this.levelScene = this.scene.get(SceneKeys.Level) as LevelScene;
 
-        this.add.image(25, 20, TextureKeys.CoinUI).setOrigin(0.5, 0.5);
-        this.coinText = this.add.bitmapText(40, 20, FontKeys.Monocraft).setOrigin(0.0, 0.5);
+        this.add.image(20, 20, TextureKeys.CoinUI).setOrigin(0.5, 0.5).setScale(ButtonScale);
+        this.coinText = this.add.bitmapText(40, 20, FontKeys.Monocraft).setOrigin(0.0, 0.5).setScale(ButtonScale);
         this.helpBoxBackground = this.add.image(GameWidth / 2, 40, TextureKeys.HelpBoxBackground)
             .setVisible(false);
 

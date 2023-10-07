@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { GameHeight, GameWidth } from "../Consts/Consts";
+import { ButtonScale, GameHeight, GameWidth } from "../Consts/Consts";
 import TextureKeys from "../Consts/TextureKeys";
 import { GameManager } from "../Scenes/BaseScene";
 import { createButton } from "../Utils";
@@ -196,7 +196,7 @@ export default class SettingsManager implements GameManager {
     }
 
     create(): void {
-        const gearButton = this.scene.add.image(GameWidth - 22, 22, TextureKeys.GearIconDefault);
+        const gearButton = this.scene.add.image(GameWidth - 22, 22, TextureKeys.GearIconDefault).setScale(ButtonScale);
         this.settingsContainer = new SettingsContainer(this.scene, GameWidth / 2, GameHeight / 2, this.showMenuButton);
 
         this.scene.add.existing(this.settingsContainer);
