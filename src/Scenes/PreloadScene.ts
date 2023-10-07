@@ -5,6 +5,7 @@ import SceneKeys from '../Consts/SceneKeys';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
 import development from "consts:development";
 import SoundKeys from '../Consts/SoundKeys';
+import AsepriteKeys from 'src/Consts/AsepriteKeys';
 
 export default class PreloadScene extends BaseScene {
     constructor() {
@@ -79,7 +80,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.Tiles, "assets/levels/tilesets/NoobParkourTileset.png");
         this.load.tilemapTiledJSON("map0", "assets/levels/maps/WelcomeScene.tmj");
 
-        this.load.aseprite("noob", "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
+        this.load.aseprite(AsepriteKeys.Noob, "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
 
         // LevelSelectionScene.
 
@@ -110,6 +111,9 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.JumpTile, "assets/images/JumpTile.png");
         this.load.image(TextureKeys.JumpTileHighlighted, "assets/images/JumpTileHighlighted.png");
 
+        this.load.aseprite(AsepriteKeys.Coin, "assets/animations/Coin.png", "assets/animations/Coin.json");
+        this.load.aseprite(AsepriteKeys.Trampoline, "assets/animations/Trampoline.png", "assets/animations/Trampoline.json");
+
         // LevelUIScene.
 
         this.load.image(TextureKeys.CoinUI, "assets/images/CoinUI_16x16.png");
@@ -135,13 +139,11 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.RightButtonHovered, "assets/images/ui/RightButtonHovered.png");
         this.load.image(TextureKeys.UpButtonDefault, "assets/images/ui/UpButtonDefault.png");
         this.load.image(TextureKeys.UpButtonHovered, "assets/images/ui/UpButtonHovered.png");
-
-        // Other
-
-        this.load.aseprite("coin", "assets/animations/Coin.png", "assets/animations/Coin.json");
     }
 
     override create() : void {
+        this.createAnimations();
+
         if (development && typeof debugConfig !== "undefined") {
             if (debugConfig.clearLocalStorage) {
                 Prefs.clear();
@@ -155,5 +157,10 @@ export default class PreloadScene extends BaseScene {
         }
         
         this.scene.start(SceneKeys.Welcome);
+    }
+
+    private createAnimations() : void {
+        this.anims.createFromAseprite(AsepriteKeys.Trampoline);
+        this.anims.createFromAseprite(AsepriteKeys.Noob);
     }
 }

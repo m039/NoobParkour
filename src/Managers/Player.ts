@@ -4,6 +4,7 @@ import { GameManager } from '../Scenes/BaseScene';
 import LevelScene from '../Scenes/LevelScene';
 import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
+import AsepriteKeys from 'src/Consts/AsepriteKeys';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -78,13 +79,9 @@ export default class Player implements GameManager {
     }
 
     create(): void {
-        if (!this.levelScene.anims.exists("Idle")) {
-            this.levelScene.anims.createFromAseprite("noob");
-        }
-
         this.emmiter = new Phaser.Events.EventEmitter();
         this.container = this.levelScene.add.container(400, 400);
-        this.sprite = this.levelScene.add.sprite(-1, -2, "noob");
+        this.sprite = this.levelScene.add.sprite(-1, -2, AsepriteKeys.Noob);
         this.container.add(this.sprite);
         this.container.setSize(this.bodySize.width, this.bodySize.height);
         this.container.depth = 1;

@@ -10,6 +10,7 @@ import SceneKeys from '../Consts/SceneKeys';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
 import { MusicId } from '../Managers/AudioManager';
+import AsepriteKeys from 'src/Consts/AsepriteKeys';
 
 class FlagButton {
     private welcomeScene:WelcomeScene;
@@ -73,10 +74,7 @@ export default class WelcomeScene extends BaseScene {
         const groundLayer = map.createLayer("Ground", tileset, -200, -20);
         groundLayer.setSkipCull(true);
 
-        if (!this.anims.exists("Idle")) {
-            this.anims.createFromAseprite("noob");
-        }
-        const noob = this.add.sprite(127, 227, "noob");
+        const noob = this.add.sprite(127, 227, AsepriteKeys.Noob);
         noob.play({key:"Sit", repeat: -1});
 
         this.title = this.add.image(240, 100, TextureKeys.TitleRu);

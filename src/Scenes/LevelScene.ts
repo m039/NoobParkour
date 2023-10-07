@@ -15,6 +15,7 @@ import { MaxLevels } from '../Consts/Consts';
 import { Progress } from '../StaticManagers/ProgressStaticManager';
 import LevelUIScene from './LevelUIScene';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
+import AsepriteKeys from 'src/Consts/AsepriteKeys';
 
 class JumpTile {
     private sprite : Phaser.GameObjects.Sprite;
@@ -279,7 +280,8 @@ export default class LevelScene extends BaseScene {
         this.createTutorial();
         this.createSandTiles(groundLayer);
         this.createJumpTiles(groundLayer);
-        this.createSpikes(tileset);        
+        this.createSpikes(tileset);
+        this.createTrampolines(groundLayer);
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -554,6 +556,38 @@ export default class LevelScene extends BaseScene {
                 const jumpTile = tile.getData("data") as JumpTile;
                 jumpTile.squashAndStretch();
                 this.performLongJump = true;
+            }, 
+            undefined, 
+            this);
+    }
+
+    private createTrampolines(groundLayer:Phaser.Tilemaps.TilemapLayer) {
+        const trampolineGroup = this.add.group();
+        
+        var tiles = groundLayer.createFromTiles(54, -1, { key: AsepriteKeys.Trampoline });
+        if (tiles) {
+            for (var tile of tiles) {
+                tile.y += 15;
+                tile.setOrigin(0, 1);
+
+                this.physics.add.existing(tile, true);
+
+                const body = tile.body as Phaser.Physics.Arcade.Body;
+                body.setSize(16, 8);
+                body.setOffset(0, tile.height - 9);
+
+                trampolineGroup.add(tile);
+
+                tile.play("Trampoline.Idle");
+            }
+        }
+
+        this.physics.add.collider(
+            this.player.container, 
+            trampolineGroup, 
+            (player:any, tile:any) => {
+                this.performLongJump = true;
+                tile.play("Trampoline.Jump");
             }, 
             undefined, 
             this);

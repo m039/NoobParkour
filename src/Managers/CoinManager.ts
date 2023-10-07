@@ -6,6 +6,7 @@ import LevelScene from '../Scenes/LevelScene';
 import EventKeys from '../Consts/EventKeys';
 import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
+import AsepriteKeys from 'src/Consts/AsepriteKeys';
 
 export default class CoinManager implements GameManager {
     private levelScene : LevelScene;
@@ -51,8 +52,8 @@ export default class CoinManager implements GameManager {
     }
 
     private createCoin(player: Player, x: number, y: number) {
-        const sprite = this.levelScene.add.sprite(x, y, "coin");
-        this.levelScene.anims.createFromAseprite("coin", ["Idle", "Pick Up"], sprite);
+        const sprite = this.levelScene.add.sprite(x, y, AsepriteKeys.Coin);
+        this.levelScene.anims.createFromAseprite(AsepriteKeys.Coin, ["Idle", "Pick Up"], sprite);
         sprite.play({key: "Idle", repeat: -1});
         sprite.depth = 1;
         
