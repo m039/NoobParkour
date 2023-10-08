@@ -2,12 +2,16 @@ import * as Phaser from 'phaser';
 import LevelScene from '../LevelScene';
 import TextureKeys from 'src/Consts/TextureKeys';
 import Player from 'src/Managers/Player';
+import SceneKeys from 'src/Consts/SceneKeys';
+import AudioScene from '../AudioScene';
+import { SoundId } from 'src/Managers/AudioManager';
 
 const ArrowFlyDistance = 200;
 const ArrowSpeed = 120;
 const ArrowLaunchCooldown = 5000;
 const ArrowActivationRadius = 400;
 const ArrowFadeDuration = 400;
+const ArrowSoundActivationRadius = 100;
 
 export default class ArrowStatue {
 
@@ -17,7 +21,6 @@ export default class ArrowStatue {
     private launchPosition : Phaser.Math.Vector2;    
     private cooldown : number;
     private dustEmmiter : Phaser.GameObjects.Particles.ParticleEmitter;
-    private active : boolean;
     private player : Player;
     private fadeTimer : number;
 
@@ -83,13 +86,19 @@ export default class ArrowStatue {
         }
 
         if (this.cooldown <= 0) {
-            if (Phaser.Math.Distance.Between(
+            let between = Phaser.Math.Distance.Between(
                 this.launchPosition.x, 
                 this.launchPosition.y,
                 this.player.container.x,
-                this.player.container.y) < ArrowActivationRadius) {
+                this.player.container.y
+            );
+
+            if (between < ArrowActivationRadius) {
+                if (between < ArrowSoundActivationRadius) {
+                    const audioScene = this.arrow.scene.scene.get(SceneKeys.Audio) as AudioScene;
+                    audioScene.audioManager.playSound(SoundId.ArrowShot);
+                }
                 
-                this.active = true;
                 this.arrow.active = true;
                 this.arrow.x = this.launchPosition.x;
                 this.arrow.visible = true;
@@ -101,7 +110,10 @@ export default class ArrowStatue {
 
                 this.dustEmmiter.emitParticleAt(this.launchPosition.x, this.launchPosition.y, 5);
             } else {
-                this.active = false;
+                const body = this.arrow.body as Phaser.Physics.Arcade.Body;
+                body.enable = false;
+
+                this.arrow.visible = false;
             }
 
             this.fadeTimer = -1;
@@ -111,7 +123,6 @@ export default class ArrowStatue {
 
     public arrowCollided() {
         this.dustEmmiter.emitParticleAt(this.arrow.x, this.arrow.y, 5);
-        this.active = false;
         this.arrow.visible = false;
 
         const body = this.arrow.body as Phaser.Physics.Arcade.Body;

@@ -39,7 +39,7 @@ export default class PreloadScene extends BaseScene {
         // Sounds and music.
 
         this.load.audio(SoundKeys.Jump2, "assets/audio/sounds/jump2.wav");
-        this.load.audio(SoundKeys.Coin1, "assets/audio/sounds/coin1.wav");
+        this.load.audio(SoundKeys.Coin1, "assets/audio/sounds/coin1.mp3");
         this.load.audio(SoundKeys.Loose1, "assets/audio/sounds/loose1.wav");
         this.load.audio(SoundKeys.Blip1, "assets/audio/sounds/blipSelect1.wav");
         this.load.audio(SoundKeys.MenuMusic, "assets/audio/music/Retro Beat.mp3");
@@ -48,6 +48,7 @@ export default class PreloadScene extends BaseScene {
         this.load.audio(SoundKeys.SandTile, "assets/audio/sounds/sandTile.wav");
         this.load.audio(SoundKeys.LongJump, "assets/audio/sounds/longJump.mp3");
         this.load.audio(SoundKeys.LongJumpTrampoline, "assets/audio/sounds/longJumpTrampoline.mp3");
+        this.load.audio(SoundKeys.ArrowShot, "assets/audio/sounds/arrowShot.mp3");
 
         // Clouds.
 

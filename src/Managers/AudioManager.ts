@@ -10,7 +10,8 @@ export enum SoundId {
     Blip,
     SandTile,
     LongJump,
-    LongJumpTrampoline
+    LongJumpTrampoline,
+    ArrowShot
 }
 
 export enum MusicId {
@@ -22,9 +23,11 @@ export enum MusicId {
 export default class AudioManager implements GameManager {
     private scene : Phaser.Scene;
     private music : Phaser.Sound.BaseSound;
+    private arrowShotCooldown : number;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
+        this.arrowShotCooldown = 0;
     }
 
     preload(): void {
@@ -35,7 +38,7 @@ export default class AudioManager implements GameManager {
     }
 
     update(time: number, delta: number): void {
-        
+        this.arrowShotCooldown = Math.max(this.arrowShotCooldown - delta, 0);
     }
 
     public get soundEnabled() : boolean {
@@ -105,6 +108,12 @@ export default class AudioManager implements GameManager {
                 break;
             case SoundId.LongJumpTrampoline:
                 this.scene.sound.play(SoundKeys.LongJumpTrampoline);
+                break;
+            case SoundId.ArrowShot:
+                if (this.arrowShotCooldown <= 0) {
+                    this.scene.sound.play(SoundKeys.ArrowShot);
+                    this.arrowShotCooldown = 50;
+                }
                 break;
         }
     }

@@ -8,7 +8,8 @@ enum SoundKeys {
     Game2Music = "game-2-music",
     SandTile = "sand_tile",
     LongJump = "long_jump",
-    LongJumpTrampoline = "long_jump_trampoline"
+    LongJumpTrampoline = "long_jump_trampoline",
+    ArrowShot = "arrow_shot"
 }
 
 export default SoundKeys;

@@ -167,7 +167,7 @@ export default class LevelScene extends BaseScene {
         this.rectangle1.width = player.body.width;
         this.rectangle1.height = player.body.height;
         
-        var spikesSize;
+        var spikesSize : number;
 
         if (tile.index >= 44 && tile.index <= 47) {
             spikesSize = 6;
