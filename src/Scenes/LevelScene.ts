@@ -22,6 +22,8 @@ import SandTile from './LevelElements/SandTile';
 import TutorialSignPost from './LevelElements/TutorialSignPost';
 import { Localization, LocalizationKey } from 'src/StaticManagers/LocalizationStaticManager';
 import ArrowStatue from './LevelElements/ArrowStatue';
+import ShaderKeys from 'src/Consts/ShaderKeys';
+import MovingPlatform from './LevelElements/MovingPlatform';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -68,6 +70,8 @@ export default class LevelScene extends BaseScene {
     private longJumpCooldown : number;
 
     private arrowStatues : Array<ArrowStatue>;
+
+    private movingPlatforms : Array<MovingPlatform>;
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -119,6 +123,7 @@ export default class LevelScene extends BaseScene {
         this.createTrampolines(groundLayer);
         this.createSawBlades();
         this.createArrowStatues(groundLayer);
+        this.createPlatforms();
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -228,7 +233,7 @@ export default class LevelScene extends BaseScene {
         for (var gate of [startGate, endGate]) {
             // Add vortex.
             const object = this.add
-                .shader("portal", gate.x, gate.y, gate.width, gate.height)
+                .shader(ShaderKeys.Portal, gate.x, gate.y, gate.width, gate.height)
                 .setOrigin(0, 0);
 
             if (gate === endGate) {
@@ -287,7 +292,7 @@ export default class LevelScene extends BaseScene {
         for (var lava of lavaLayer.objects) {
             // Add lava effect.
             const lavaObject = this.add
-                .shader("lava", lava.x, lava.y, lava.width, lava.height)
+                .shader(ShaderKeys.Lava, lava.x, lava.y, lava.width, lava.height)
                 .setOrigin(0, 0);
 
             this.physics.add.existing(lavaObject, true);
@@ -527,9 +532,46 @@ export default class LevelScene extends BaseScene {
                 arrowStatue.arrowCollided();
                 this.player.dieInAir();
             }, 
-            undefined,
+            (player: any, arrow:any) => {
+                let arrowStatue = arrow.getData("data") as ArrowStatue;
+                return arrowStatue.isArrowActive;
+            },
             this
         );
+    }
+
+    private createPlatforms() {
+        const platformsLayer = this.map.getObjectLayer("Platforms");
+        if (!platformsLayer) {
+            return;
+        }
+
+        const movingPlatformsGroup = this.physics.add.group({allowGravity: false, immovable: true });
+
+        this.movingPlatforms = [];
+
+        for (let tiledObject of platformsLayer.objects) {
+            if (tiledObject.type === "MovingPlatform") {
+                const movingPlatform = new MovingPlatform(this, tiledObject);
+                this.movingPlatforms.push(movingPlatform);
+
+                this.physics.add.existing(movingPlatform.platform, false);
+                movingPlatformsGroup.add(movingPlatform.platform);
+                movingPlatform.platform.setData("data", movingPlatform);
+            }
+        }
+
+        this.physics.add.collider(
+            this.player.container, 
+            movingPlatformsGroup, 
+            (player : any, platform : any) => {
+                let movingPlatform = platform.getData("data") as MovingPlatform;
+                movingPlatform.adjustPlayerPosition(this.player);
+            }, 
+            (player : any, platform : any) => {
+                return player.body.y < platform.body.y;
+            }, 
+            this);
     }
 
     private getTextKeyProperty(tiledObject: Phaser.Types.Tilemaps.TiledObject) : string {
@@ -569,6 +611,18 @@ export default class LevelScene extends BaseScene {
         if (this.sawBlades) {
             for (let sawBlade of this.sawBlades) {
                 sawBlade.reset();
+            }
+        }
+
+        if (this.arrowStatues) {
+            for (let arrowStatue of this.arrowStatues) {
+                arrowStatue.reset();
+            }
+        }
+
+        if (this.movingPlatforms) {
+            for (let movingPlatform of this.movingPlatforms) {
+                movingPlatform.reset();
             }
         }
     }
@@ -678,6 +732,13 @@ export default class LevelScene extends BaseScene {
         if (this.arrowStatues) {
             for (let arrowStatue of this.arrowStatues) {
                 arrowStatue.update(delta);
+            }
+        }
+
+        // Moving platforms.
+        if (this.movingPlatforms) {
+            for (let movingPlatform of this.movingPlatforms) {
+                movingPlatform.update(delta);
             }
         }
     }

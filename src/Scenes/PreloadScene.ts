@@ -6,6 +6,7 @@ import { Prefs } from '../StaticManagers/PrefsStaticManager';
 import development from "consts:development";
 import SoundKeys from '../Consts/SoundKeys';
 import AsepriteKeys from 'src/Consts/AsepriteKeys';
+import ShaderKeys from 'src/Consts/ShaderKeys';
 
 export default class PreloadScene extends BaseScene {
     constructor() {
@@ -106,8 +107,8 @@ export default class PreloadScene extends BaseScene {
         this.load.tilemapTiledJSON("map2", "assets/levels/maps/Level2.tmj");
 
         this.load.image(TextureKeys.Pixel, "assets/images/Pixel.png");
-        this.load.glsl("portal", "assets/shaders/Portal.frag");
-        this.load.glsl("lava", "assets/shaders/Lava.frag");
+        this.load.glsl(ShaderKeys.Portal, "assets/shaders/Portal.frag");
+        this.load.glsl(ShaderKeys.Lava, "assets/shaders/Lava.frag");
 
         this.load.image(TextureKeys.SignPostDefault, "assets/images/SignPostDefault.png");
         this.load.image(TextureKeys.SignPostHovered, "assets/images/SignPostHovered.png");
@@ -119,6 +120,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.SawGrooveHead, "assets/images/SawGrooveHead.png");
         this.load.image(TextureKeys.ArrowLeft, "assets/images/ArrowLeft.png");
         this.load.image(TextureKeys.ArrowRight, "assets/images/ArrowRight.png");
+        this.load.image(TextureKeys.MovingPlatform, "assets/images/MovingPlatform.png");
 
         this.load.aseprite(AsepriteKeys.Coin, "assets/animations/Coin.png", "assets/animations/Coin.json");
         this.load.aseprite(AsepriteKeys.Trampoline, "assets/animations/Trampoline.png", "assets/animations/Trampoline.json");

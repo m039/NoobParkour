@@ -65,7 +65,7 @@ export default class ArrowStatue {
         this.fadeTimer = -1;
     }
 
-    public update(delta:number) {
+    public update(delta:number) : void {
         this.cooldown = Math.max(this.cooldown - delta, 0);
 
         if (Math.abs(this.arrow.x - this.launchPosition.x) > ArrowFlyDistance && 
@@ -121,7 +121,15 @@ export default class ArrowStatue {
         }
     }
 
-    public arrowCollided() {
+    public reset() : void {
+        this.cooldown = 0;
+    }
+
+    public get isArrowActive() : boolean {
+        return this.arrow.alpha >= 1;
+    }
+
+    public arrowCollided() : void {
         this.dustEmmiter.emitParticleAt(this.arrow.x, this.arrow.y, 5);
         this.arrow.visible = false;
 

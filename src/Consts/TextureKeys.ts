@@ -56,6 +56,7 @@ enum TextureKeys {
     RepeatButtonHovered = "repeat_button_hovered",
     ArrowLeft = "arrow_left",
     ArrowRight = "arrow_right",
+    MovingPlatform = "moving_platform"
 }
 
 export default TextureKeys;
