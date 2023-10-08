@@ -5,6 +5,7 @@ import LevelScene from '../Scenes/LevelScene';
 import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
 import AsepriteKeys from 'src/Consts/AsepriteKeys';
+import TextureKeys from 'src/Consts/TextureKeys';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -97,7 +98,7 @@ export default class Player implements GameManager {
                 this.inDieInAir = false;
             }
         });
-        this.dustEmmiter = this.levelScene.add.particles(0, 0, "pixel", {
+        this.dustEmmiter = this.levelScene.add.particles(0, 0, TextureKeys.Pixel, {
             lifespan: 1000,
             speed: {min: 10, max: 20},
             scale: {start: 5, end: 0},

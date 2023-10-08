@@ -1,11 +1,11 @@
 import * as Phaser from 'phaser';
+
 import WelcomeScene from './Scenes/WelcomeScene';
 import LevelSelectionScene from './Scenes/LevelSelectionScene';
 import PreloadScene from './Scenes/PreloadScene';
 import AudioScene from './Scenes/AudioScene';
 import LevelScene from './Scenes/LevelScene';
 import LevelUIScene from './Scenes/LevelUIScene';
-import { MovementConsts } from './Managers/Player';
 
 const config : Phaser.Types.Core.GameConfig = {
     type: Phaser.WEBGL,
