@@ -116,6 +116,8 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.SawBlades, "assets/images/SawBlades.png");
         this.load.image(TextureKeys.SawGrooveBody, "assets/images/SawGrooveBody.png");
         this.load.image(TextureKeys.SawGrooveHead, "assets/images/SawGrooveHead.png");
+        this.load.image(TextureKeys.ArrowLeft, "assets/images/ArrowLeft.png");
+        this.load.image(TextureKeys.ArrowRight, "assets/images/ArrowRight.png");
 
         this.load.aseprite(AsepriteKeys.Coin, "assets/animations/Coin.png", "assets/animations/Coin.json");
         this.load.aseprite(AsepriteKeys.Trampoline, "assets/animations/Trampoline.png", "assets/animations/Trampoline.json");
@@ -141,6 +143,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.RepeatButtonHovered, "assets/images/ui/RepeatButtonHovered.png");
 
         // Input controller.
+
         this.load.image(TextureKeys.LeftButtonDefault, "assets/images/ui/LeftButtonDefault.png");
         this.load.image(TextureKeys.LeftButtonHovered, "assets/images/ui/LeftButtonHovered.png");
         this.load.image(TextureKeys.RightButtonDefault, "assets/images/ui/RightButtonDefault.png");

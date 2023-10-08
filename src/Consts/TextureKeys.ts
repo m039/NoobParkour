@@ -53,7 +53,9 @@ enum TextureKeys {
     SawGrooveBody = "saw_groove_body",
     SawGrooveHead = "saw_groove_head",
     RepeatButtonDefault = "repeat_button_default",
-    RepeatButtonHovered = "repeat_button_hovered"
+    RepeatButtonHovered = "repeat_button_hovered",
+    ArrowLeft = "arrow_left",
+    ArrowRight = "arrow_right",
 }
 
 export default TextureKeys;

@@ -21,6 +21,7 @@ import JumpTile from './LevelElements/JumpTile';
 import SandTile from './LevelElements/SandTile';
 import TutorialSignPost from './LevelElements/TutorialSignPost';
 import { Localization, LocalizationKey } from 'src/StaticManagers/LocalizationStaticManager';
+import ArrowStatue from './LevelElements/ArrowStatue';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -65,6 +66,8 @@ export default class LevelScene extends BaseScene {
     private sawBlades : Array<SawBlade>;
 
     private longJumpCooldown : number;
+
+    private arrowStatues : Array<ArrowStatue>;
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -115,6 +118,7 @@ export default class LevelScene extends BaseScene {
         this.createSpikes(tileset);
         this.createTrampolines(groundLayer);
         this.createSawBlades();
+        this.createArrowStatues(groundLayer);
 
         groundLayer.setCollisionByExclusion([-1]);
 
@@ -478,6 +482,56 @@ export default class LevelScene extends BaseScene {
             this);
     }
 
+    private createArrowStatues(groundLayer: Phaser.Tilemaps.TilemapLayer) {
+        this.arrowStatues = [];
+        const arrowGroup = this.add.group();
+        
+        let tiles = groundLayer.createFromTiles(55, null);
+        if (tiles) {
+            for (let tile of tiles) {
+                this.arrowStatues.push(new ArrowStatue(this, tile.x, tile.y, false));
+                tile.destroy();
+            }
+        }
+
+        tiles = groundLayer.createFromTiles(56, null);
+        if (tiles) {
+            for (let tile of tiles) {
+                this.arrowStatues.push(new ArrowStatue(this, tile.x, tile.y, true));
+                tile.destroy();
+            }
+        }
+
+        for (let arrowStatue of this.arrowStatues) {
+            this.physics.add.existing(arrowStatue.arrow, false);
+            arrowStatue.arrow.setData("data", arrowStatue);
+            arrowGroup.add(arrowStatue.arrow);
+        }
+
+        this.physics.add.collider(
+            arrowGroup, 
+            groundLayer, 
+            (arrow:any, tile:any) => {
+                let arrowStatue = arrow.getData("data") as ArrowStatue;
+                arrowStatue.arrowCollided();
+            }, 
+            undefined,
+            this
+        );
+
+        this.physics.add.overlap(
+            this.player.container, 
+            arrowGroup, 
+            (player:any, arrow:any) => {
+                let arrowStatue = arrow.getData("data") as ArrowStatue;
+                arrowStatue.arrowCollided();
+                this.player.dieInAir();
+            }, 
+            undefined,
+            this
+        );
+    }
+
     private getTextKeyProperty(tiledObject: Phaser.Types.Tilemaps.TiledObject) : string {
         for (let property of tiledObject.properties) {
             if (property.name === "TextKey") {
@@ -513,7 +567,7 @@ export default class LevelScene extends BaseScene {
         this.events.emit(EventKeys.LevelRestart);
 
         if (this.sawBlades) {
-            for (var sawBlade of this.sawBlades) {
+            for (let sawBlade of this.sawBlades) {
                 sawBlade.reset();
             }
         }
@@ -598,7 +652,7 @@ export default class LevelScene extends BaseScene {
         // Update sign posts.
 
         if (this.tutorialSignPosts) {
-            for (var signPost of this.tutorialSignPosts) {
+            for (let signPost of this.tutorialSignPosts) {
                 signPost.update();
             }
         }
@@ -606,7 +660,7 @@ export default class LevelScene extends BaseScene {
         // Update sand tiles.
 
         if (this.sandTiles) {
-            for (var tile of this.sandTiles) {
+            for (let tile of this.sandTiles) {
                 tile.update(delta);
             }
         }
@@ -614,8 +668,16 @@ export default class LevelScene extends BaseScene {
         // Update saws.
 
         if (this.sawBlades) {
-            for (var sawBlade of this.sawBlades) {
+            for (let sawBlade of this.sawBlades) {
                 sawBlade.update(delta);
+            }
+        }
+
+        // Arrow statues.
+
+        if (this.arrowStatues) {
+            for (let arrowStatue of this.arrowStatues) {
+                arrowStatue.update(delta);
             }
         }
     }
