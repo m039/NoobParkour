@@ -4,8 +4,9 @@ import TextureKeys from "src/Consts/TextureKeys";
 import LevelScene from "../LevelScene";
 import Player from "src/Managers/Player";
 import EventKeys from "src/Consts/EventKeys";
+import LevelElement from './LevelElement';
 
-export default class TutorialSignPost extends Phaser.GameObjects.Image {
+export default class TutorialSignPost extends Phaser.GameObjects.Image implements LevelElement {
     arcadeBody : Phaser.Physics.Arcade.Body;
     overlap : boolean;
     wasOverlap : boolean;
@@ -32,7 +33,10 @@ export default class TutorialSignPost extends Phaser.GameObjects.Image {
         });
     }
 
-    update() {
+    public reset(): void {
+    }
+
+    public update(time:number, delta:number) : void {
         if (this.overlap && !this.wasOverlap) {
             this.emit("overlapstart");
         }

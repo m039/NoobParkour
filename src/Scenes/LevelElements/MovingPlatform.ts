@@ -1,10 +1,9 @@
 import * as Phaser from 'phaser';
 import TextureKeys from "src/Consts/TextureKeys";
 import Player from 'src/Managers/Player';
+import LevelElement from './LevelElement';
 
-const PlatformSpeed = 100;
-
-export default class MovingPlatform {
+export default class MovingPlatform implements LevelElement {
 
     public platform : Phaser.GameObjects.Image;
 
@@ -76,7 +75,7 @@ export default class MovingPlatform {
         };
     }
 
-    public update(delta:number) : void {
+    public update(time:number, delta:number) : void {
         this.moveLength += 0.001 * delta * this.moveSpeed * this.moveDirection;
         if (this.moveLength < 0) {
             this.moveDirection = 1;

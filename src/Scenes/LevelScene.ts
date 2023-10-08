@@ -24,6 +24,7 @@ import { Localization, LocalizationKey } from 'src/StaticManagers/LocalizationSt
 import ArrowStatue from './LevelElements/ArrowStatue';
 import ShaderKeys from 'src/Consts/ShaderKeys';
 import MovingPlatform from './LevelElements/MovingPlatform';
+import LevelElement from './LevelElements/LevelElement';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -53,25 +54,17 @@ export default class LevelScene extends BaseScene {
 
     private isMobile : boolean = false;
 
-    private tutorialSignPosts : Array<TutorialSignPost>;
-
     private debugGraphics : Phaser.GameObjects.Graphics;
 
     private rectangle1 : Phaser.Geom.Rectangle;
 
     private rectangle2 : Phaser.Geom.Rectangle;
 
-    private sandTiles : Array<SandTile>;
-
     private performLongJump : boolean;
-
-    private sawBlades : Array<SawBlade>;
 
     private longJumpCooldown : number;
 
-    private arrowStatues : Array<ArrowStatue>;
-
-    private movingPlatforms : Array<MovingPlatform>;
+    private levelElements : Array<LevelElement>;
 
     constructor() {
         super({key:SceneKeys.Level});
@@ -101,6 +94,7 @@ export default class LevelScene extends BaseScene {
     public override create(): void {
         this.isMobile = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
 
+        this.levelElements = [];
         this.map = this.make.tilemap({ key: "map" + this.level});
 
         (this.scene.get(SceneKeys.Audio) as AudioScene).audioManager.playMusic(MusicId.Game1);
@@ -328,21 +322,18 @@ export default class LevelScene extends BaseScene {
             return;
         }
 
-        this.tutorialSignPosts = [];
-
         for (var tiledObject of tutorialLayer.objects) {
             const signPost = new TutorialSignPost(
                 this, tiledObject.x, tiledObject.y, this.getTextKeyProperty(tiledObject)
             );
             this.add.existing(signPost);
-            this.tutorialSignPosts.push(signPost);
+            this.levelElements.push(signPost);
         }
     }
 
     private createSandTiles(groundLayer:Phaser.Tilemaps.TilemapLayer) {
         const sandTilesGroup = this.add.group();
-        this.sandTiles = [];
-        
+
         var tiles = groundLayer.createFromTiles(32, -1, { key: TextureKeys.SandTile });
         if (tiles) {
             for (let tile of tiles) {
@@ -354,7 +345,7 @@ export default class LevelScene extends BaseScene {
                 this.physics.add.existing(tile, true);
                 tile.setData("data", sandTile);
 
-                this.sandTiles.push(sandTile);
+                this.levelElements.push(sandTile);
                 sandTilesGroup.add(tile);
             }
         }
@@ -461,12 +452,10 @@ export default class LevelScene extends BaseScene {
 
         const sawsGroup = this.add.group();
 
-        this.sawBlades = [];
-
         for (var tiledObject of sawsLayer.objects) {
             if (tiledObject.type === "Saw") {
                 const sawBlade = new SawBlade(this, tiledObject);
-                this.sawBlades.push(sawBlade);
+                this.levelElements.push(sawBlade);
 
                 this.physics.add.existing(sawBlade.blades, false);
                 sawsGroup.add(sawBlade.blades);
@@ -488,13 +477,13 @@ export default class LevelScene extends BaseScene {
     }
 
     private createArrowStatues(groundLayer: Phaser.Tilemaps.TilemapLayer) {
-        this.arrowStatues = [];
+        let arrowStatues : Array<ArrowStatue> = [];
         const arrowGroup = this.add.group();
         
         let tiles = groundLayer.createFromTiles(55, null);
         if (tiles) {
             for (let tile of tiles) {
-                this.arrowStatues.push(new ArrowStatue(this, tile.x, tile.y, false));
+                arrowStatues.push(new ArrowStatue(this, tile.x, tile.y, false));
                 tile.destroy();
             }
         }
@@ -502,15 +491,16 @@ export default class LevelScene extends BaseScene {
         tiles = groundLayer.createFromTiles(56, null);
         if (tiles) {
             for (let tile of tiles) {
-                this.arrowStatues.push(new ArrowStatue(this, tile.x, tile.y, true));
+                arrowStatues.push(new ArrowStatue(this, tile.x, tile.y, true));
                 tile.destroy();
             }
         }
 
-        for (let arrowStatue of this.arrowStatues) {
+        for (let arrowStatue of arrowStatues) {
             this.physics.add.existing(arrowStatue.arrow, false);
             arrowStatue.arrow.setData("data", arrowStatue);
             arrowGroup.add(arrowStatue.arrow);
+            this.levelElements.push(arrowStatue);
         }
 
         this.physics.add.collider(
@@ -548,12 +538,10 @@ export default class LevelScene extends BaseScene {
 
         const movingPlatformsGroup = this.physics.add.group({allowGravity: false, immovable: true });
 
-        this.movingPlatforms = [];
-
         for (let tiledObject of platformsLayer.objects) {
             if (tiledObject.type === "MovingPlatform") {
                 const movingPlatform = new MovingPlatform(this, tiledObject);
-                this.movingPlatforms.push(movingPlatform);
+                this.levelElements.push(movingPlatform);
 
                 this.physics.add.existing(movingPlatform.platform, false);
                 movingPlatformsGroup.add(movingPlatform.platform);
@@ -608,21 +596,9 @@ export default class LevelScene extends BaseScene {
         this.coinManager.restartLevel();
         this.events.emit(EventKeys.LevelRestart);
 
-        if (this.sawBlades) {
-            for (let sawBlade of this.sawBlades) {
-                sawBlade.reset();
-            }
-        }
-
-        if (this.arrowStatues) {
-            for (let arrowStatue of this.arrowStatues) {
-                arrowStatue.reset();
-            }
-        }
-
-        if (this.movingPlatforms) {
-            for (let movingPlatform of this.movingPlatforms) {
-                movingPlatform.reset();
+        if (this.levelElements) {
+            for (let levelElement of this.levelElements) {
+                levelElement.reset();
             }
         }
     }
@@ -703,42 +679,11 @@ export default class LevelScene extends BaseScene {
             this.player.fly();
         }
 
-        // Update sign posts.
+        // Update level elements.
 
-        if (this.tutorialSignPosts) {
-            for (let signPost of this.tutorialSignPosts) {
-                signPost.update();
-            }
-        }
-
-        // Update sand tiles.
-
-        if (this.sandTiles) {
-            for (let tile of this.sandTiles) {
-                tile.update(delta);
-            }
-        }
-
-        // Update saws.
-
-        if (this.sawBlades) {
-            for (let sawBlade of this.sawBlades) {
-                sawBlade.update(delta);
-            }
-        }
-
-        // Arrow statues.
-
-        if (this.arrowStatues) {
-            for (let arrowStatue of this.arrowStatues) {
-                arrowStatue.update(delta);
-            }
-        }
-
-        // Moving platforms.
-        if (this.movingPlatforms) {
-            for (let movingPlatform of this.movingPlatforms) {
-                movingPlatform.update(delta);
+        if (this.levelElements) {
+            for (let levelElement of this.levelElements) {
+                levelElement.update(time, delta);
             }
         }
     }

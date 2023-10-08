@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="28">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="29">
  <editorsettings>
   <export target="../../dist/assets/levels/maps/Level2.tmj" format="json"/>
  </editorsettings>
@@ -162,7 +162,7 @@
     <property name="Speed" type="float" value="30"/>
     <property name="StartPosition" type="float" value="0"/>
    </properties>
-   <polyline points="70,-137 -54,-98"/>
+   <polyline points="72,-136 -42,-109"/>
   </object>
  </objectgroup>
  <objectgroup id="7" name="Coins">

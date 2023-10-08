@@ -2,8 +2,9 @@ import * as Phaser from 'phaser';
 import SceneKeys from 'src/Consts/SceneKeys';
 import AudioScene from '../AudioScene';
 import { SoundId } from 'src/Managers/AudioManager';
+import LevelElement from './LevelElement';
 
-export default class SandTile {
+export default class SandTile implements LevelElement {
     public isHidden : boolean;
     private sprite : Phaser.GameObjects.Sprite;
     private timer : number;
@@ -33,7 +34,10 @@ export default class SandTile {
         }
     }
 
-    public update(delta: number) : void {
+    public reset(): void {
+    }
+
+    public update(time:number, delta: number) : void {
         if (this.isShaking) {
             this.shakeCooldown += delta;
             const offset = 0.1;

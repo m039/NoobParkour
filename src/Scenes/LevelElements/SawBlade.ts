@@ -1,7 +1,8 @@
 import * as Phaser from 'phaser';
 import TextureKeys from "src/Consts/TextureKeys";
+import LevelElement from './LevelElement';
 
-export default class SawBlade {
+export default class SawBlade implements LevelElement {
 
     public blades : Phaser.GameObjects.Image;
 
@@ -103,7 +104,7 @@ export default class SawBlade {
         };
     }
 
-    public update(delta:number) : void {
+    public update(time:number, delta:number) : void {
         // Rotate.
         this.blades.rotation += Math.PI * 0.0015 * delta;
 

@@ -5,6 +5,7 @@ import Player from 'src/Managers/Player';
 import SceneKeys from 'src/Consts/SceneKeys';
 import AudioScene from '../AudioScene';
 import { SoundId } from 'src/Managers/AudioManager';
+import LevelElement from './LevelElement';
 
 const ArrowFlyDistance = 200;
 const ArrowSpeed = 120;
@@ -13,7 +14,7 @@ const ArrowActivationRadius = 400;
 const ArrowFadeDuration = 400;
 const ArrowSoundActivationRadius = 100;
 
-export default class ArrowStatue {
+export default class ArrowStatue implements LevelElement {
 
     public arrow : Phaser.GameObjects.Image;
 
@@ -65,7 +66,7 @@ export default class ArrowStatue {
         this.fadeTimer = -1;
     }
 
-    public update(delta:number) : void {
+    public update(time:number, delta:number) : void {
         this.cooldown = Math.max(this.cooldown - delta, 0);
 
         if (Math.abs(this.arrow.x - this.launchPosition.x) > ArrowFlyDistance && 
