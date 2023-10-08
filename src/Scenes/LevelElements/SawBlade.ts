@@ -26,11 +26,11 @@ export default class SawBlade {
             throw new Error("The polyline is missing or invalid.");
         }
 
-        var startPositionPercent = 0;
+        let startPositionPercent = 0;
         this.bladeMoveSpeed = 50;
         this.bladeMoveDirection = 1;
 
-        for (var property of tiledObject.properties) {
+        for (let property of tiledObject.properties) {
             if (property.name === "StartPosition") {
                 startPositionPercent = Phaser.Math.Clamp(property.value, 0.0, 1.0);
             } else if (property.name === "Speed") {
