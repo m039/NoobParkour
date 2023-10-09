@@ -9,7 +9,6 @@ import SceneKeys from '../Consts/SceneKeys';
 import InputController, { InputButton } from '../Managers/InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
-import { InstantGamesBridge } from 'instant-games-bridge';
 import TextureKeys from '../Consts/TextureKeys';
 import { MaxLevels } from '../Consts/Consts';
 import { Progress } from '../StaticManagers/ProgressStaticManager';
@@ -92,7 +91,7 @@ export default class LevelScene extends BaseScene {
     }
 
     public override create(): void {
-        this.isMobile = bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE;
+        this.isMobile = bridge.device.type === instantGamesBridge.DEVICE_TYPE.MOBILE;
 
         this.levelElements = [];
         this.map = this.make.tilemap({ key: "map" + this.level});

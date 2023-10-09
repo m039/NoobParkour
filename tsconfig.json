@@ -2,10 +2,7 @@
     "compilerOptions": {
         "target": "es6",
         "moduleResolution": "node",
-        "baseUrl": ".",
-        "paths": {
-            "instant-games-bridge": ["src/instant-games-bridge.ts"]
-        }
+        "baseUrl": "."
     },
     "include": [
         "./src/**/*",

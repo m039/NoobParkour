@@ -2,7 +2,6 @@ import * as Phaser from 'phaser';
 import { GameManager } from '../Scenes/BaseScene';
 import TextureKeys from '../Consts/TextureKeys';
 import { GameHeight, GameWidth } from '../Consts/Consts';
-import { InstantGamesBridge } from 'instant-games-bridge';
 
 export interface InputButton {
     get isUp() : boolean;
@@ -119,7 +118,7 @@ export default class InputController implements GameManager {
         this.upKeyInputButton = new KeyboardInputButton(this.upKey);
         this.gamepadAInputButton = new GamepadAInputButton(this.scene);
 
-        if (bridge.device.type === InstantGamesBridge.DEVICE_TYPE.MOBILE) {
+        if (bridge.device.type === instantGamesBridge.DEVICE_TYPE.MOBILE) {
             this.leftKeyOnScreen = new OnScreenInputButton(
                 this.scene,
                 60,
