@@ -151,7 +151,7 @@ export default class LevelScene extends BaseScene {
             }, this.processSpikes, this);
         }
 
-        if (debugConfig.debugSpikes) {
+        if (typeof debugConfig !== "undefined" && debugConfig.debugSpikes) {
             this.debugGraphics = this.add.graphics();
             this.debugGraphics.depth = 100;
         }
@@ -207,7 +207,7 @@ export default class LevelScene extends BaseScene {
         this.rectangle2.width -= 4;
         this.rectangle2.height -= 4;
         
-        if (debugConfig.debugSpikes) {
+        if (typeof debugConfig !== "undefined" && debugConfig.debugSpikes) {
             this.debugGraphics.clear();
 
             this.debugGraphics.fillStyle(0x0000af, 1);
@@ -370,7 +370,7 @@ export default class LevelScene extends BaseScene {
     private createJumpTiles(groundLayer:Phaser.Tilemaps.TilemapLayer) {
         const jumpTilesGroup = this.add.group();
         
-        var tiles = groundLayer.createFromTiles(48, -1, { key: TextureKeys.JumpTile });
+        let tiles = groundLayer.createFromTiles(48, -1, { key: TextureKeys.JumpTile });
         if (tiles) {
             for (let tile of tiles) {
                 tile.x += tile.width / 2;
@@ -404,7 +404,7 @@ export default class LevelScene extends BaseScene {
     private createTrampolines(groundLayer:Phaser.Tilemaps.TilemapLayer) {
         const trampolineGroup = this.add.group();
         
-        var tiles = groundLayer.createFromTiles(54, -1, { key: AsepriteKeys.Trampoline });
+        let tiles = groundLayer.createFromTiles(54, -1, { key: AsepriteKeys.Trampoline });
         if (tiles) {
             for (let tile of tiles) {
                 tile.y += 17;
@@ -452,7 +452,7 @@ export default class LevelScene extends BaseScene {
 
         const sawsGroup = this.add.group();
 
-        for (var tiledObject of sawsLayer.objects) {
+        for (let tiledObject of sawsLayer.objects) {
             if (tiledObject.type === "Saw") {
                 const sawBlade = new SawBlade(this, tiledObject);
                 this.levelElements.push(sawBlade);
