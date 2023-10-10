@@ -11,7 +11,9 @@ export enum SoundId {
     SandTile,
     LongJump,
     LongJumpTrampoline,
-    ArrowShot
+    ArrowShot,
+    Swoosh,
+    JumpLanding
 }
 
 export enum MusicId {
@@ -108,11 +110,30 @@ export default class AudioManager implements GameManager {
                 break;
             case SoundId.LongJumpTrampoline:
                 this.scene.sound.play(SoundKeys.LongJumpTrampoline);
+                this.scene.sound.stopByKey(SoundKeys.JumpLanding);
                 break;
             case SoundId.ArrowShot:
                 if (this.arrowShotCooldown <= 0) {
                     this.scene.sound.play(SoundKeys.ArrowShot);
                     this.arrowShotCooldown = 50;
+                }
+                break;
+            case SoundId.Swoosh:
+                this.scene.sound.play(SoundKeys.Swoosh);
+                break;
+            case SoundId.JumpLanding:
+                let isSoundPlaying = false;
+
+                for (let sound of this.scene.sound.getAllPlaying()) {
+                    if (sound.key === SoundKeys.LongJumpTrampoline || 
+                        sound.key == SoundKeys.LongJump) {
+                        isSoundPlaying = true;
+                        break;
+                    }
+                }                
+
+                if (!isSoundPlaying) {
+                    this.scene.sound.play(SoundKeys.JumpLanding);
                 }
                 break;
         }

@@ -50,6 +50,8 @@ export default class PreloadScene extends BaseScene {
         this.load.audio(SoundKeys.LongJump, "assets/audio/sounds/longJump.mp3");
         this.load.audio(SoundKeys.LongJumpTrampoline, "assets/audio/sounds/longJumpTrampoline.mp3");
         this.load.audio(SoundKeys.ArrowShot, "assets/audio/sounds/arrowShot.mp3");
+        this.load.audio(SoundKeys.Swoosh, "assets/audio/sounds/swoosh.mp3");
+        this.load.audio(SoundKeys.JumpLanding, "assets/audio/sounds/jumpLanding.mp3");
 
         // Clouds.
 

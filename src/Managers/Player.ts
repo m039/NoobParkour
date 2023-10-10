@@ -71,6 +71,8 @@ export default class Player implements GameManager {
     private wallSlideTimer : number = 0;
 
     private velocityX : number;
+
+    private wasOnGround : boolean = false;
     
     constructor(levelScene: LevelScene) {
         this.levelScene = levelScene;
@@ -140,7 +142,7 @@ export default class Player implements GameManager {
         return this.groundLayer.getTileAtWorldXY(
             this.container.x - this.bodySize.width / 2 - 1,
             this.container.y
-        ) !== null;
+        ) !== null && this.sprite.flipX;
     }
 
     public get isTouchingRight() {
@@ -151,7 +153,7 @@ export default class Player implements GameManager {
         return this.groundLayer.getTileAtWorldXY(
             this.container.x + this.bodySize.width / 2 + 1,
             this.container.y
-        ) !== null;
+        ) !== null && !this.sprite.flipX;
     }
 
     update(time: number, delta: number) {
@@ -221,6 +223,16 @@ export default class Player implements GameManager {
 
         // Update velocity.
         this.body.velocity.x = this.velocityX;
+
+        // Play on landing sound.
+
+        let oldWasOnGround = this.wasOnGround;
+        this.wasOnGround = this.body.blocked.down;
+
+        if (oldWasOnGround != this.wasOnGround && this.wasOnGround) {
+            const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
+            audioScene.audioManager.playSound(SoundId.JumpLanding);
+        }
     }
 
     public setPosition(x?:number, y?:number) {
@@ -268,6 +280,9 @@ export default class Player implements GameManager {
 
         this.body.velocity.y = -MovementConsts.JumpSpeed;
         this.showDust();
+
+        const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
+        audioScene.audioManager.playSound(SoundId.Swoosh);
     }
 
     public longJump() {
@@ -303,6 +318,9 @@ export default class Player implements GameManager {
         this.wallSlideTimer = MovementConsts.WallSlideCooldownMs;
         this.flipX = direction == -1;
         this.inDoubleJump = false;
+
+        const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
+        audioScene.audioManager.playSound(SoundId.Swoosh);
     }
 
     public stopJump() {

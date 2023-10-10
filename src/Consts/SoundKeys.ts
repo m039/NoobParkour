@@ -9,7 +9,9 @@ enum SoundKeys {
     SandTile = "sand_tile",
     LongJump = "long_jump",
     LongJumpTrampoline = "long_jump_trampoline",
-    ArrowShot = "arrow_shot"
+    ArrowShot = "arrow_shot",
+    Swoosh = "swoosh",
+    JumpLanding = "jump_landing"
 }
 
 export default SoundKeys;
