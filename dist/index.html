@@ -15,6 +15,9 @@
 
     <script>
       bridge.initialize().then(() => {
+        bridge.advertisement.setMinimumDelayBetweenInterstitial(90);
+        bridge.advertisement.showInterstitial(); // Preroll.
+
         let scriptElement = document.createElement("script");
         scriptElement.setAttribute("src", "Game.js");
         scriptElement.setAttribute("type", "text/javascript");

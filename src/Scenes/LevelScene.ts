@@ -138,6 +138,8 @@ export default class LevelScene extends BaseScene {
         this.rectangle1 = new Phaser.Geom.Rectangle();
         this.rectangle2 = new Phaser.Geom.Rectangle();
         this.performLongJump = false;
+
+        bridge.advertisement.showInterstitial();
     }
 
     private createSpikes(tileset : Phaser.Tilemaps.Tileset) : void {
@@ -145,9 +147,7 @@ export default class LevelScene extends BaseScene {
             const spikesLayer = this.map.createLayer("Spikes", tileset);
             spikesLayer.setCollisionByExclusion([-1]);
 
-            this.physics.add.overlap(this.player.container, spikesLayer, () => {
-                this.player.dieInAir();
-            }, this.processSpikes, this);
+            this.physics.add.overlap(this.player.container, spikesLayer, this.diePlayer, this.processSpikes, this);
         }
 
         if (typeof debugConfig !== "undefined" && debugConfig.debugSpikes) {
@@ -311,7 +311,7 @@ export default class LevelScene extends BaseScene {
             }
 
             // Collider.
-            this.physics.add.collider(this.player.container, lavaObject, () => this.player.dieInAir());
+            this.physics.add.collider(this.player.container, lavaObject, this.diePlayer, undefined, this);
         }
     }
 
@@ -468,9 +468,7 @@ export default class LevelScene extends BaseScene {
         this.physics.add.overlap(
             this.player.container, 
             sawsGroup, 
-            () => {
-                this.player.dieInAir();
-            }, 
+            this.diePlayer, 
             undefined, 
             this);
     }
@@ -519,7 +517,7 @@ export default class LevelScene extends BaseScene {
             (player:any, arrow:any) => {
                 let arrowStatue = arrow.getData("data") as ArrowStatue;
                 arrowStatue.arrowCollided();
-                this.player.dieInAir();
+                this.diePlayer();
             }, 
             (player: any, arrow:any) => {
                 let arrowStatue = arrow.getData("data") as ArrowStatue;
@@ -600,6 +598,11 @@ export default class LevelScene extends BaseScene {
                 levelElement.reset();
             }
         }
+    }
+
+    private diePlayer() {
+        this.player.dieInAir();
+        bridge.advertisement.showInterstitial();
     }
 
     private centerCameraAtCharacter(player: Player) {
