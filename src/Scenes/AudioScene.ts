@@ -1,3 +1,4 @@
+import { Metrika, MetrikaEvent } from "src/StaticManagers/MetrikaStaticManager";
 import SceneKeys from "../Consts/SceneKeys";
 import AudioManager from "../Managers/AudioManager";
 import BaseScene from "./BaseScene";
@@ -29,6 +30,8 @@ export default class AudioScene extends BaseScene {
             instantGamesBridge.EVENT_NAME.INTERSTITIAL_STATE_CHANGED, 
             function (state) {
                 if (state === instantGamesBridge.INTERSTITIAL_STATE.OPENED) {
+                    Metrika.reachGoal(MetrikaEvent.FIRST_INTERSTITIAL);
+
                     self.audioManager.disable();
                     self.wasLevelSceneRunning = self.scene.isActive(SceneKeys.Level);
                     if (self.wasLevelSceneRunning) {

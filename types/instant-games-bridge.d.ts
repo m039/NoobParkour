@@ -23,11 +23,32 @@ declare namespace instantGamesBridge  {
         sendMessage(message: PLATFORM_MESSAGE) : void;
     }
 
+    interface Player {
+        get isAuthorized() : boolean;
+        authorize(options? : {[key:string | PLATFORM_ID] : {scopes: boolean}}) : Promise<void>;
+    }
+
+    interface Leaderboard {
+        get isSetScoreSupported() : boolean;
+        setScore(options : {[key:string | PLATFORM_ID] : {leaderboardName:string, score:number}}) : void;
+    }
+
     interface InstantGamesBridgeInternal {
         get platform() : Platform;
         get device() : Device;
         get storage() : Storage;
         get advertisement() : Advertisement;
+        get leaderboard() : Leaderboard;
+        get player() : Player;
+    }
+
+    enum PLATFORM_ID {
+        VK = 'vk',
+        YANDEX = 'yandex',
+        CRAZY_GAMES = 'crazy_games',
+        ABSOLUTE_GAMES = 'absolute_games',
+        GAME_DISTRIBUTION = 'game_distribution',
+        MOCK = 'mock'
     }
 
     enum EVENT_NAME {

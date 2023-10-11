@@ -24,6 +24,7 @@ import ArrowStatue from './LevelElements/ArrowStatue';
 import ShaderKeys from 'src/Consts/ShaderKeys';
 import MovingPlatform from './LevelElements/MovingPlatform';
 import LevelElement from './LevelElements/LevelElement';
+import { Metrika } from 'src/StaticManagers/MetrikaStaticManager';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -138,6 +139,8 @@ export default class LevelScene extends BaseScene {
         this.rectangle1 = new Phaser.Geom.Rectangle();
         this.rectangle2 = new Phaser.Geom.Rectangle();
         this.performLongJump = false;
+
+        Metrika.reachGoal("level_show_" + this.level);
     }
 
     private createSpikes(tileset : Phaser.Tilemaps.Tileset) : void {
@@ -268,8 +271,23 @@ export default class LevelScene extends BaseScene {
         Progress.setLevelCompleted(this.level);
         if (this.coinManager.coinsCount === this.coinManager.pickedCoins) {
             Progress.setLevelCompletedFully(this.level);
+
+            let starLevels = Prefs.getStarLevels();
+            if (starLevels) {
+                Metrika.reachGoal("level_fully_complete_" + starLevels.length);
+
+                if (bridge.leaderboard.isSetScoreSupported) {
+                    bridge.leaderboard.setScore({
+                        "yandex": {
+                            leaderboardName: "FullyCompletedLevels",
+                            score: starLevels.length
+                        }
+                    });
+                }
+            }
         }
         Prefs.syncToCloud();
+        Metrika.reachGoal("level_complete_" + this.level);
     }
 
     private createLava() {
