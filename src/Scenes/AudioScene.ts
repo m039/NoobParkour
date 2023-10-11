@@ -9,6 +9,8 @@ export default class AudioScene extends BaseScene {
 
     private wasMusicEnabled : boolean;
 
+    private wasSoundEnabled : boolean;
+
     private wasLevelSceneRunning : boolean;
 
     constructor() {
@@ -16,6 +18,10 @@ export default class AudioScene extends BaseScene {
 
         this.audioManager = new AudioManager(this);
         this.gameManagers.push(this.audioManager);
+    }
+
+    public create(): void {
+        super.create();
 
         const self = this;
 
@@ -23,28 +29,19 @@ export default class AudioScene extends BaseScene {
             instantGamesBridge.EVENT_NAME.INTERSTITIAL_STATE_CHANGED, 
             function (state) {
                 if (state === instantGamesBridge.INTERSTITIAL_STATE.OPENED) {
-                    self.wasMusicEnabled = self.audioManager.musicEnabled;
-                    self.audioManager.musicEnabled = false;
+                    self.audioManager.disable();
                     self.wasLevelSceneRunning = self.scene.isActive(SceneKeys.Level);
-                    self.scene.pause(SceneKeys.Level);
+                    if (self.wasLevelSceneRunning) {
+                        self.scene.pause(SceneKeys.Level);
+                    }
                 } else if (state === instantGamesBridge.INTERSTITIAL_STATE.CLOSED || 
                     state === instantGamesBridge.INTERSTITIAL_STATE.FAILED) {
-                    self.audioManager.musicEnabled = self.wasMusicEnabled;
+                    self.audioManager.enable();
                     if (self.wasLevelSceneRunning) {
                         self.scene.resume(SceneKeys.Level);
                     }
                 }
             }
         );
-    }
-
-    onInterstitialStateChanged(state : string) {
-        if (state === instantGamesBridge.INTERSTITIAL_STATE.OPENED) {
-            this.wasMusicEnabled = this.audioManager.musicEnabled;
-            this.audioManager.musicEnabled = false;
-        } else if (state === instantGamesBridge.INTERSTITIAL_STATE.CLOSED || 
-            state === instantGamesBridge.INTERSTITIAL_STATE.FAILED) {
-            this.audioManager.musicEnabled = this.wasMusicEnabled;
-        }
     }
 }

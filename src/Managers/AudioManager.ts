@@ -26,6 +26,7 @@ export default class AudioManager implements GameManager {
     private scene : Phaser.Scene;
     private music : Phaser.Sound.BaseSound;
     private arrowShotCooldown : number;
+    private isAudioEnabled : boolean;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
@@ -41,6 +42,22 @@ export default class AudioManager implements GameManager {
 
     update(time: number, delta: number): void {
         this.arrowShotCooldown = Math.max(this.arrowShotCooldown - delta, 0);
+    }
+
+    public disable() {
+        if (this.music) {
+            this.music.pause();
+        }
+        this.isAudioEnabled = true;
+    }
+
+    public enable() {
+        if (this.music) {
+            if (this.musicEnabled) {
+                this.music.resume();
+            }
+        }
+        this.isAudioEnabled = false;
     }
 
     public get soundEnabled() : boolean {
@@ -85,7 +102,7 @@ export default class AudioManager implements GameManager {
     }
 
     public playSound(soundId: SoundId) {
-        if (!this.soundEnabled) {
+        if (!this.soundEnabled || !this.enable) {
             return;
         }
 

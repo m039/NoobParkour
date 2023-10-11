@@ -20,6 +20,7 @@ declare namespace instantGamesBridge  {
     
     interface Platform {
         get language() : string;
+        sendMessage(message: PLATFORM_MESSAGE) : void;
     }
 
     interface InstantGamesBridgeInternal {
@@ -53,5 +54,14 @@ declare namespace instantGamesBridge  {
         MOBILE = 'mobile',
         TABLET = 'tablet',
         TV = 'tv',
+    }
+
+    enum PLATFORM_MESSAGE  {
+        GAME_READY = 'game_ready',
+        IN_GAME_LOADING_STARTED = 'in_game_loading_started',
+        IN_GAME_LOADING_STOPPED = 'in_game_loading_stopped',
+        GAMEPLAY_STARTED = 'gameplay_started',
+        GAMEPLAY_STOPPED = 'gameplay_stopped',
+        PLAYER_GOT_ACHIEVEMENT = 'player_got_achievement',
     }
 }

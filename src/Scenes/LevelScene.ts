@@ -138,8 +138,6 @@ export default class LevelScene extends BaseScene {
         this.rectangle1 = new Phaser.Geom.Rectangle();
         this.rectangle2 = new Phaser.Geom.Rectangle();
         this.performLongJump = false;
-
-        bridge.advertisement.showInterstitial();
     }
 
     private createSpikes(tileset : Phaser.Tilemaps.Tileset) : void {
@@ -598,11 +596,12 @@ export default class LevelScene extends BaseScene {
                 levelElement.reset();
             }
         }
+
+        bridge.advertisement.showInterstitial();
     }
 
     private diePlayer() {
         this.player.dieInAir();
-        bridge.advertisement.showInterstitial();
     }
 
     private centerCameraAtCharacter(player: Player) {

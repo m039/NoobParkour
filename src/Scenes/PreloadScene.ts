@@ -160,6 +160,8 @@ export default class PreloadScene extends BaseScene {
     override create() : void {
         this.createAnimations();
 
+        bridge.platform.sendMessage(instantGamesBridge.PLATFORM_MESSAGE.GAME_READY);
+
         if (development && typeof debugConfig !== "undefined") {
             if (debugConfig.clearLocalStorage) {
                 Prefs.clear();
