@@ -296,6 +296,24 @@
                  "width":0,
                  "x":-23,
                  "y":223
+                }, 
+                {
+                 "ellipse":true,
+                 "height":59,
+                 "id":30,
+                 "name":"SawOrbit",
+                 "properties":[
+                        {
+                         "name":"RotationSpeed",
+                         "type":"float",
+                         "value":0.8
+                        }],
+                 "rotation":0,
+                 "type":"SawOrbit",
+                 "visible":true,
+                 "width":59,
+                 "x":34,
+                 "y":19
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -446,7 +464,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":30,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

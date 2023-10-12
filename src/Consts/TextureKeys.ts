@@ -57,7 +57,8 @@ enum TextureKeys {
     ArrowLeft = "arrow_left",
     ArrowRight = "arrow_right",
     MovingPlatform = "moving_platform",
-    SawBladesStatic = "saw_blades_static"
+    SawBladesStatic = "saw_blades_static",
+    SawChain = "saw_chaing"
 }
 
 export default TextureKeys;

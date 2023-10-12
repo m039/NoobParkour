@@ -24,6 +24,7 @@ declare namespace instantGamesBridge  {
     }
 
     interface Player {
+        get isAuthorizationSupported() : boolean;
         get isAuthorized() : boolean;
         authorize(options? : {[key:string | PLATFORM_ID] : {scopes: boolean}}) : Promise<void>;
     }

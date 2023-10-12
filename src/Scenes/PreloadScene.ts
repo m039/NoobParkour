@@ -124,6 +124,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.ArrowRight, "assets/images/ArrowRight.png");
         this.load.image(TextureKeys.MovingPlatform, "assets/images/MovingPlatform.png");
         this.load.image(TextureKeys.SawBladesStatic, "assets/images/SawBladesStatic.png");
+        this.load.image(TextureKeys.SawChain, "assets/images/SawChain.png");
 
         this.load.aseprite(AsepriteKeys.Coin, "assets/animations/Coin.png", "assets/animations/Coin.json");
         this.load.aseprite(AsepriteKeys.Trampoline, "assets/animations/Trampoline.png", "assets/animations/Trampoline.json");
@@ -163,11 +164,13 @@ export default class PreloadScene extends BaseScene {
 
         bridge.platform.sendMessage(instantGamesBridge.PLATFORM_MESSAGE.GAME_READY);
 
-        bridge.player.authorize({
-            'yandex': {
-                scopes: true 
-            }
-        });
+        if (bridge.player.isAuthorizationSupported) {
+            bridge.player.authorize({
+                'yandex': {
+                    scopes: true 
+                }
+            });
+        }
 
         if (development && typeof debugConfig !== "undefined") {
             if (debugConfig.clearLocalStorage) {

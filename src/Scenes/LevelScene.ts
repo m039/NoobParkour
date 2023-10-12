@@ -26,6 +26,7 @@ import MovingPlatform from './LevelElements/MovingPlatform';
 import LevelElement from './LevelElements/LevelElement';
 import { Metrika } from 'src/StaticManagers/MetrikaStaticManager';
 import SawBladeStatic from './LevelElements/SawBladeStatic';
+import SawBladeOrbit from './LevelElements/SawBladeOrbit';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -494,6 +495,16 @@ export default class LevelScene extends BaseScene {
 
                 const body = sawBladeStatic.blades.body as Phaser.Physics.Arcade.Body;
                 body.setCircle(9);
+                body.setOffset(4, 4);
+            } else if (tiledObject.type === "SawOrbit") {
+                const sawBladeOrbit = new SawBladeOrbit(this, tiledObject);
+                this.levelElements.push(sawBladeOrbit);
+
+                this.physics.add.existing(sawBladeOrbit.blades, false);
+                sawsGroup.add(sawBladeOrbit.blades);
+
+                const body = sawBladeOrbit.blades.body as Phaser.Physics.Arcade.Body;
+                body.setCircle(10);
                 body.setOffset(4, 4);
             }
         }
