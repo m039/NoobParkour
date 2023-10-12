@@ -232,6 +232,8 @@ export default class Player implements GameManager {
         if (oldWasOnGround != this.wasOnGround && this.wasOnGround) {
             const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
             audioScene.audioManager.playSound(SoundId.JumpLanding);
+
+            this.inFly = false;
         }
     }
 
@@ -283,6 +285,7 @@ export default class Player implements GameManager {
 
         const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
         audioScene.audioManager.playSound(SoundId.Swoosh);
+        this.inFly = false;
     }
 
     public longJump() {
@@ -292,6 +295,7 @@ export default class Player implements GameManager {
 
         this.body.velocity.y = -MovementConsts.LongJumpSpeed;
         this.showDust();
+        this.inFly = false;
     }
 
     public doubleJump() {
@@ -318,6 +322,7 @@ export default class Player implements GameManager {
         this.wallSlideTimer = MovementConsts.WallSlideCooldownMs;
         this.flipX = direction == -1;
         this.inDoubleJump = false;
+        this.inFly = false;
 
         const audioScene = this.levelScene.scene.get(SceneKeys.Audio) as AudioScene;
         audioScene.audioManager.playSound(SoundId.Swoosh);

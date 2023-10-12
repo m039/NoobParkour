@@ -37,6 +37,8 @@ export default class LevelScene extends BaseScene {
 
     public level : number;
 
+    public startGatePosition : Phaser.Math.Vector2;
+
 
     private inputController : InputController;
 
@@ -240,6 +242,10 @@ export default class LevelScene extends BaseScene {
                     this.onEndReached();
                     collider.destroy();
                 });
+            } else if (gate === startGate) {
+                this.startGatePosition = new Phaser.Math.Vector2(
+                    gate.x, gate.y
+                );
             }
 
             if (!this.isMobile) {

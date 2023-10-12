@@ -8,10 +8,6 @@ export default class AudioScene extends BaseScene {
 
     public audioManager:AudioManager;
 
-    private wasMusicEnabled : boolean;
-
-    private wasSoundEnabled : boolean;
-
     private wasLevelSceneRunning : boolean;
 
     constructor() {
@@ -26,11 +22,16 @@ export default class AudioScene extends BaseScene {
 
         const self = this;
 
+        let firstInterstitial = false;
+
         bridge.advertisement.on(
             instantGamesBridge.EVENT_NAME.INTERSTITIAL_STATE_CHANGED, 
             function (state) {
                 if (state === instantGamesBridge.INTERSTITIAL_STATE.OPENED) {
-                    Metrika.reachGoal(MetrikaEvent.FIRST_INTERSTITIAL);
+                    if (!firstInterstitial) {
+                        Metrika.reachGoal(MetrikaEvent.FIRST_INTERSTITIAL);
+                        firstInterstitial = true;
+                    }
 
                     self.audioManager.disable();
                     self.wasLevelSceneRunning = self.scene.isActive(SceneKeys.Level);
