@@ -123,6 +123,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.ArrowLeft, "assets/images/ArrowLeft.png");
         this.load.image(TextureKeys.ArrowRight, "assets/images/ArrowRight.png");
         this.load.image(TextureKeys.MovingPlatform, "assets/images/MovingPlatform.png");
+        this.load.image(TextureKeys.SawBladesStatic, "assets/images/SawBladesStatic.png");
 
         this.load.aseprite(AsepriteKeys.Coin, "assets/animations/Coin.png", "assets/animations/Coin.json");
         this.load.aseprite(AsepriteKeys.Trampoline, "assets/animations/Trampoline.png", "assets/animations/Trampoline.json");

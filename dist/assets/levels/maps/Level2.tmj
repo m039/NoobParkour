@@ -70,12 +70,12 @@
                  "x":16,
                  "y":0
                 }],
-         "height":48,
+         "height":16,
          "id":1,
          "name":"Ground",
          "opacity":1,
          "startx":-16,
-         "starty":-32,
+         "starty":0,
          "type":"tilelayer",
          "visible":true,
          "width":48,
@@ -284,6 +284,18 @@
                  "width":0,
                  "x":-111,
                  "y":23
+                }, 
+                {
+                 "height":0,
+                 "id":29,
+                 "name":"SawStatic",
+                 "point":true,
+                 "rotation":0,
+                 "type":"SawStatic",
+                 "visible":true,
+                 "width":0,
+                 "x":-23,
+                 "y":223
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -338,12 +350,12 @@
                  "name":"Platform",
                  "polyline":[
                         {
-                         "x":70,
-                         "y":-137
+                         "x":72,
+                         "y":-136
                         }, 
                         {
-                         "x":-54,
-                         "y":-98
+                         "x":-42,
+                         "y":-109
                         }],
                  "properties":[
                         {
@@ -434,7 +446,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":28,
+ "nextobjectid":30,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

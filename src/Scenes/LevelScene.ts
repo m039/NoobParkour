@@ -25,6 +25,7 @@ import ShaderKeys from 'src/Consts/ShaderKeys';
 import MovingPlatform from './LevelElements/MovingPlatform';
 import LevelElement from './LevelElements/LevelElement';
 import { Metrika } from 'src/StaticManagers/MetrikaStaticManager';
+import SawBladeStatic from './LevelElements/SawBladeStatic';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -483,6 +484,16 @@ export default class LevelScene extends BaseScene {
 
                 const body = sawBlade.blades.body as Phaser.Physics.Arcade.Body;
                 body.setCircle(10);
+                body.setOffset(4, 4);
+            } else if (tiledObject.type === "SawStatic") {
+                const sawBladeStatic = new SawBladeStatic(this, tiledObject);
+                this.levelElements.push(sawBladeStatic);
+
+                this.physics.add.existing(sawBladeStatic.blades, false);
+                sawsGroup.add(sawBladeStatic.blades);
+
+                const body = sawBladeStatic.blades.body as Phaser.Physics.Arcade.Body;
+                body.setCircle(9);
                 body.setOffset(4, 4);
             }
         }
