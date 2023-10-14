@@ -117,7 +117,7 @@ export default class LevelScene extends BaseScene {
         this.createTutorial();
         this.createSandTiles(groundLayer);
         this.createJumpTiles(groundLayer);
-        this.createSpikes(tileset, groundLayer);
+        this.createSpikes(groundLayer);
         this.createTrampolines(groundLayer);
         this.createSawBlades();
         this.createArrowStatues(groundLayer);
@@ -129,7 +129,21 @@ export default class LevelScene extends BaseScene {
             this.placeCharacterAtStart(this.player, this.map, true);
         });
         
-        this.physics.add.collider(this.player.container, groundLayer);
+        this.physics.add.collider(
+            this.player.container, 
+            groundLayer, 
+            undefined, 
+            (player:any, tile:any) => {
+                let indeces = [44, 45, 46, 47, 50, 51, 52, 53]; // Spikes indeces.
+
+                if (indeces.find((v) => v == tile.index) !== undefined) {
+                    return false;
+                }
+
+                return true;
+            }, 
+            this
+        );
         
         this.player.groundLayer = groundLayer;
 
@@ -147,30 +161,8 @@ export default class LevelScene extends BaseScene {
         Metrika.reachGoal("level_show_" + this.level);
     }
 
-    private createSpikes(tileset : Phaser.Tilemaps.Tileset, groundLayer : Phaser.Tilemaps.TilemapLayer) : void {
-        let layer = this.map.createBlankLayer(
-            "SpikesDynamic",
-            tileset, 
-            groundLayer.x, 
-            groundLayer.y, 
-            groundLayer.width, 
-            groundLayer.height
-        );
-        let indeces = [44, 45, 46, 47, 50, 51, 52, 53];
-
-        let tiles = groundLayer.getTilesWithin();
-
-        for (let tile of tiles) {
-            if (indeces.find((v) => v == tile.index) !== undefined) {
-                layer.putTileAtWorldXY(tile.index, tile.getLeft(), tile.getTop());
-            }
-        }
-
-        for (let index of indeces) {
-            groundLayer.replaceByIndex(index, -1);
-        }
-
-        this.physics.add.overlap(this.player.container, layer, this.diePlayer, this.processSpikes, this);
+    private createSpikes(groundLayer : Phaser.Tilemaps.TilemapLayer) : void {
+        this.physics.add.overlap(this.player.container, groundLayer, this.diePlayer, this.processSpikes, this);
 
         if (typeof debugConfig !== "undefined" && debugConfig.debugSpikes) {
             this.debugGraphics = this.add.graphics();
