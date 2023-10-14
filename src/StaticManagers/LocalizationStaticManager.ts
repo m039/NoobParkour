@@ -15,7 +15,12 @@ export enum LocalizationKey {
     Tutorial2Desktop = "tutorial2_desktop",
     Tutorial1Mobile = "tutorial1_mobile",
     Tutorial2Mobile = "tutorial2_mobile",
-    Tutorial3 = "tutorial3"
+    Tutorial3 = "tutorial3",
+    Tutorial4 = "tutorial4",
+    Tutorial5 = "tutorial5",
+    Tutorial6 = "tutorial6",
+    Tutorial7 = "tutorial7",
+    Tutorial8 = "tutorial8"
 };
 
 class LocalizationStaticManager {
@@ -61,8 +66,28 @@ class LocalizationStaticManager {
             ru: "Уровень\nпройден"
         };
         this.localizationTexts[LocalizationKey.Tutorial3] = {
+            en: "Collect coins.",
+            ru: "Собирайте монетки."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial4] = {
             en: "Beware of lava!",
             ru: "Осторожно, лава!"
+        };
+        this.localizationTexts[LocalizationKey.Tutorial5] = {
+            en: "Use wall jump to reach higher\nplace!",
+            ru: "Отпрыгивайте от стены,\nчтобы забраться выше!"
+        };
+        this.localizationTexts[LocalizationKey.Tutorial6] = {
+            en: "Press jump while in the air!",
+            ru: "Нажмите прыжок, когда находитесь\nв воздухе!"
+        };
+        this.localizationTexts[LocalizationKey.Tutorial7] = {
+            en: "The spikes are sharp!",
+            ru: "Шипы острые!"
+        };
+        this.localizationTexts[LocalizationKey.Tutorial8] = {
+            en: "Press up key quickly to jump low!",
+            ru: "Нажимайте кнопку вверх быстро,\n чтобы прыгнуть низко!"
         };
     }
 

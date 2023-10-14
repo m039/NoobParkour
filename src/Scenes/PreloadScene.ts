@@ -85,7 +85,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.StartButtonHovered, "assets/images/ui/StartButtonHovered.png");
 
         this.load.image(TextureKeys.Tiles, "assets/levels/tilesets/NoobParkourTileset.png");
-        this.load.tilemapTiledJSON("map0", "assets/levels/maps/WelcomeScene.tmj");
+        this.load.tilemapTiledJSON("map0", "assets/levels/maps/WelcomeScene.json");
 
         this.load.aseprite(AsepriteKeys.Noob, "assets/animations/NoobMain.png", "assets/animations/NoobMain.json");
 
@@ -105,8 +105,9 @@ export default class PreloadScene extends BaseScene {
 
         // LevelScene.
 
-        this.load.tilemapTiledJSON("map1", "assets/levels/maps/Level1.tmj");
-        this.load.tilemapTiledJSON("map2", "assets/levels/maps/Level2.tmj");
+        this.load.tilemapTiledJSON("map1", "assets/levels/maps/Level1.json");
+        this.load.tilemapTiledJSON("map2", "assets/levels/maps/Level2.json");
+        this.load.tilemapTiledJSON("map3", "assets/levels/maps/Level3.json");
 
         this.load.image(TextureKeys.Pixel, "assets/images/Pixel.png");
         this.load.glsl(ShaderKeys.Portal, "assets/shaders/Portal.frag");
