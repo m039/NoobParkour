@@ -2,20 +2,20 @@ declare var bridge: instantGamesBridge.InstantGamesBridgeInternal;
 
 declare namespace instantGamesBridge  {
     interface Storage {
-        get(key: string | Array<string>, options?: any) : Promise<any>
-        set(key: string | Array<string>, value: any, options?: any) : Promise<void>
+        get(key: string | Array<string>, options?: any) : Promise<any>;
+        set(key: string | Array<string>, value: any, options?: any) : Promise<void>;
     }
 
     interface Advertisement  {
         showInterstitial(options?:any) : void;
         on(
             eventName:EVENT_NAME,
-            callback: (state:INTERSTITIAL_STATE | VISIBILITY_STATE
-        ) => void) : void;
+            callback: (state:INTERSTITIAL_STATE | VISIBILITY_STATE) => void
+        ) : void;
     }
     
     interface Device {
-        get type() : DEVICE_TYPE
+        get type() : DEVICE_TYPE;
     }
     
     interface Platform {
