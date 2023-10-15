@@ -11,6 +11,8 @@ export enum LocalizationKey {
     LevelCompleTitle = "level_complete_title",
     Back = "back",
     SettingsMenuButton = "settings_menu_button",
+    MenuRestartLevel = "menu_repeat_level",
+    NextLevel = "next_level",
     Tutorial1Desktop = "tutorial1_desktop",
     Tutorial2Desktop = "tutorial2_desktop",
     Tutorial1Mobile = "tutorial1_mobile",
@@ -88,6 +90,14 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.Tutorial8] = {
             en: "Press up key quickly to jump low!",
             ru: "Нажимайте кнопку вверх быстро,\n чтобы прыгнуть низко!"
+        };
+        this.localizationTexts[LocalizationKey.MenuRestartLevel] = {
+            en: "Restart Level",
+            ru: "Начать заново"
+        };
+        this.localizationTexts[LocalizationKey.NextLevel] = {
+            en: "Next Level",
+            ru: "Следующий ур."
         };
     }
 

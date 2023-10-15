@@ -16,6 +16,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
     private titleText : Phaser.GameObjects.BitmapText;
     private backButtonText : Phaser.GameObjects.BitmapText;
     private menuButtonText : Phaser.GameObjects.BitmapText;
+    private repeatButtonText : Phaser.GameObjects.BitmapText;
     private isAnimating : boolean;
 
     constructor(scene: Phaser.Scene, x: number, y: number, showMenuButton:boolean) {
@@ -36,7 +37,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             .setOrigin(0.5, 0.5)
             .setTint(0x000000);
         
-        var py = -background.height / 2 + 50;
+        var py = -background.height / 2 + 40;
         var menuButton : Phaser.GameObjects.Image;
         if (showMenuButton) {
             menuButton = scene.add.image(0, py, TextureKeys.SettingsButtonDefault);
@@ -54,7 +55,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
                 }
             });
 
-            py += 40;
+            py += 35;
         }
 
         const audioManager = (scene.scene.get(SceneKeys.Audio) as AudioScene).audioManager;
@@ -86,13 +87,19 @@ class SettingsContainer extends Phaser.GameObjects.Container {
         });
 
         let repeatButton : Phaser.GameObjects.Image;
+        let repeatIcon : Phaser.GameObjects.Image;
 
         if (showMenuButton) {
-            repeatButton = scene.add.image(100, py, TextureKeys.RepeatButtonDefault);
+            repeatButton = scene.add.image(0, py + 35, TextureKeys.SettingsButtonDefault);
+            this.repeatButtonText = scene.add.bitmapText(-50, repeatButton.y, FontKeys.Monocraft)
+                .setOrigin(0.0, 0.5)
+                .setTint(0x000000);
+
+            repeatIcon = scene.add.image(45, py + 35, TextureKeys.RepeatIcon);
 
             createButton(repeatButton, {
-                defaultTexture: TextureKeys.RepeatButtonDefault,
-                hoveredTexture: TextureKeys.RepeatButtonHovered,
+                defaultTexture: TextureKeys.SettingsButtonDefault,
+                hoveredTexture: TextureKeys.SettingsButtonHovered,
                 onClick: () => {
                     const levelScene = this.scene.scene.get(SceneKeys.Level) as LevelScene;
                     levelScene.scene.restart({level: levelScene.level});
@@ -120,6 +127,8 @@ class SettingsContainer extends Phaser.GameObjects.Container {
         this.add(this.backButtonText);
         if (showMenuButton) {
             this.add(repeatButton);
+            this.add(this.repeatButtonText);
+            this.add(repeatIcon);
         }
 
         this.visible = false;
@@ -144,6 +153,10 @@ class SettingsContainer extends Phaser.GameObjects.Container {
         this.backButtonText.setText(Localization.getText(LocalizationKey.Back));
         if (this.menuButtonText) {
             this.menuButtonText.setText(Localization.getText(LocalizationKey.SettingsMenuButton));
+        }
+
+        if (this.repeatButtonText) {
+            this.repeatButtonText.setText(Localization.getText(LocalizationKey.MenuRestartLevel));
         }
     }
 

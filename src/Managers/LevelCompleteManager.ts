@@ -36,11 +36,19 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             .setOrigin(0, 0.5)
             .setText(coinManager.pickedCoins + "/" + coinManager.coinsCount);
         
-        const nextButton = scene.add.image(30, 50, TextureKeys.NextButtonDefault);
+        
+        // Next button.
+        const nextButton = scene.add.image(0, 30, TextureKeys.NextButtonBackgroundDefault);
+        const nextButtonText = scene.add.bitmapText(-50, nextButton.y, FontKeys.Monocraft)
+            .setOrigin(0.0, 0.5)
+            .setText(Localization.getText(LocalizationKey.NextLevel))
+            .setTint(0x000000);
+
+        const nextIcon = scene.add.image(45, nextButton.y, TextureKeys.NextIcon);
 
         createButton(nextButton, {
-            defaultTexture: TextureKeys.NextButtonDefault,
-            hoveredTexture: TextureKeys.NextButtonHovered,
+            defaultTexture: TextureKeys.NextButtonBackgroundDefault,
+            hoveredTexture: TextureKeys.NextButtonBackgroundHovered,
             onClick: () => {
                 const levelScene = this.scene.scene.get(SceneKeys.Level) as LevelScene;
                 levelScene.scene.restart({level: levelScene.level + 1});
@@ -50,11 +58,18 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             }
         });
 
-        const repeatButton = scene.add.image(-30, 50, TextureKeys.RepeatButtonDefault);
+        // Repeat button.
+        const repeatButton = scene.add.image(0, 60, TextureKeys.SettingsButtonDefault);
+        const repeatButtonText = scene.add.bitmapText(-50, repeatButton.y, FontKeys.Monocraft)
+            .setOrigin(0.0, 0.5)
+            .setText(Localization.getText(LocalizationKey.MenuRestartLevel))
+            .setTint(0x000000);
+
+        const repeatIcon = scene.add.image(45, repeatButton.y, TextureKeys.RepeatIcon);
 
         createButton(repeatButton, {
-            defaultTexture: TextureKeys.RepeatButtonDefault,
-            hoveredTexture: TextureKeys.RepeatButtonHovered,
+            defaultTexture: TextureKeys.SettingsButtonDefault,
+            hoveredTexture: TextureKeys.SettingsButtonHovered,
             onClick: () => {
                 const levelScene = this.scene.scene.get(SceneKeys.Level) as LevelScene;
                 levelScene.scene.restart({level: levelScene.level});
@@ -71,7 +86,11 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
         this.add(coin);
         this.add(coinText);
         this.add(nextButton);
+        this.add(nextButtonText);
+        this.add(nextIcon);
         this.add(repeatButton);
+        this.add(repeatButtonText);
+        this.add(repeatIcon);
 
         this.visible = false;
         this.depth = 100;

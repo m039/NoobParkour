@@ -38,8 +38,6 @@ enum TextureKeys {
     HelpBoxBackground = "help_box_background",
     BigStarEmpty = "big_star_empty",
     BigStarFill = "big_star_fill",
-    NextButtonDefault = "next_button_default",
-    NextButtonHovered = "next_button_hovered",
     LeftButtonDefault = "left_button_default",
     LeftButtonHovered = "left_button_hovered",
     RightButtonDefault = "right_button_default",
@@ -52,13 +50,15 @@ enum TextureKeys {
     SawBlades = "saw_blades",
     SawGrooveBody = "saw_groove_body",
     SawGrooveHead = "saw_groove_head",
-    RepeatButtonDefault = "repeat_button_default",
-    RepeatButtonHovered = "repeat_button_hovered",
     ArrowLeft = "arrow_left",
     ArrowRight = "arrow_right",
     MovingPlatform = "moving_platform",
     SawBladesStatic = "saw_blades_static",
-    SawChain = "saw_chaing"
+    SawChain = "saw_chaing",
+    RepeatIcon = "repeat_icon",
+    NextButtonBackgroundDefault = "next_button_background_default",
+    NextButtonBackgroundHovered = "next_button_background_hovered",
+    NextIcon = "next_icon"
 }
 
 export default TextureKeys;

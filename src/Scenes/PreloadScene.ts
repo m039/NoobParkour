@@ -72,6 +72,7 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.MusicIconDefault, "assets/images/ui/MusicIconDefault.png");
         this.load.image(TextureKeys.MusicIconHovered, "assets/images/ui/MusicIconHovered.png");
         this.load.image(TextureKeys.DisableIcon, "assets/images/ui/DisableIcon.png");
+        this.load.image(TextureKeys.RepeatIcon, "assets/images/ui/RepeatIcon.png");
 
         // WelcomeScene.
 
@@ -109,6 +110,7 @@ export default class PreloadScene extends BaseScene {
         this.load.tilemapTiledJSON("map2", "assets/levels/maps/Level2.json");
         this.load.tilemapTiledJSON("map3", "assets/levels/maps/Level3.json");
         this.load.tilemapTiledJSON("map4", "assets/levels/maps/Level4.json");
+        this.load.tilemapTiledJSON("map5", "assets/levels/maps/Level5.json");
 
         this.load.image(TextureKeys.Pixel, "assets/images/Pixel.png");
         this.load.glsl(ShaderKeys.Portal, "assets/shaders/Portal.frag");
@@ -146,10 +148,9 @@ export default class PreloadScene extends BaseScene {
 
         this.load.image(TextureKeys.BigStarEmpty, "assets/images/ui/BigStarEmpty.png");
         this.load.image(TextureKeys.BigStarFill, "assets/images/ui/BigStarFill.png");
-        this.load.image(TextureKeys.NextButtonDefault, "assets/images/ui/NextButtonDefault.png");
-        this.load.image(TextureKeys.NextButtonHovered, "assets/images/ui/NextButtonHovered.png");
-        this.load.image(TextureKeys.RepeatButtonDefault, "assets/images/ui/RepeatButtonDefault.png");
-        this.load.image(TextureKeys.RepeatButtonHovered, "assets/images/ui/RepeatButtonHovered.png");
+        this.load.image(TextureKeys.NextButtonBackgroundDefault, "assets/images/ui/NextButtonBackgroundDefault.png");
+        this.load.image(TextureKeys.NextButtonBackgroundHovered, "assets/images/ui/NextButtonBackgroundHovered.png");
+        this.load.image(TextureKeys.NextIcon, "assets/images/ui/NextIcon.png");
 
         // Input controller.
 
