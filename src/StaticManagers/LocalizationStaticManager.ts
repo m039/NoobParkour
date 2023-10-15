@@ -77,7 +77,7 @@ class LocalizationStaticManager {
         };
         this.localizationTexts[LocalizationKey.Tutorial5] = {
             en: "Use wall jump to reach higher\nplace!",
-            ru: "Отпрыгивайте от стены,\nчтобы забраться выше!"
+            ru: "Отпрыгивайте от стены, чтобы забраться\nвыше!"
         };
         this.localizationTexts[LocalizationKey.Tutorial6] = {
             en: "Press jump while in the air!",
