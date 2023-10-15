@@ -6,6 +6,7 @@ import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
 import AsepriteKeys from 'src/Consts/AsepriteKeys';
 import TextureKeys from 'src/Consts/TextureKeys';
+import { isSpikes } from 'src/Utils';
 
 enum PlayerAnimation {
     Idle = "Idle",
@@ -40,7 +41,7 @@ export const MovementConsts = {
 export default class Player implements GameManager {
     public container : Phaser.GameObjects.Container;
 
-    public readonly bodySize = { width: 7, height: 16 };
+    public readonly bodySize = { width: 8, height: 16 };
 
     public body : Phaser.Physics.Arcade.Body;
 
@@ -139,10 +140,16 @@ export default class Player implements GameManager {
             return false;
         }
 
-        return this.groundLayer.getTileAtWorldXY(
+        let tile = this.groundLayer.getTileAtWorldXY(
             this.container.x - this.bodySize.width / 2 - 1,
             this.container.y
-        ) !== null && this.sprite.flipX;
+        );
+
+        if (tile === null) {
+            return false;
+        }
+
+        return !isSpikes(tile.index) && this.sprite.flipX;
     }
 
     public get isTouchingRight() {
@@ -150,10 +157,16 @@ export default class Player implements GameManager {
             return false;
         }
 
-        return this.groundLayer.getTileAtWorldXY(
+        let tile = this.groundLayer.getTileAtWorldXY(
             this.container.x + this.bodySize.width / 2 + 1,
             this.container.y
-        ) !== null && !this.sprite.flipX;
+        );
+
+        if (tile === null) {
+            return false;
+        }
+
+        return !isSpikes(tile.index) && !this.sprite.flipX;
     }
 
     update(time: number, delta: number) {

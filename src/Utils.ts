@@ -11,6 +11,10 @@ interface CreateButtonConfig {
     isSelected?: () => boolean
 }
 
+export function isSpikes(index:number) : boolean {
+    return (index >= 44 && index <= 50) || (index >= 50 && index <= 53);
+}
+
 export function getRandomElement(array: Array<string>) : string {
     return array[Math.floor(Math.random() * array.length)];
 }

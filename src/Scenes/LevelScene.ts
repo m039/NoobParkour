@@ -27,6 +27,7 @@ import LevelElement from './LevelElements/LevelElement';
 import { Metrika } from 'src/StaticManagers/MetrikaStaticManager';
 import SawBladeStatic from './LevelElements/SawBladeStatic';
 import SawBladeOrbit from './LevelElements/SawBladeOrbit';
+import { isSpikes } from 'src/Utils';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -134,9 +135,7 @@ export default class LevelScene extends BaseScene {
             groundLayer, 
             undefined, 
             (player:any, tile:any) => {
-                let indeces = [44, 45, 46, 47, 50, 51, 52, 53]; // Spikes indeces.
-
-                if (indeces.find((v) => v == tile.index) !== undefined) {
+                if (isSpikes(tile.index)) {
                     return false;
                 }
 
