@@ -38,6 +38,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             .setTint(0x000000);
         
         var py = -background.height / 2 + 40;
+        const verticalGap = Math.abs(py - backButton.y) / 3;
         var menuButton : Phaser.GameObjects.Image;
         if (showMenuButton) {
             menuButton = scene.add.image(0, py, TextureKeys.SettingsButtonDefault);
@@ -55,7 +56,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
                 }
             });
 
-            py += 35;
+            py += verticalGap;
         }
 
         const audioManager = (scene.scene.get(SceneKeys.Audio) as AudioScene).audioManager;
@@ -90,12 +91,12 @@ class SettingsContainer extends Phaser.GameObjects.Container {
         let repeatIcon : Phaser.GameObjects.Image;
 
         if (showMenuButton) {
-            repeatButton = scene.add.image(0, py + 35, TextureKeys.SettingsButtonDefault);
+            repeatButton = scene.add.image(0, py + verticalGap, TextureKeys.SettingsButtonDefault);
             this.repeatButtonText = scene.add.bitmapText(-50, repeatButton.y, FontKeys.Monocraft)
                 .setOrigin(0.0, 0.5)
                 .setTint(0x000000);
 
-            repeatIcon = scene.add.image(45, py + 35, TextureKeys.RepeatIcon);
+            repeatIcon = scene.add.image(45, repeatButton.y, TextureKeys.RepeatIcon);
 
             createButton(repeatButton, {
                 defaultTexture: TextureKeys.SettingsButtonDefault,

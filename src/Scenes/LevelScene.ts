@@ -107,9 +107,8 @@ export default class LevelScene extends BaseScene {
         super.create();
 
         const tileset = this.map.addTilesetImage("NoobParkourTileset", TextureKeys.Tiles, 16, 16, 1, 2);
-        const groundLayer = this.map.createLayer("Ground", tileset);
-        
         this.map.createLayer("Back", tileset);
+        const groundLayer = this.map.createLayer("Ground", tileset);
         
         this.inputController = (this.scene.get(SceneKeys.LevelUI) as LevelUIScene).inputController;
 
