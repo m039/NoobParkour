@@ -23,7 +23,8 @@ export enum LocalizationKey {
     Tutorial6 = "tutorial6",
     Tutorial7 = "tutorial7",
     Tutorial8 = "tutorial8",
-    Tutorial9 = "tutorial9"
+    Tutorial9 = "tutorial9",
+    Tutorial10 = "tutorial10"
 };
 
 class LocalizationStaticManager {
@@ -102,7 +103,11 @@ class LocalizationStaticManager {
         };
         this.localizationTexts[LocalizationKey.Tutorial9] = {
             en: "Don't stay long on the sand.",
-            ru: "Не стой долго на песке."
+            ru: "Не стойте долго на песке."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial10] = {
+            en: "Jump higher with green platforms.",
+            ru: "Прыгайте выше с помощью зеленых платформ."
         };
     }
 
