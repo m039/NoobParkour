@@ -113,6 +113,7 @@ export default class PreloadScene extends BaseScene {
         this.load.tilemapTiledJSON("map5", "assets/levels/maps/Level05.json");
         this.load.tilemapTiledJSON("map6", "assets/levels/maps/Level06.json");
         this.load.tilemapTiledJSON("map7", "assets/levels/maps/Level07.json");
+        this.load.tilemapTiledJSON("map8", "assets/levels/maps/Level08.json");
 
         this.load.image(TextureKeys.Pixel, "assets/images/Pixel.png");
         this.load.glsl(ShaderKeys.Portal, "assets/shaders/Portal.frag");
