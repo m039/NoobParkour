@@ -25,7 +25,9 @@ export enum LocalizationKey {
     Tutorial8 = "tutorial8",
     Tutorial9 = "tutorial9",
     Tutorial10 = "tutorial10",
-    Tutorial11 = "tutorial11"
+    Tutorial11 = "tutorial11",
+    Tutorial12 = "tutorial12",
+    Tutorial13 = "tutorial13"
 };
 
 class LocalizationStaticManager {
@@ -113,6 +115,14 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.Tutorial11] = {
             en: "Jump on the trampoline.",
             ru: "Прыгайте на трамплин."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial12] = {
+            en: "Wait for it and hop in.",
+            ru: "Подождите и запрыгивайте."
+        };
+        this.localizationTexts[LocalizationKey.Tutorial13] = {
+            en: "Hello, saws!",
+            ru: "Привет, пилы!"
         };
     }
 

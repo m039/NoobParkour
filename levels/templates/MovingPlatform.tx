@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Platform" type="MovingPlatform">
+  <properties>
+   <property name="InverseStartDirection" type="bool" value="false"/>
+   <property name="Speed" type="float" value="30"/>
+   <property name="StartPosition" type="float" value="0"/>
+  </properties>
+  <polyline points="72,-136 -42,-109"/>
+ </object>
+</template>

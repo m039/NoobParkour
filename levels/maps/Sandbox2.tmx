@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="31">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="32">
  <editorsettings>
   <export target="../../dist/assets/levels/maps/Level2.tmj" format="json"/>
  </editorsettings>
@@ -143,14 +143,7 @@
    </properties>
    <polyline points="0,0 -1,-138"/>
   </object>
-  <object id="27" name="Platform" type="MovingPlatform" x="18" y="83">
-   <properties>
-    <property name="InverseStartDirection" type="bool" value="false"/>
-    <property name="Speed" type="float" value="30"/>
-    <property name="StartPosition" type="float" value="0"/>
-   </properties>
-   <polyline points="72,-136 -42,-109"/>
-  </object>
+  <object id="27" template="../templates/MovingPlatform.tx" type="MovingPlatform" x="18" y="83"/>
  </objectgroup>
  <objectgroup id="7" name="Coins">
   <object id="14" name="Coin" x="256" y="80">

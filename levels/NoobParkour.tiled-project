@@ -6,7 +6,8 @@
     "extensionsPath": "extensions",
     "folders": [
         "tilesets",
-        "maps"
+        "maps",
+        "templates"
     ],
     "properties": [
     ],
