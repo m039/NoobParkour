@@ -19,7 +19,6 @@ export enum SoundId {
 export enum MusicId {
     Menu = SoundKeys.MenuMusic,
     Game1 = SoundKeys.Game1Music,
-    Game2 = SoundKeys.Game2Music
 }
 
 export default class AudioManager implements GameManager {

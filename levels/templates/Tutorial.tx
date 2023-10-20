@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Tutorial13">
+  <properties>
+   <property name="TextKey" value="tutorial13"/>
+  </properties>
+  <point/>
+ </object>
+</template>

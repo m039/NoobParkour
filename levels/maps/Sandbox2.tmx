@@ -116,20 +116,12 @@
   <object id="17" name="CloudBounds" x="-508" y="-72" width="1280" height="232"/>
  </objectgroup>
  <objectgroup id="10" name="Saws">
-  <object id="25" name="Saw" type="Saw" x="-111" y="23">
-   <properties>
-    <property name="InverseStartDirection" type="bool" value="false"/>
-    <property name="Speed" type="float" value="50"/>
-    <property name="StartPosition" type="float" value="0.3"/>
-   </properties>
-   <polyline points="-1,117 -1,22"/>
-  </object>
-  <object id="29" name="SawStatic" type="SawStatic" x="-23" y="223">
-   <point/>
-  </object>
+  <object id="25" template="../templates/Saw.tx" type="Saw" x="-111" y="23"/>
+  <object id="29" template="../templates/SawStatic.tx" type="SawStatic" x="-23" y="223"/>
   <object id="30" name="SawOrbit" type="SawOrbit" x="34" y="19" width="59" height="59">
    <properties>
     <property name="RotationSpeed" type="float" value="0.8"/>
+    <property name="StartAngle" type="float" value="0"/>
    </properties>
    <ellipse/>
   </object>

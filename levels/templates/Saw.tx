@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Saw" type="Saw">
+  <properties>
+   <property name="InverseStartDirection" type="bool" value="false"/>
+   <property name="Speed" type="float" value="50"/>
+   <property name="StartPosition" type="float" value="0"/>
+  </properties>
+  <polyline points="-1,117 -1,22"/>
+ </object>
+</template>

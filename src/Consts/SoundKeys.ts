@@ -5,7 +5,6 @@ enum SoundKeys {
     Blip1 = "blip1",
     MenuMusic = "menu-music",
     Game1Music = "game-1-music",
-    Game2Music = "game-2-music",
     SandTile = "sand_tile",
     LongJump = "long_jump",
     LongJumpTrampoline = "long_jump_trampoline",

@@ -385,6 +385,10 @@ export default class LevelScene extends BaseScene {
             sandTilesGroup, 
             undefined, 
             (player : any, tile : any) => {
+                if (player.body.y >= tile.body.y) {
+                    return false;
+                }
+
                 var sandTile = tile.getData("data") as SandTile;
                 if (sandTile.isHidden) {
                     return false;
