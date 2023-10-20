@@ -106,7 +106,7 @@ class LocalizationStaticManager {
             ru: "Следующий ур."
         };
         this.localizationTexts[LocalizationKey.Tutorial9] = {
-            en: "Don't stay long on the sand.",
+            en: "Don't stay too long on the sand.",
             ru: "Не стойте долго на песке."
         };
         this.localizationTexts[LocalizationKey.Tutorial10] = {

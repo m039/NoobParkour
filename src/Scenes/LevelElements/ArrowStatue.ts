@@ -7,7 +7,7 @@ import AudioScene from '../AudioScene';
 import { SoundId } from 'src/Managers/AudioManager';
 import LevelElement from './LevelElement';
 
-const ArrowFlyDistance = 200;
+const ArrowFlyDistance = 150;
 const ArrowSpeed = 120;
 const ArrowLaunchCooldown = 5000;
 const ArrowActivationRadius = 400;
