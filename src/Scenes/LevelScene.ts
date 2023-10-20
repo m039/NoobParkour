@@ -383,18 +383,21 @@ export default class LevelScene extends BaseScene {
         this.physics.add.collider(
             this.player.container, 
             sandTilesGroup, 
-            undefined, 
             (player : any, tile : any) => {
-                if (player.body.y >= tile.body.y) {
+                if (player.body.touching.down) {
+                    const sandTile = tile.getData("data") as SandTile;
+                    sandTile.startHide();
+                }
+            }, 
+            (player : any, tile : any) => {
+                if (player.body.y > tile.body.y) {
                     return false;
                 }
 
-                var sandTile = tile.getData("data") as SandTile;
+                const sandTile = tile.getData("data") as SandTile;
                 if (sandTile.isHidden) {
                     return false;
                 }
-
-                sandTile.startHide();
 
                 return true;
             }, 

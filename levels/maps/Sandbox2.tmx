@@ -118,13 +118,7 @@
  <objectgroup id="10" name="Saws">
   <object id="25" template="../templates/Saw.tx" type="Saw" x="-111" y="23"/>
   <object id="29" template="../templates/SawStatic.tx" type="SawStatic" x="-23" y="223"/>
-  <object id="30" name="SawOrbit" type="SawOrbit" x="34" y="19" width="59" height="59">
-   <properties>
-    <property name="RotationSpeed" type="float" value="0.8"/>
-    <property name="StartAngle" type="float" value="0"/>
-   </properties>
-   <ellipse/>
-  </object>
+  <object id="30" template="../templates/SawOrbit.tx" type="SawOrbit" x="34" y="19"/>
  </objectgroup>
  <objectgroup id="11" name="Platforms">
   <object id="26" name="Platform" type="MovingPlatform" x="-26" y="172">

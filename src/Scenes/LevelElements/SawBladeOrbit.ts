@@ -38,10 +38,10 @@ export default class SawBladeOrbit implements LevelElement {
             tiledObject.x + tiledObject.width, 
             tiledObject.y + tiledObject.height / 2
         );
-        this.radius = Math.min(tiledObject.width, tiledObject.height);
+        this.radius = Math.min(tiledObject.width, tiledObject.height) / 2.0;
         const length = Phaser.Geom.Line.Length(this.line);
 
-        const count = Math.floor(length / 5);
+        const count = Math.floor(length / 10.0);
         this.chains = [];
         for (let i = 0; i < count; i++) {
             this.chains.push(scene.add.image(0, 0, TextureKeys.SawChain));
