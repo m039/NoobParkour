@@ -14,6 +14,7 @@ export enum LocalizationKey {
     MenuRestartLevel = "menu_repeat_level",
     NextLevel = "next_level",
     Reset = "reset",
+    SkipLevel = "skip_level",
     Tutorial1Desktop = "tutorial1_desktop",
     Tutorial2Desktop = "tutorial2_desktop",
     Tutorial1Mobile = "tutorial1_mobile",
@@ -133,6 +134,10 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.Reset] = {
             en: "Reset Progress",
             ru: "Сброс прогресса"
+        };
+        this.localizationTexts[LocalizationKey.SkipLevel] = {
+            en: "Skip This\nLevel",
+            ru: "Пропустить\nуровень"
         };
     }
 

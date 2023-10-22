@@ -8,9 +8,10 @@ declare namespace instantGamesBridge  {
 
     interface Advertisement  {
         showInterstitial(options?:any) : void;
+        showRewarded() : void;
         on(
             eventName:EVENT_NAME,
-            callback: (state:INTERSTITIAL_STATE | VISIBILITY_STATE) => void
+            callback: (state:INTERSTITIAL_STATE | VISIBILITY_STATE | REWARDED_STATE) => void
         ) : void;
     }
     
@@ -66,6 +67,14 @@ declare namespace instantGamesBridge  {
         OPENED = 'opened',
         CLOSED = 'closed',
         FAILED = 'failed'
+    }
+
+    enum REWARDED_STATE {
+        LOADING = 'loading',
+        OPENED = 'opened',
+        CLOSED = 'closed',
+        FAILED = 'failed',
+        REWARDED = 'rewarded'
     }
 
     enum VISIBILITY_STATE {

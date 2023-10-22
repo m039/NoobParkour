@@ -157,6 +157,8 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.RightButtonHovered, "assets/images/ui/RightButtonHovered.png");
         this.load.image(TextureKeys.UpButtonDefault, "assets/images/ui/UpButtonDefault.png");
         this.load.image(TextureKeys.UpButtonHovered, "assets/images/ui/UpButtonHovered.png");
+        this.load.image(TextureKeys.SkipLevelButtonDefault, "assets/images/ui/SkipLevelButtonDefault.png");
+        this.load.image(TextureKeys.SkipLevelButtonHovered, "assets/images/ui/SkipLevelButtonHovered.png");
 
         // Level complete screen.
 

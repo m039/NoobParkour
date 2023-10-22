@@ -58,7 +58,9 @@ enum TextureKeys {
     RepeatIcon = "repeat_icon",
     NextButtonBackgroundDefault = "next_button_background_default",
     NextButtonBackgroundHovered = "next_button_background_hovered",
-    NextIcon = "next_icon"
+    NextIcon = "next_icon",
+    SkipLevelButtonDefault = "skip_level_button_default",
+    SkipLevelButtonHovered = "skip_level_button_hovered"
 }
 
 export default TextureKeys;

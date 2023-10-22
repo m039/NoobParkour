@@ -6,10 +6,11 @@ import TextureKeys from "../Consts/TextureKeys";
 import SettingsManager from "../Managers/SettingsManager";
 import BaseScene from "./BaseScene";
 import LevelScene from "./LevelScene";
-import { ButtonScale, GameWidth } from '../Consts/Consts';
+import { ButtonScale, GameHeight, GameWidth } from '../Consts/Consts';
 import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
 import LevelCompleteManager from '../Managers/LevelCompleteManager';
 import InputController from '../Managers/InputController';
+import { createButton } from 'src/Utils';
 
 export default class LevelUIScene extends BaseScene {
     private coinText : Phaser.GameObjects.BitmapText;
@@ -17,6 +18,8 @@ export default class LevelUIScene extends BaseScene {
     private helpBoxBackground : Phaser.GameObjects.Image;
     private helpBoxText : Phaser.GameObjects.BitmapText;
     public inputController : InputController;
+    private skipLevelButton : Phaser.GameObjects.Image;
+    private skipLevelText : Phaser.GameObjects.BitmapText;
 
     constructor() {
         super(SceneKeys.LevelUI);
@@ -42,6 +45,33 @@ export default class LevelUIScene extends BaseScene {
             .setOrigin(0, 0)
             .setVisible(false);
 
+        // Skip button.
+
+        this.skipLevelButton = this.add.image(
+            GameWidth - 100,
+            23, 
+            TextureKeys.SkipLevelButtonDefault
+        )
+            .setDepth(-1);
+
+        this.skipLevelText = this.add.bitmapText(
+            this.skipLevelButton.x - 18, 
+            this.skipLevelButton.y,
+            FontKeys.Monocraft,
+            Localization.getText(LocalizationKey.SkipLevel)
+        )
+            .setDepth(-1)
+            .setTint(0x000000)
+            .setOrigin(0, 0.5);
+
+        createButton(this.skipLevelButton, {
+            defaultTexture: TextureKeys.SkipLevelButtonDefault,
+            hoveredTexture: TextureKeys.SkipLevelButtonHovered,
+            onClick: () => {
+                bridge.advertisement.showRewarded();
+            }
+        })
+
         const self = this;
         this.levelScene.events.on(EventKeys.CoinPickUp, this.updateUI, self);
         this.levelScene.events.on(EventKeys.LevelRestart, this.updateUI, self);
@@ -60,11 +90,17 @@ export default class LevelUIScene extends BaseScene {
         this.helpBoxBackground.visible = true;
         this.helpBoxText.visible = true;
         this.helpBoxText.setText(Localization.getText(textKey as LocalizationKey));
+
+        this.skipLevelButton.visible = false;
+        this.skipLevelText.visible = false;
     }
 
     private hideHelpBox() {
         this.helpBoxBackground.visible = false;
         this.helpBoxText.visible = false;
+
+        this.skipLevelButton.visible = true;
+        this.skipLevelText.visible = true;
     }
 
     private updateUI() {
