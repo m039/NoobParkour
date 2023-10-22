@@ -9,6 +9,7 @@ import EventKeys from '../Consts/EventKeys';
 import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
 import LevelScene from 'src/Scenes/LevelScene';
+import { Prefs } from 'src/StaticManagers/PrefsStaticManager';
 
 class SettingsContainer extends Phaser.GameObjects.Container {
 
@@ -16,6 +17,7 @@ class SettingsContainer extends Phaser.GameObjects.Container {
     private titleText : Phaser.GameObjects.BitmapText;
     private backButtonText : Phaser.GameObjects.BitmapText;
     private menuButtonText : Phaser.GameObjects.BitmapText;
+    private resetButtonText : Phaser.GameObjects.BitmapText;
     private repeatButtonText : Phaser.GameObjects.BitmapText;
     private isAnimating : boolean;
 
@@ -111,6 +113,28 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             });
         }
 
+        let resetButton : Phaser.GameObjects.Image;
+
+        if (!showMenuButton) {
+            resetButton = scene.add.image(0, py + verticalGap, TextureKeys.SettingsButtonDefault);
+            this.resetButtonText = scene.add.bitmapText(0, resetButton.y, FontKeys.Monocraft)
+                .setOrigin(0.5, 0.5)
+                .setTint(0x000000);
+
+            createButton(resetButton, {
+                defaultTexture: TextureKeys.SettingsButtonDefault,
+                hoveredTexture: TextureKeys.SettingsButtonHovered,
+                onClick: () => {
+                    Prefs.setStarLevels([]);
+                    Prefs.setCompletedLevel(0);
+                    Prefs.syncToCloud();
+                    scene.scene.restart();
+                }
+            });
+
+            py += verticalGap;
+        }
+
         // Add all images to the container.
         this.add(background);
         this.add(backButton);
@@ -130,6 +154,10 @@ class SettingsContainer extends Phaser.GameObjects.Container {
             this.add(repeatButton);
             this.add(this.repeatButtonText);
             this.add(repeatIcon);
+        }
+        if (!showMenuButton) {
+            this.add(resetButton);
+            this.add(this.resetButtonText);
         }
 
         this.visible = false;
@@ -158,6 +186,10 @@ class SettingsContainer extends Phaser.GameObjects.Container {
 
         if (this.repeatButtonText) {
             this.repeatButtonText.setText(Localization.getText(LocalizationKey.MenuRestartLevel));
+        }
+
+        if (this.resetButtonText) {
+            this.resetButtonText.setText(Localization.getText(LocalizationKey.Reset));
         }
     }
 

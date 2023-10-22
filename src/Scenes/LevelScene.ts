@@ -291,11 +291,32 @@ export default class LevelScene extends BaseScene {
             if (starLevels) {
                 Metrika.reachGoal("level_fully_complete_" + starLevels.length);
 
-                if (bridge.leaderboard.isSetScoreSupported) {
-                    bridge.leaderboard.setScore({
+                if (bridge.leaderboard.isGetScoreSupported && 
+                    bridge.leaderboard.isSetScoreSupported) {
+                    const leadeboardName = "FullyCompletedLevels";
+                    const score = starLevels.length;
+
+                    bridge.leaderboard.getScore({
                         "yandex": {
-                            leaderboardName: "FullyCompletedLevels",
-                            score: starLevels.length
+                            leaderboardName: leadeboardName
+                        }
+                    }).then(number => {
+                        if (number < starLevels.length) {
+                            bridge.leaderboard.setScore({
+                                "yandex": {
+                                    leaderboardName: leadeboardName,
+                                    score: score
+                                }
+                            });
+                        }
+                    }).catch(error => {
+                        if (error.code === "LEADERBOARD_PLAYER_NOT_PRESENT") {
+                            bridge.leaderboard.setScore({
+                                "yandex": {
+                                    leaderboardName: leadeboardName,
+                                    score: score
+                                }
+                            });
                         }
                     });
                 }

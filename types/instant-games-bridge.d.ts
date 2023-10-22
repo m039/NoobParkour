@@ -31,7 +31,9 @@ declare namespace instantGamesBridge  {
 
     interface Leaderboard {
         get isSetScoreSupported() : boolean;
-        setScore(options : {[key:string | PLATFORM_ID] : {leaderboardName:string, score:number}}) : void;
+        get isGetScoreSupported() : boolean;
+        setScore(options : {[key:string | PLATFORM_ID] : {leaderboardName:string, score:number | string}}) : void;
+        getScore(options : {[key:string | PLATFORM_ID] : {leaderboardName:string}}) : Promise<number>;
     }
 
     interface InstantGamesBridgeInternal {

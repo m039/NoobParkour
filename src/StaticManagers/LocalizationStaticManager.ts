@@ -13,6 +13,7 @@ export enum LocalizationKey {
     SettingsMenuButton = "settings_menu_button",
     MenuRestartLevel = "menu_repeat_level",
     NextLevel = "next_level",
+    Reset = "reset",
     Tutorial1Desktop = "tutorial1_desktop",
     Tutorial2Desktop = "tutorial2_desktop",
     Tutorial1Mobile = "tutorial1_mobile",
@@ -128,6 +129,10 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.Tutorial14] = {
             en: "Careful, these statues shot arrows!",
             ru: "Осторожно, эти статуи стреляют стрелами!"
+        };
+        this.localizationTexts[LocalizationKey.Reset] = {
+            en: "Reset Progress",
+            ru: "Сброс прогресса"
         };
     }
 
