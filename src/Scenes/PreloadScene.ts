@@ -7,6 +7,8 @@ import development from "consts:development";
 import SoundKeys from '../Consts/SoundKeys';
 import AsepriteKeys from 'src/Consts/AsepriteKeys';
 import ShaderKeys from 'src/Consts/ShaderKeys';
+import { Progress } from 'src/StaticManagers/ProgressStaticManager';
+import { MaxLevels } from 'src/Consts/Consts';
 
 export default class PreloadScene extends BaseScene {
     constructor() {
@@ -194,6 +196,10 @@ export default class PreloadScene extends BaseScene {
         if (development && typeof debugConfig !== "undefined") {
             if (debugConfig.clearLocalStorage) {
                 Prefs.clear();
+            }
+
+            if (debugConfig.openAllLevels) {
+                Progress.setLevelCompleted(MaxLevels);
             }
 
             if (debugConfig.startLevelScene) {

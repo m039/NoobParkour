@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="544">
  <editorsettings>
-  <export target="../../dist/assets/levels/maps/Level13.json" format="json"/>
+  <export target="../../dist/assets/levels/maps/Level16.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="60" columns="10">
   <image source="../tilesets/NoobParkourTileset.png" width="160" height="96"/>
@@ -581,9 +581,9 @@
    <polyline points="-31,116 -31,-44"/>
   </object>
   <object id="481" template="../templates/SawStatic.tx" x="641" y="190"/>
-  <object id="482" template="../templates/SawStatic.tx" x="1190" y="26"/>
-  <object id="483" template="../templates/SawStatic.tx" x="1287" y="-7"/>
-  <object id="484" template="../templates/SawStatic.tx" x="1238" y="9"/>
+  <object id="482" template="../templates/SawStatic.tx" x="1190" y="6"/>
+  <object id="483" template="../templates/SawStatic.tx" x="1287" y="-27"/>
+  <object id="484" template="../templates/SawStatic.tx" x="1238" y="-11"/>
   <object id="485" template="../templates/Saw.tx" x="1500" y="-73" rotation="0.196583">
    <properties>
     <property name="Speed" type="float" value="45"/>
@@ -655,9 +655,6 @@
    <point/>
   </object>
   <object id="499" name="Coin" x="830" y="122">
-   <point/>
-  </object>
-  <object id="500" name="Coin" x="784" y="76">
    <point/>
   </object>
   <object id="501" name="Coin" x="785" y="114">
