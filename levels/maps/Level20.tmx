@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="35" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="745">
  <editorsettings>
-  <export target="../../dist/assets/levels/maps/Level18.json" format="json"/>
+  <export target="../../dist/assets/levels/maps/Level20.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="NoobParkourTileset" tilewidth="16" tileheight="16" tilecount="60" columns="10">
   <image source="../tilesets/NoobParkourTileset.png" width="160" height="96"/>
@@ -915,7 +915,6 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="Objects" visible="0">
-  <object id="744" name="Start" type="Gate" x="1349" y="-113" width="31.9486" height="47.937"/>
   <object id="4" name="Start" type="Gate" x="48" y="128" width="31.9486" height="47.937"/>
   <object id="8" name="End" type="Gate" x="1872" y="96" width="31.8182" height="47.892"/>
   <object id="11" name="BottomLine2" x="1758" y="553">
