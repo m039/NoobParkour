@@ -47,7 +47,7 @@ export default class AudioManager implements GameManager {
         if (this.music) {
             this.music.pause();
         }
-        this.isAudioEnabled = true;
+        this.isAudioEnabled = false;
     }
 
     public enable() {
@@ -56,7 +56,7 @@ export default class AudioManager implements GameManager {
                 this.music.resume();
             }
         }
-        this.isAudioEnabled = false;
+        this.isAudioEnabled = true;
     }
 
     public get soundEnabled() : boolean {
@@ -101,7 +101,7 @@ export default class AudioManager implements GameManager {
     }
 
     public playSound(soundId: SoundId) {
-        if (!this.soundEnabled || !this.enable) {
+        if (!this.soundEnabled || !this.isAudioEnabled) {
             return;
         }
 
