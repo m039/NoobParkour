@@ -1,6 +1,14 @@
 declare var bridge: instantGamesBridge.InstantGamesBridgeInternal;
 
 declare namespace instantGamesBridge  {
+    interface Game {
+        get visibilityState() : VISIBILITY_STATE;
+        on(
+            eventName:EVENT_NAME,
+            callback: (state: VISIBILITY_STATE) => void
+        ) : void;
+    }
+
     interface Storage {
         get(key: string | Array<string>, options?: any) : Promise<any>;
         set(key: string | Array<string>, value: any, options?: any) : Promise<void>;
@@ -44,6 +52,7 @@ declare namespace instantGamesBridge  {
         get advertisement() : Advertisement;
         get leaderboard() : Leaderboard;
         get player() : Player;
+        get game() : Game;
     }
 
     enum PLATFORM_ID {

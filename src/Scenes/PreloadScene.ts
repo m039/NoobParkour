@@ -185,14 +185,6 @@ export default class PreloadScene extends BaseScene {
 
         bridge.platform.sendMessage(instantGamesBridge.PLATFORM_MESSAGE.GAME_READY);
 
-        if (bridge.player.isAuthorizationSupported) {
-            bridge.player.authorize({
-                'yandex': {
-                    scopes: true 
-                }
-            });
-        }
-
         if (development && typeof debugConfig !== "undefined") {
             if (debugConfig.clearLocalStorage) {
                 Prefs.clear();

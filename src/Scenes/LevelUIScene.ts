@@ -70,7 +70,7 @@ export default class LevelUIScene extends BaseScene {
             onClick: () => {
                 bridge.advertisement.showRewarded();
             }
-        })
+        });
 
         const self = this;
         this.levelScene.events.on(EventKeys.CoinPickUp, this.updateUI, self);
@@ -91,16 +91,20 @@ export default class LevelUIScene extends BaseScene {
         this.helpBoxText.visible = true;
         this.helpBoxText.setText(Localization.getText(textKey as LocalizationKey));
 
-        this.skipLevelButton.visible = false;
-        this.skipLevelText.visible = false;
+        if (this.skipLevelButton && this.skipLevelText) {
+            this.skipLevelButton.visible = false;
+            this.skipLevelText.visible = false;
+        }
     }
 
     private hideHelpBox() {
         this.helpBoxBackground.visible = false;
         this.helpBoxText.visible = false;
 
-        this.skipLevelButton.visible = true;
-        this.skipLevelText.visible = true;
+        if (this.skipLevelButton && this.skipLevelText) {
+            this.skipLevelButton.visible = true;
+            this.skipLevelText.visible = true;
+        }
     }
 
     private updateUI() {

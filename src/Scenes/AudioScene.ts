@@ -78,5 +78,15 @@ export default class AudioScene extends BaseScene {
                 }
             }
         );
+
+        bridge.game.on(instantGamesBridge.EVENT_NAME.VISIBILITY_STATE_CHANGED, 
+            function (state) {
+                if (state === instantGamesBridge.VISIBILITY_STATE.HIDDEN) {
+                    self.audioManager.disable();
+                } else if (state === instantGamesBridge.VISIBILITY_STATE.VISIBLE) {
+                    self.audioManager.enable();
+                }
+            }
+        );
     }
 }
