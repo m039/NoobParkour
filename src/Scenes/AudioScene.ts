@@ -25,6 +25,8 @@ export default class AudioScene extends BaseScene {
 
         let firstInterstitial = false;
 
+        let adIsOpen = false;
+
         bridge.advertisement.on(
             instantGamesBridge.EVENT_NAME.INTERSTITIAL_STATE_CHANGED, 
             function (state) {
@@ -39,8 +41,10 @@ export default class AudioScene extends BaseScene {
                     if (self.wasLevelSceneRunning) {
                         self.scene.pause(SceneKeys.Level);
                     }
+                    adIsOpen = true;
                 } else if (state === instantGamesBridge.INTERSTITIAL_STATE.CLOSED || 
                     state === instantGamesBridge.INTERSTITIAL_STATE.FAILED) {
+                    adIsOpen = false;
                     self.audioManager.enable();
                     if (self.wasLevelSceneRunning) {
                         self.scene.resume(SceneKeys.Level);
@@ -60,12 +64,14 @@ export default class AudioScene extends BaseScene {
                     if (self.wasLevelSceneRunning) {
                         self.scene.pause(SceneKeys.Level);
                     }
+                    adIsOpen = true;
                 } else if (state === instantGamesBridge.REWARDED_STATE.CLOSED || 
                     state === instantGamesBridge.REWARDED_STATE.FAILED) {
                     self.audioManager.enable();
                     if (self.wasLevelSceneRunning) {
                         self.scene.resume(SceneKeys.Level);
                     }
+                    adIsOpen = false;
                 } else if (state == instantGamesBridge.REWARDED_STATE.REWARDED) {
                     const levelScene = self.scene.get(SceneKeys.Level) as LevelScene;
                     Progress.setLevelCompleted(levelScene.level);
@@ -84,7 +90,9 @@ export default class AudioScene extends BaseScene {
                 if (state === instantGamesBridge.VISIBILITY_STATE.HIDDEN) {
                     self.audioManager.disable();
                 } else if (state === instantGamesBridge.VISIBILITY_STATE.VISIBLE) {
-                    self.audioManager.enable();
+                    if (!adIsOpen) {
+                        self.audioManager.enable();
+                    }
                 }
             }
         );
