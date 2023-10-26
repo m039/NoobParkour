@@ -4,6 +4,7 @@ import AudioManager from "../Managers/AudioManager";
 import BaseScene from "./BaseScene";
 import LevelScene from "./LevelScene";
 import { Progress } from "src/StaticManagers/ProgressStaticManager";
+import { Prefs } from "src/StaticManagers/PrefsStaticManager";
 
 export default class AudioScene extends BaseScene {
 
@@ -75,6 +76,7 @@ export default class AudioScene extends BaseScene {
                 } else if (state == instantGamesBridge.REWARDED_STATE.REWARDED) {
                     const levelScene = self.scene.get(SceneKeys.Level) as LevelScene;
                     Progress.setLevelCompleted(levelScene.level);
+                    Prefs.syncToCloud();
 
                     levelScene.scene.restart({level: levelScene.level + 1});
                     self.scene.pause(SceneKeys.Level);
