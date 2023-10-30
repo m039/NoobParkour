@@ -16,6 +16,7 @@ declare namespace instantGamesBridge  {
 
     interface Advertisement  {
         showInterstitial(options?:any) : void;
+        get isInterstitialReady() : boolean;
         showRewarded() : void;
         on(
             eventName:EVENT_NAME,

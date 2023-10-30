@@ -6,6 +6,7 @@ import PreloadScene from './Scenes/PreloadScene';
 import AudioScene from './Scenes/AudioScene';
 import LevelScene from './Scenes/LevelScene';
 import LevelUIScene from './Scenes/LevelUIScene';
+import AdScene from './Scenes/AdScene';
 
 const config : Phaser.Types.Core.GameConfig = {
     type: Phaser.WEBGL,
@@ -33,7 +34,8 @@ const config : Phaser.Types.Core.GameConfig = {
         LevelSelectionScene, 
         AudioScene, 
         LevelScene,
-        LevelUIScene
+        LevelUIScene,
+        AdScene
     ]
 };
 

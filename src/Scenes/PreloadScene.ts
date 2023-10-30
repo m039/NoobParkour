@@ -161,6 +161,10 @@ export default class PreloadScene extends BaseScene {
         this.load.image(TextureKeys.UpButtonHovered, "assets/images/ui/UpButtonHovered.png");
         this.load.image(TextureKeys.SkipLevelButtonDefault, "assets/images/ui/SkipLevelButtonDefault.png");
         this.load.image(TextureKeys.SkipLevelButtonHovered, "assets/images/ui/SkipLevelButtonHovered.png");
+        
+        // AdScene.
+        
+        this.load.image(TextureKeys.Hand, "assets/images/ui/Hand.png");
 
         // Level complete screen.
 
@@ -184,6 +188,8 @@ export default class PreloadScene extends BaseScene {
         this.createAnimations();
 
         bridge.platform.sendMessage(instantGamesBridge.PLATFORM_MESSAGE.GAME_READY);
+
+        this.scene.launch(SceneKeys.Ad);
 
         if (development && typeof debugConfig !== "undefined") {
             if (debugConfig.clearLocalStorage) {

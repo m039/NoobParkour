@@ -5,6 +5,7 @@ import BaseScene from "./BaseScene";
 import LevelScene from "./LevelScene";
 import { Progress } from "src/StaticManagers/ProgressStaticManager";
 import { Prefs } from "src/StaticManagers/PrefsStaticManager";
+import AdScene from "./AdScene";
 
 export default class AudioScene extends BaseScene {
 
@@ -46,6 +47,12 @@ export default class AudioScene extends BaseScene {
                 } else if (state === instantGamesBridge.INTERSTITIAL_STATE.CLOSED || 
                     state === instantGamesBridge.INTERSTITIAL_STATE.FAILED) {
                     adIsOpen = false;
+
+                    const adScene = self.scene.get(SceneKeys.Ad) as AdScene;
+                    if (adScene.visible) {
+                        return;
+                    }
+                    
                     self.audioManager.enable();
                     if (self.wasLevelSceneRunning) {
                         self.scene.resume(SceneKeys.Level);
@@ -68,11 +75,17 @@ export default class AudioScene extends BaseScene {
                     adIsOpen = true;
                 } else if (state === instantGamesBridge.REWARDED_STATE.CLOSED || 
                     state === instantGamesBridge.REWARDED_STATE.FAILED) {
+                    adIsOpen = false;
+
+                    const adScene = self.scene.get(SceneKeys.Ad) as AdScene;
+                    if (adScene.visible) {
+                        return;
+                    }
+
                     self.audioManager.enable();
                     if (self.wasLevelSceneRunning) {
                         self.scene.resume(SceneKeys.Level);
                     }
-                    adIsOpen = false;
                 } else if (state == instantGamesBridge.REWARDED_STATE.REWARDED) {
                     const levelScene = self.scene.get(SceneKeys.Level) as LevelScene;
                     Progress.setLevelCompleted(levelScene.level);
@@ -89,6 +102,11 @@ export default class AudioScene extends BaseScene {
 
         bridge.game.on(instantGamesBridge.EVENT_NAME.VISIBILITY_STATE_CHANGED, 
             function (state) {
+                const adScene = self.scene.get(SceneKeys.Ad) as AdScene;
+                if (adScene.visible) {
+                    return;
+                }
+
                 if (state === instantGamesBridge.VISIBILITY_STATE.HIDDEN) {
                     self.audioManager.disable();
                 } else if (state === instantGamesBridge.VISIBILITY_STATE.VISIBLE) {

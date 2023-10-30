@@ -95,7 +95,7 @@ export default class AudioManager implements GameManager {
         this.music = this.scene.sound.add(musicId);
         this.music.play({loop: true});
 
-        if (!this.musicEnabled) {
+        if (!this.musicEnabled || !this.isAudioEnabled) {
             this.music.pause();
         }
     }

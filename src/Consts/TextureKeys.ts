@@ -60,7 +60,8 @@ enum TextureKeys {
     NextButtonBackgroundHovered = "next_button_background_hovered",
     NextIcon = "next_icon",
     SkipLevelButtonDefault = "skip_level_button_default",
-    SkipLevelButtonHovered = "skip_level_button_hovered"
+    SkipLevelButtonHovered = "skip_level_button_hovered",
+    Hand = "hand"
 }
 
 export default TextureKeys;

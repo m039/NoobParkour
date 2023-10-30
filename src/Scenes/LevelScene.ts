@@ -28,6 +28,7 @@ import { Metrika } from 'src/StaticManagers/MetrikaStaticManager';
 import SawBladeStatic from './LevelElements/SawBladeStatic';
 import SawBladeOrbit from './LevelElements/SawBladeOrbit';
 import { isSpikes } from 'src/Utils';
+import AdScene from './AdScene';
 
 export default class LevelScene extends BaseScene {
     public map : Phaser.Tilemaps.Tilemap;
@@ -324,6 +325,10 @@ export default class LevelScene extends BaseScene {
         }
         Prefs.syncToCloud();
         Metrika.reachGoal("level_complete_" + this.level);
+
+        setTimeout(() => {
+            bridge.advertisement.showInterstitial();
+        }, 2000);
     }
 
     private createLava() {
@@ -678,7 +683,8 @@ export default class LevelScene extends BaseScene {
             }
         }
 
-        bridge.advertisement.showInterstitial();
+        const adScene = this.scene.get(SceneKeys.Ad) as AdScene;
+        adScene.startAd();
     }
 
     private diePlayer() {

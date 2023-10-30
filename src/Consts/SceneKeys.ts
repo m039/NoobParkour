@@ -4,7 +4,8 @@ enum SceneKeys {
     Preload="preload",
     LevelSelection="level-selection",
     Level="level",
-    LevelUI="level-ui"
+    LevelUI="level-ui",
+    Ad="ad"
 }
 
 export default SceneKeys;

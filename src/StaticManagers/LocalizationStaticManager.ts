@@ -30,7 +30,9 @@ export enum LocalizationKey {
     Tutorial11 = "tutorial11",
     Tutorial12 = "tutorial12",
     Tutorial13 = "tutorial13",
-    Tutorial14 = "tutorial14"
+    Tutorial14 = "tutorial14",
+    AdTitle = "ad_title",
+    AdContinue = "ad_continue"
 };
 
 class LocalizationStaticManager {
@@ -138,6 +140,14 @@ class LocalizationStaticManager {
         this.localizationTexts[LocalizationKey.SkipLevel] = {
             en: "Skip This\nLevel",
             ru: "Пропустить\nуровень"
+        };
+        this.localizationTexts[LocalizationKey.AdTitle] = {
+            en: "Ad Starts",
+            ru: "Реклама"
+        };
+        this.localizationTexts[LocalizationKey.AdContinue] = {
+            en: "Press to Continue",
+            ru: "Нажмите, чтобы продолжить"
         };
     }
 
