@@ -27,7 +27,7 @@ export default class AdScene extends BaseScene {
     private pressToContinue : boolean;
 
     public get visible() {
-        return this.container.visible;
+        return this.container && this.container.visible;
     }
 
     constructor() {
