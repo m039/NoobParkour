@@ -14,7 +14,7 @@ class KeyboardInputButton implements InputButton {
         this.key = key;
     }
 
-    get isUp(): boolean {
+    public get isUp(): boolean {
         return this.key.isUp;
     }
 }
@@ -26,7 +26,7 @@ class GamepadAInputButton implements InputButton {
         this.scene = scene;
     }
 
-    get isUp(): boolean {
+    public get isUp(): boolean {
         const pad = this.scene.input.gamepad.getPad(0);
         if (pad) {
             return !pad.A;
@@ -68,12 +68,16 @@ class OnScreenInputButton implements InputButton {
         });
     }
 
-    get isDown() : boolean {
+    public get isDown() : boolean {
         return !this.isUp;
     }
 
-    get isUp() : boolean {
+    public get isUp() : boolean {
         return this.isUpState;
+    }
+
+    public reset() : void {
+        this.isUpState = true;
     }
 }
 
@@ -147,6 +151,20 @@ export default class InputController implements GameManager {
 
     update(time: number, delta: number): void {
         this.handleJustPressed();
+    }
+
+    public reset() : void {
+        if (this.leftKeyOnScreen) {
+            this.leftKeyOnScreen.reset();
+        }
+
+        if (this.rightKeyOnScreen) {
+            this.rightKeyOnScreen.reset();
+        }
+
+        if (this.upKeyOnScreen) {
+            this.upKeyOnScreen.reset();
+        }        
     }
 
     private handleJustPressed() : void {

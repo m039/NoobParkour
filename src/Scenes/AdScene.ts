@@ -86,6 +86,9 @@ export default class AdScene extends BaseScene {
         this.container.visible = true;
         this.pressToContinue = false;
 
+        const LevelUIScene = this.scene.get(SceneKeys.LevelUI) as LevelUIScene;
+        LevelUIScene.inputController.reset();
+
         this.hand.visible = false;
         this.titleText.text = Localization.getText(LocalizationKey.AdTitle);
         let numberLeft = 3;
