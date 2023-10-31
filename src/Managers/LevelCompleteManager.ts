@@ -100,21 +100,6 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             .setVisible(false)
             .setDepth(99)
             .setInteractive();
-
-        const buttons = [
-            nextButton,
-            nextButtonText,
-            nextIcon,
-            repeatButton,
-            repeatButtonText,
-            repeatIcon
-        ];
-
-        buttons.forEach(element => element.visible = false);
-
-        setTimeout(() => {
-            buttons.forEach(element => element.visible = true);
-        }, LevelCompleteAdDelay);
     }
 
     public show() {
