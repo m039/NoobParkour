@@ -10,7 +10,7 @@ import InputController, { InputButton } from '../Managers/InputController';
 import EventKeys from '../Consts/EventKeys';
 import AudioScene from './AudioScene';
 import TextureKeys from '../Consts/TextureKeys';
-import { MaxLevels } from '../Consts/Consts';
+import { LevelCompleteAdDelay, MaxLevels } from '../Consts/Consts';
 import { Progress } from '../StaticManagers/ProgressStaticManager';
 import LevelUIScene from './LevelUIScene';
 import { Prefs } from '../StaticManagers/PrefsStaticManager';
@@ -328,7 +328,7 @@ export default class LevelScene extends BaseScene {
 
         setTimeout(() => {
             bridge.advertisement.showInterstitial();
-        }, 2000);
+        }, LevelCompleteAdDelay);
     }
 
     private createLava() {

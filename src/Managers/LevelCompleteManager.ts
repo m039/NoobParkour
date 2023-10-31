@@ -3,7 +3,7 @@ import EventKeys from "../Consts/EventKeys";
 import { GameManager } from "../Scenes/BaseScene";
 import SceneKeys from '../Consts/SceneKeys';
 import TextureKeys from '../Consts/TextureKeys';
-import { GameHeight, GameWidth } from '../Consts/Consts';
+import { GameHeight, GameWidth, LevelCompleteAdDelay } from '../Consts/Consts';
 import FontKeys from '../Consts/FontKeys';
 import { Localization, LocalizationKey } from '../StaticManagers/LocalizationStaticManager';
 import LevelScene from '../Scenes/LevelScene';
@@ -100,6 +100,21 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             .setVisible(false)
             .setDepth(99)
             .setInteractive();
+
+        const buttons = [
+            nextButton,
+            nextButtonText,
+            nextIcon,
+            repeatButton,
+            repeatButtonText,
+            repeatIcon
+        ];
+
+        buttons.forEach(element => element.visible = false);
+
+        setTimeout(() => {
+            buttons.forEach(element => element.visible = true);
+        }, LevelCompleteAdDelay);
     }
 
     public show() {
