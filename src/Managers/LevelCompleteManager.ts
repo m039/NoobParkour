@@ -100,6 +100,20 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             .setVisible(false)
             .setDepth(99)
             .setInteractive();
+
+        if (bridge.advertisement.isInterstitialReady) {
+            nextButton.removeInteractive();
+            nextButton.setTint(0x808080);
+            repeatButton.removeInteractive();
+            repeatButton.setTint(0x808080);
+
+            setTimeout(() => {
+                nextButton.setInteractive();
+                nextButton.setTint(0xffffff);
+                repeatButton.setInteractive();
+                repeatButton.setTint(0xffffff);
+            }, LevelCompleteAdDelay);
+        }
     }
 
     public show() {

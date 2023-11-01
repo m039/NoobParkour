@@ -30,6 +30,7 @@ export default class AudioManager implements GameManager {
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
         this.arrowShotCooldown = 0;
+        this.isAudioEnabled = true;
     }
 
     preload(): void {

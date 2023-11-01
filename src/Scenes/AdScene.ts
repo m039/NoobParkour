@@ -69,8 +69,6 @@ export default class AdScene extends BaseScene {
         this.container.add(this.hand);
 
         this.container.visible = false;
-
-        this.startAd();
     }
 
     public startAd() : void {

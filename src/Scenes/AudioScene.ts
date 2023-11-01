@@ -9,7 +9,7 @@ import AdScene from "./AdScene";
 
 export default class AudioScene extends BaseScene {
 
-    public audioManager:AudioManager;
+    public audioManager : AudioManager;
 
     private wasLevelSceneRunning : boolean;
 
