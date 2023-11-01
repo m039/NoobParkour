@@ -128,15 +128,19 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
 
         if (bridge.advertisement.isInterstitialReady) {
             this.nextButton.removeInteractive();
-            this.nextButton.setTint(0x808080);
+            this.nextButton.alpha = 0.5;
+            this.nextButton.tint = 0xcccccc;
             this.repeatButton.removeInteractive();
-            this.repeatButton.setTint(0x808080);
+            this.repeatButton.alpha = 0.5;
+            this.repeatButton.tint = 0xcccccc;
 
             setTimeout(() => {
                 this.nextButton.setInteractive();
-                this.nextButton.setTint(0xffffff);
+                this.nextButton.alpha = 1;
+                this.nextButton.tint = 0xffffff;
                 this.repeatButton.setInteractive();
-                this.repeatButton.setTint(0xffffff);
+                this.repeatButton.alpha = 1;
+                this.repeatButton.tint = 0xffffff;
             }, LevelCompleteAdDelay);
         }
     }

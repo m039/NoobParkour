@@ -684,7 +684,10 @@ export default class LevelScene extends BaseScene {
         }
 
         const adScene = this.scene.get(SceneKeys.Ad) as AdScene;
-        adScene.startAd();
+
+        if (tint) {
+            adScene.startAd();
+        }
     }
 
     private diePlayer() {
