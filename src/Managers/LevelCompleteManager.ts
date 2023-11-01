@@ -11,6 +11,8 @@ import { createButton } from '../Utils';
 
 class LevelCompleteScreen extends Phaser.GameObjects.Container {
     private shadow : Phaser.GameObjects.Rectangle;
+    private repeatButton : Phaser.GameObjects.Image;
+    private nextButton : Phaser.GameObjects.Image;
 
     constructor(scene:Phaser.Scene) {
         super(scene, GameWidth / 2, GameHeight / 2);
@@ -38,15 +40,15 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
         
         
         // Next button.
-        const nextButton = scene.add.image(0, 30, TextureKeys.NextButtonBackgroundDefault);
-        const nextButtonText = scene.add.bitmapText(-50, nextButton.y, FontKeys.Monocraft)
+        this.nextButton = scene.add.image(0, 30, TextureKeys.NextButtonBackgroundDefault);
+        const nextButtonText = scene.add.bitmapText(-50, this.nextButton.y, FontKeys.Monocraft)
             .setOrigin(0.0, 0.5)
             .setText(Localization.getText(LocalizationKey.NextLevel))
             .setTint(0x000000);
 
-        const nextIcon = scene.add.image(45, nextButton.y, TextureKeys.NextIcon);
+        const nextIcon = scene.add.image(45, this.nextButton.y, TextureKeys.NextIcon);
 
-        createButton(nextButton, {
+        createButton(this.nextButton, {
             defaultTexture: TextureKeys.NextButtonBackgroundDefault,
             hoveredTexture: TextureKeys.NextButtonBackgroundHovered,
             onClick: () => {
@@ -59,15 +61,15 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
         });
 
         // Repeat button.
-        const repeatButton = scene.add.image(0, 60, TextureKeys.SettingsButtonDefault);
-        const repeatButtonText = scene.add.bitmapText(-50, repeatButton.y, FontKeys.Monocraft)
+        this.repeatButton = scene.add.image(0, 60, TextureKeys.SettingsButtonDefault);
+        const repeatButtonText = scene.add.bitmapText(-50, this.repeatButton.y, FontKeys.Monocraft)
             .setOrigin(0.0, 0.5)
             .setText(Localization.getText(LocalizationKey.MenuRestartLevel))
             .setTint(0x000000);
 
-        const repeatIcon = scene.add.image(45, repeatButton.y, TextureKeys.RepeatIcon);
+        const repeatIcon = scene.add.image(45, this.repeatButton.y, TextureKeys.RepeatIcon);
 
-        createButton(repeatButton, {
+        createButton(this.repeatButton, {
             defaultTexture: TextureKeys.SettingsButtonDefault,
             hoveredTexture: TextureKeys.SettingsButtonHovered,
             onClick: () => {
@@ -85,10 +87,10 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
         this.add(star);
         this.add(coin);
         this.add(coinText);
-        this.add(nextButton);
+        this.add(this.nextButton);
         this.add(nextButtonText);
         this.add(nextIcon);
-        this.add(repeatButton);
+        this.add(this.repeatButton);
         this.add(repeatButtonText);
         this.add(repeatIcon);
 
@@ -100,20 +102,6 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             .setVisible(false)
             .setDepth(99)
             .setInteractive();
-
-        if (bridge.advertisement.isInterstitialReady) {
-            nextButton.removeInteractive();
-            nextButton.setTint(0x808080);
-            repeatButton.removeInteractive();
-            repeatButton.setTint(0x808080);
-
-            setTimeout(() => {
-                nextButton.setInteractive();
-                nextButton.setTint(0xffffff);
-                repeatButton.setInteractive();
-                repeatButton.setTint(0xffffff);
-            }, LevelCompleteAdDelay);
-        }
     }
 
     public show() {
@@ -137,6 +125,20 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
             ease: Phaser.Math.Easing.Back.Out,
             duration: 800
         });
+
+        if (bridge.advertisement.isInterstitialReady) {
+            this.nextButton.removeInteractive();
+            this.nextButton.setTint(0x808080);
+            this.repeatButton.removeInteractive();
+            this.repeatButton.setTint(0x808080);
+
+            setTimeout(() => {
+                this.nextButton.setInteractive();
+                this.nextButton.setTint(0xffffff);
+                this.repeatButton.setInteractive();
+                this.repeatButton.setTint(0xffffff);
+            }, LevelCompleteAdDelay);
+        }
     }
 }
 

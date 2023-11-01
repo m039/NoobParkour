@@ -11,6 +11,8 @@ import { Localization, LocalizationKey } from '../StaticManagers/LocalizationSta
 import LevelCompleteManager from '../Managers/LevelCompleteManager';
 import InputController from '../Managers/InputController';
 import { createButton } from 'src/Utils';
+import { Progress } from 'src/StaticManagers/ProgressStaticManager';
+import { Prefs } from 'src/StaticManagers/PrefsStaticManager';
 
 export default class LevelUIScene extends BaseScene {
     private coinText : Phaser.GameObjects.BitmapText;
@@ -47,30 +49,35 @@ export default class LevelUIScene extends BaseScene {
 
         // Skip button.
 
-        this.skipLevelButton = this.add.image(
-            GameWidth - 100,
-            23, 
-            TextureKeys.SkipLevelButtonDefault
-        )
-            .setDepth(-1);
+        if (this.levelScene.level <= Prefs.getCompletedLevel()) {
+            this.skipLevelButton = undefined;
+            this.skipLevelText = undefined;
+        } else {
+            this.skipLevelButton = this.add.image(
+                GameWidth - 100,
+                23, 
+                TextureKeys.SkipLevelButtonDefault
+            )
+                .setDepth(-1);
 
-        this.skipLevelText = this.add.bitmapText(
-            this.skipLevelButton.x - 18, 
-            this.skipLevelButton.y,
-            FontKeys.Monocraft,
-            Localization.getText(LocalizationKey.SkipLevel)
-        )
-            .setDepth(-1)
-            .setTint(0x000000)
-            .setOrigin(0, 0.5);
+            this.skipLevelText = this.add.bitmapText(
+                this.skipLevelButton.x - 18, 
+                this.skipLevelButton.y,
+                FontKeys.Monocraft,
+                Localization.getText(LocalizationKey.SkipLevel)
+            )
+                .setDepth(-1)
+                .setTint(0x000000)
+                .setOrigin(0, 0.5);
 
-        createButton(this.skipLevelButton, {
-            defaultTexture: TextureKeys.SkipLevelButtonDefault,
-            hoveredTexture: TextureKeys.SkipLevelButtonHovered,
-            onClick: () => {
-                bridge.advertisement.showRewarded();
-            }
-        });
+            createButton(this.skipLevelButton, {
+                defaultTexture: TextureKeys.SkipLevelButtonDefault,
+                hoveredTexture: TextureKeys.SkipLevelButtonHovered,
+                onClick: () => {
+                    bridge.advertisement.showRewarded();
+                }
+            });
+        }
 
         const self = this;
         this.levelScene.events.on(EventKeys.CoinPickUp, this.updateUI, self);
