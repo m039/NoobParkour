@@ -89,7 +89,7 @@ export default class AdScene extends BaseScene {
 
         this.hand.visible = false;
         this.titleText.text = Localization.getText(LocalizationKey.AdTitle);
-        let numberLeft = 3;
+        let numberLeft = 2;
         this.counterText.text = numberLeft.toString();
         this.counterText.visible = true;
 
