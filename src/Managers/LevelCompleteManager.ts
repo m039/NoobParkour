@@ -141,7 +141,7 @@ class LevelCompleteScreen extends Phaser.GameObjects.Container {
                 this.repeatButton.setInteractive();
                 this.repeatButton.alpha = 1;
                 this.repeatButton.tint = 0xffffff;
-            }, LevelCompleteAdDelay);
+            }, LevelCompleteAdDelay + 500);
         }
     }
 }

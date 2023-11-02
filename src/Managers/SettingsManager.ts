@@ -10,6 +10,7 @@ import SceneKeys from '../Consts/SceneKeys';
 import AudioScene from '../Scenes/AudioScene';
 import LevelScene from 'src/Scenes/LevelScene';
 import { Prefs } from 'src/StaticManagers/PrefsStaticManager';
+import { Metrika } from 'src/StaticManagers/MetrikaStaticManager';
 
 class SettingsContainer extends Phaser.GameObjects.Container {
 
@@ -129,6 +130,8 @@ class SettingsContainer extends Phaser.GameObjects.Container {
                     Prefs.setCompletedLevel(0);
                     Prefs.syncToCloud();
                     scene.scene.restart();
+
+                    Metrika.reachGoal("reset_clicked");
                 }
             });
 
