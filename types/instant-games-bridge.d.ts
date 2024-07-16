@@ -30,6 +30,7 @@ declare namespace instantGamesBridge  {
     
     interface Platform {
         get language() : string;
+        get sdk(): any;
         sendMessage(message: PLATFORM_MESSAGE) : void;
     }
 

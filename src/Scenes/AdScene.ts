@@ -22,7 +22,7 @@ export default class AdScene extends BaseScene {
 
     private hand : Phaser.GameObjects.Image;
 
-    private intervalId : NodeJS.Timer;
+    private intervalId : NodeJS.Timeout;
 
     private pressToContinue : boolean;
 

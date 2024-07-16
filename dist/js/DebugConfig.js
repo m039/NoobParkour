@@ -1,5 +1,5 @@
 window.debugConfig = {
-    startLevelScene: true,
+    startLevelScene: false,
     levelSceneLevel: 1,
     clearLocalStorage: false,
     debugSpikes: false,

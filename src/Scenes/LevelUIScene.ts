@@ -49,7 +49,7 @@ export default class LevelUIScene extends BaseScene {
 
         // Skip button.
 
-        if (this.levelScene.level <= Prefs.getCompletedLevel()) {
+        if (bridge.platform.sdk === null || this.levelScene.level <= Prefs.getCompletedLevel()) {
             this.skipLevelButton = undefined;
             this.skipLevelText = undefined;
         } else {
