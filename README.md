@@ -1,6 +1,6 @@
 # Super Noob Parkour
 
-A platformer game made with Phaser 3. You play as a Noob, a Minecraft character, and your goals are to reach another portal and also to collect all coins. You can play the game [on itch.io](https://m039.itch.io/super-noob-parkour) or [on Yandex Games](https://yandex.ru/games/app/208056). The game was initially released on Yandex Games.
+A platformer game made with Phaser 3. You play as a Noob, a Minecraft character, and your goals are to reach another portal and also to collect all coins. You can play the game [on itch.io](https://m039.itch.io/super-noob-parkour) or [on Yandex Games](https://yandex.ru/games/app/208056). The game was initially released on Yandex Games in Nov 2023.
 
 ## Available Commands
 
