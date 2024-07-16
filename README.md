@@ -16,3 +16,8 @@ You can read instructions how to use the project [here](docs/README_old.md).
 ## License
 
 The license for source code is GPL-3.0, for the art is [CC-BY 4.0](http://creativecommons.org/licenses/by/4.0/).
+
+## Screenshot
+
+![Screenshot](docs/screenshot1.png)
+
